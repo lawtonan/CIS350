@@ -136,6 +136,30 @@ public class Euchre {
 		for (int i = 1; i < 5; i++) {
 			for (int j = 0; j < i; j++) {
 				if (hand[i].getSuit() == hand[j].getSuit()) {
+					if(hand[i].getSuit() == hand[j+1].getSuit()&&((j+1)<5)){
+						if(hand[i].getSuit() == hand[j+2].getSuit()&&((j+2)<5)){
+							if(hand[i].getSuit() == hand[j+3].getSuit()&&((j+3)<5)){
+								i=4;
+								j=i;
+							}
+						}
+						else{
+							change = hand[i];
+							hand[i] = hand[j+2];
+							hand[j+2] = change;
+							}
+					}
+					else{
+						change = hand[i];
+						hand[i] = hand[j+1];
+						hand[j+1] = change;
+					}
+				}
+			}			
+		}			
+		for (int i = 1; i < 5; i++) {
+			for (int j = 0; j < i; j++) {
+				if (hand[i].getSuit() == hand[j].getSuit()) {
 					if (hand[i].getCardName() > hand[j].getCardName()) {
 						change = hand[i];
 						hand[i] = hand[j];
