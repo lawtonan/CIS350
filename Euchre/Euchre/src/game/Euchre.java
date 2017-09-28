@@ -43,9 +43,9 @@ public class Euchre {
 		game.printCards(gameDeck);
 		t1Score = 0;
 		t2Score = 0;
-//<<<<<<< HEAD
+		
 		game.deal();
-//=======
+
 		game.shuffle(gameDeck);
 		game.printCards(gameDeck);
 		game.deal();
@@ -53,7 +53,7 @@ public class Euchre {
 		printHand(p2);
 		printHand(p3);
 		printHand(p4);
-//>>>>>>> branch 'master' of https://github.com/lawtonan/CIS350
+
 	}
 
 	public void T1Point() {
