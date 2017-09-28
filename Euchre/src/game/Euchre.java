@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Euchre {
@@ -22,26 +23,31 @@ public class Euchre {
 	int n;
 	Scanner reader = new Scanner(System.in);  // Reading from System.in
 
-	public void createDeck() {
+	public ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
 			deck.add(new Card(i, DIAMOND));
 			deck.add(new Card(i, HEART));
 			deck.add(new Card(i, CLUB));
 			deck.add(new Card(i, SPADE));
 		}
+		return deck;
 	}
 
-	public void printCards() {
+	public void printCards(ArrayList<Card> deck) {
 		System.out.println(deck);
 	}
 
 	public static void main(String[] args) {
 		Euchre game = new Euchre();
-		game.createDeck();
-		game.printCards();
+		ArrayList<Card> gameDeck = game.createDeck();
+		game.printCards(gameDeck);
 		t1Score = 0;
 		t2Score = 0;
+		game.shuffle(gameDeck);
+		game.printCards(gameDeck);
+		
 		//deal(deck,p1,p2,p3,p4);
+		
 		//printHand(p1);
 	}
 
@@ -62,8 +68,8 @@ public class Euchre {
 			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
 	}
 
-	public void shuffle(ArrayList<Card> D) {
-
+	public void shuffle(ArrayList<Card> deck) {
+		Collections.shuffle(deck);
 	}
 
 	public boolean playable(Card Lead, Card Played, Card hand[]) { // also need
