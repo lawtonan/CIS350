@@ -1,7 +1,8 @@
 package game;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Euchre {
@@ -21,34 +22,29 @@ public class Euchre {
 	Card played[] = new Card[5];
 	Card turnUp;
 	int n;
-	Scanner reader = new Scanner(System.in);  // Reading from System.in
+	Scanner reader = new Scanner(System.in); // Reading from System.in
 
-	public ArrayList<Card> createDeck() {
+	public void createDeck() {
 		for (int i = 0; i <= 5; i++) {
 			deck.add(new Card(i, DIAMOND));
 			deck.add(new Card(i, HEART));
 			deck.add(new Card(i, CLUB));
 			deck.add(new Card(i, SPADE));
 		}
-		return deck;
 	}
 
-	public void printCards(ArrayList<Card> deck) {
+	public void printCards() {
 		System.out.println(deck);
 	}
 
 	public static void main(String[] args) {
 		Euchre game = new Euchre();
-		ArrayList<Card> gameDeck = game.createDeck();
-		game.printCards(gameDeck);
+		game.createDeck();
+		game.printCards();
 		t1Score = 0;
 		t2Score = 0;
-		game.shuffle(gameDeck);
-		game.printCards(gameDeck);
-		
-		//deal(deck,p1,p2,p3,p4);
-		
-		//printHand(p1);
+		// deal(deck,p1,p2,p3,p4);
+		// printHand(p1);
 	}
 
 	public void T1Point() {
@@ -68,8 +64,8 @@ public class Euchre {
 			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
 	}
 
-	public void shuffle(ArrayList<Card> deck) {
-		Collections.shuffle(deck);
+	public void shuffle(ArrayList<Card> D) {
+		
 	}
 
 	public boolean playable(Card Lead, Card Played, Card hand[]) { // also need
@@ -90,18 +86,16 @@ public class Euchre {
 		trump = t;
 	}
 
-	public void takeTrick(Card active[], Suits t){ // order played
+	public void takeTrick(Card active[], Suits t) { // order played
 		Card High;
 		High = active[0];
-		for(int i=1;i<4;i++)
-		{
-			if(High.getSuit()!=active[i].getSuit()){
-				if(active[i].getSuit()==t){
-					High=active[i];
+		for (int i = 1; i < 4; i++) {
+			if (High.getSuit() != active[i].getSuit()) {
+				if (active[i].getSuit() == t) {
+					High = active[i];
 				}
-			}
-			else if(High.getCardName()<active[i].getCardName())
-				High=active[i];
+			} else if (High.getCardName() < active[i].getCardName())
+				High = active[i];
 		}
 	}
 
@@ -118,7 +112,7 @@ public class Euchre {
 			this.p4[i] = Deck.get(cardCount);
 			cardCount++;
 		}
-		turnUp=Deck.get(cardCount);
+		turnUp = Deck.get(cardCount);
 		organizeHand(p1);
 		organizeHand(p2);
 		organizeHand(p3);
@@ -142,51 +136,49 @@ public class Euchre {
 		}
 	}
 
-	
-	public void playTrick(Card h1[], Card h2[], Card h3[], Card h4[], Suits t)
-	{
-	
+	public void playTrick(Card h1[], Card h2[], Card h3[], Card h4[], Suits t) {
+
 		printHand(h1);
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		played[0]=h1[n];
-	
+		played[0] = h1[n];
+
 		printHand(h2);
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while( playable(played[0],h2[n],h2) == false){
+		while (playable(played[0], h2[n], h2) == false) {
 			System.out.println("not a valid card");
 			printHand(h2);
 			System.out.println("Play a Card: ");
 			n = reader.nextInt();
 		}
-		played[1]=h2[n];
-	
+		played[1] = h2[n];
+
 		printHand(h3);
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while( playable(played[0],h3[n],h3) == false){
+		while (playable(played[0], h3[n], h3) == false) {
 			System.out.println("not a valid card");
 			printHand(h3);
 			System.out.println("Play a Card: ");
 			n = reader.nextInt();
 		}
-		played[2]=h3[n];
-		
+		played[2] = h3[n];
+
 		printHand(h4);
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while( playable(played[0],h4[n],h4) == false){
+		while (playable(played[0], h4[n], h4) == false) {
 			System.out.println("not a valid card");
 			printHand(h4);
 			System.out.println("Play a Card: ");
 			n = reader.nextInt();
 		}
-		played[3]=h4[n];
+		played[3] = h4[n];
 	}
-	
-	public void printHand(Card hand[]){
-		for(int i=0;i<hand.length;i++){
+
+	public void printHand(Card hand[]) {
+		for (int i = 0; i < hand.length; i++) {
 			switch (hand[i].getCardName()) {
 			case 0:
 				System.out.println("9 of " + hand[i].getSuit());
@@ -200,7 +192,7 @@ public class Euchre {
 			case 3:
 				System.out.println("Queen of " + hand[i].getSuit());
 				break;
-			case 4: 
+			case 4:
 				System.out.println("King of " + hand[i].getSuit());
 				break;
 			case 5:
@@ -209,6 +201,5 @@ public class Euchre {
 			}
 		}
 	}
-	
-	
+
 }
