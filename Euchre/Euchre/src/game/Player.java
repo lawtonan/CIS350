@@ -1,7 +1,5 @@
 package game;
 
-import java.util.*;
-
 public class Player {
 	public Card hand[] = new Card[5];
 	public Team team;
@@ -19,6 +17,10 @@ public class Player {
 
 	public void setHand(Card hand[]) {
 		this.hand = hand;
+	}
+	
+	public void setCard(int cnum,Card c) {
+		this.hand[cnum]=c;
 	}
 
 	public Team getTeam() {

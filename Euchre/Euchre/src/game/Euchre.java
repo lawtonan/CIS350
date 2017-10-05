@@ -10,14 +10,18 @@ public class Euchre {
 	private Suits SPADE = Suits.Spades;
 	private Suits CLUB = Suits.Clubs;
 	Suits trump;
+	public static Card a[] = new Card[5];
+	public static Card b[] = new Card[5];
+	public static Card c[] = new Card[5];
+	public static Card d[] = new Card[5];
 	public ArrayList<Card> deck = new ArrayList<Card>();
 	static int t1Score;
 	static int t2Score;
 	public int cardCount;
-	public static Card p1[] = new Card[5];
-	public static Card p2[] = new Card[5];
-	public static Card p3[] = new Card[5];
-	public static Card p4[] = new Card[5];
+	public static Player p1;
+	public static Player p2;
+	public static Player p3;
+	public static Player p4;
 	public Card played[] = new Card[4];
 	Card turnUp;
 	int n;
@@ -43,16 +47,22 @@ public class Euchre {
 		game.printCards(gameDeck);
 		t1Score = 0;
 		t2Score = 0;
-
+		
+		p1 = new Player(Team.Team1,a);
+		p2 = new Player(Team.Team2,b);
+		p3 = new Player(Team.Team1,c);
+		p4 = new Player(Team.Team2,d);
+		
+		
 		game.deal();
 
 		game.shuffle(gameDeck);
 		game.printCards(gameDeck);
 		game.deal();
-		//printHand(p1);
-		printHand(p2);
-		printHand(p3);
-		printHand(p4);
+		printHand(p1.getHand());
+		printHand(p2.getHand());
+		printHand(p3.getHand());
+		printHand(p4.getHand());
 
 	}
 
@@ -111,20 +121,20 @@ public class Euchre {
 	public void deal() {
 		cardCount = 0;
 		for (int i = 0; i < 5; i++) {
-			p1[i] = this.deck.get(cardCount);
+			p1.setCard(i, this.deck.get(cardCount));
 			cardCount++;
-			p2[i] = this.deck.get(cardCount);
+			p2.setCard(i, this.deck.get(cardCount));
 			cardCount++;
-			p3[i] = this.deck.get(cardCount);
+			p3.setCard(i, this.deck.get(cardCount));
 			cardCount++;
-			p4[i] = this.deck.get(cardCount);
+			p4.setCard(i, this.deck.get(cardCount));
 			cardCount++;
 		}
 		turnUp = deck.get(cardCount);
-		organizeHand(p1);
-		organizeHand(p2);
-		organizeHand(p3);
-		organizeHand(p4);
+		organizeHand(p1.getHand());
+		organizeHand(p2.getHand());
+		organizeHand(p3.getHand());
+		organizeHand(p4.getHand());
 	}
 
 	public void organizeHand(Card hand[]) { // still need to move cards down
@@ -252,5 +262,4 @@ public class Euchre {
 			}
 		}
 	}
-
 }
