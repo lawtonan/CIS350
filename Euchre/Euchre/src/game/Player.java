@@ -3,21 +3,21 @@ package game;
 import java.util.*;
 
 public class Player {
-	public ArrayList<Card> hand = new ArrayList<Card>();
+	public Card hand[] = new Card[5];
 	public Team team;
 	public boolean dealer;
 	
-	public Player(Team team, ArrayList<Card> hand) {
+	public Player(Team team, Card hand[]) {
 		this.team = team;
 		this.hand = hand;
 		dealer = false;
 	}
 
-	public ArrayList<Card> getHand() {
+	public Card[] getHand() {
 		return hand;
 	}
 
-	public void setHand(ArrayList<Card> hand) {
+	public void setHand(Card hand[]) {
 		this.hand = hand;
 	}
 
