@@ -22,6 +22,10 @@ public class Player {
 	public void setCard(int cnum,Card c) {
 		this.hand[cnum]=c;
 	}
+	
+	public Card getCard(int cnum) {
+		return this.hand[cnum];
+	}
 
 	public Team getTeam() {
 		return team;

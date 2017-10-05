@@ -9,6 +9,8 @@ public class Euchre {
 	private Suits HEART = Suits.Hearts;
 	private Suits SPADE = Suits.Spades;
 	private Suits CLUB = Suits.Clubs;
+	private static Team TEAM1 = Team.Team1;
+	private static Team TEAM2 = Team.Team2;
 	Suits trump;
 	public static Card a[] = new Card[5];
 	public static Card b[] = new Card[5];
@@ -25,7 +27,9 @@ public class Euchre {
 	public Card played[] = new Card[4];
 	Card turnUp;
 	int n;
+	public Card highCard;
 	Scanner reader = new Scanner(System.in); // Reading from System.in
+	public int t1Trick,t2Trick;
 
 	public ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
@@ -48,10 +52,10 @@ public class Euchre {
 		t1Score = 0;
 		t2Score = 0;
 		
-		p1 = new Player(Team.Team1,a);
-		p2 = new Player(Team.Team2,b);
-		p3 = new Player(Team.Team1,c);
-		p4 = new Player(Team.Team2,d);
+		p1 = new Player(TEAM1,a);
+		p2 = new Player(TEAM2,b);
+		p3 = new Player(TEAM1,c);
+		p4 = new Player(TEAM2,d);
 		
 		
 		game.deal();
@@ -105,7 +109,7 @@ public class Euchre {
 		trump = t;
 	}
 
-	public void takeTrick(Card active[], Suits t) { // order played
+	public Card takeTrick(Card active[], Suits t) { // order played
 		Card High;
 		High = active[0];
 		for (int i = 1; i < 4; i++) {
@@ -116,10 +120,13 @@ public class Euchre {
 			} else if (High.getCardName() < active[i].getCardName())
 				High = active[i];
 		}
+		return High;
 	}
 
 	public void deal() {
 		cardCount = 0;
+		t1Trick = 0;
+		t2Trick = 0;
 		for (int i = 0; i < 5; i++) {
 			p1.setCard(i, this.deck.get(cardCount));
 			cardCount++;
@@ -195,46 +202,61 @@ public class Euchre {
 		}
 	}
 
-	public void playTrick(Card h1[], Card h2[], Card h3[], Card h4[], Suits t) {
+	public void playTrick(Player pl1,Player pl2, Player pl3, Player pl4, Suits t) {
 
-		printHand(h1);
+		printHand(pl1.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		played[0] = h1[n];
+		played[0] = pl1.getCard(n);
 
-		printHand(h2);
+		printHand(pl2.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while (playable(played[0], h2[n], h2) == false) {
+		while (playable(played[0], pl2.getCard(n), pl2.getHand()) == false) {
 			System.out.println("not a valid card");
-			printHand(h2);
+			printHand(pl2.getHand());
 			System.out.println("Play a Card: ");
 			n = reader.nextInt();
 		}
-		played[1] = h2[n];
+		played[1] = pl2.getCard(n);
 
-		printHand(h3);
+		printHand(pl3.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while (playable(played[0], h3[n], h3) == false) {
+		while (playable(played[0], pl3.getCard(n), pl3.getHand()) == false) {
 			System.out.println("not a valid card");
-			printHand(h3);
+			printHand(pl3.getHand());
 			System.out.println("Play a Card: ");
 			n = reader.nextInt();
 		}
-		played[2] = h3[n];
+		played[2] = pl3.getCard(n);
 
-		printHand(h4);
+		printHand(pl4.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while (playable(played[0], h4[n], h4) == false) {
+		while (playable(played[0], pl4.getCard(n), pl4.getHand()) == false) {
 			System.out.println("not a valid card");
-			printHand(h4);
+			printHand(pl4.getHand());
 			System.out.println("Play a Card: ");
 			n = reader.nextInt();
 		}
-		played[3] = h4[n];
-		takeTrick(played, t);
+		played[3] = pl4.getCard(n);
+		
+		highCard = takeTrick(played, t);
+		if(highCard==played[0]||highCard==played[2])
+		{
+			if(pl1.getTeam()==TEAM1||pl3.getTeam()==TEAM1)
+				t1Trick++;
+			else
+				t2Trick++;
+		}
+		else
+		{
+			if(pl2.getTeam()==TEAM1||pl4.getTeam()==TEAM1)
+				t1Trick++;
+			else
+				t2Trick++;
+		}
 	}
 
 	public static void printHand(Card hand[]) {
