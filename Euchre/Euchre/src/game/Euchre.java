@@ -49,7 +49,7 @@ public class Euchre {
 		game.shuffle(gameDeck);
 		game.printCards(gameDeck);
 		game.deal();
-		printHand(p1);
+		//printHand(p1);
 		printHand(p2);
 		printHand(p3);
 		printHand(p4);
