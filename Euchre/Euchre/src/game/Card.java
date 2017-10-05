@@ -4,6 +4,10 @@ public class Card {
 	private int cardName;
 	private Suits suit;
 	
+	public Card() {
+		cardName = -1;
+	}
+	
 	public Card(int card, Suits suit){
 		cardName = card;
 		this.suit = suit;

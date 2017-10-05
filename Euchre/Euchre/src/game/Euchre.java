@@ -11,7 +11,7 @@ public class Euchre {
 	private Suits CLUB = Suits.Clubs;
 	private static Team TEAM1 = Team.Team1;
 	private static Team TEAM2 = Team.Team2;
-	Suits trump;
+	private static Suits trump;
 	public static Card a[] = new Card[5];
 	public static Card b[] = new Card[5];
 	public static Card c[] = new Card[5];
@@ -29,7 +29,8 @@ public class Euchre {
 	int n;
 	public Card highCard;
 	Scanner reader = new Scanner(System.in); // Reading from System.in
-	public int t1Trick,t2Trick;
+	public static int t1Trick;
+	public static int t2Trick;
 
 	public ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
@@ -51,22 +52,22 @@ public class Euchre {
 		game.printCards(gameDeck);
 		t1Score = 0;
 		t2Score = 0;
-		
-		p1 = new Player(TEAM1,a);
-		p2 = new Player(TEAM2,b);
-		p3 = new Player(TEAM1,c);
-		p4 = new Player(TEAM2,d);
-		
-		
-		game.deal();
+
+		p1 = new Player(TEAM1, a);
+		p2 = new Player(TEAM2, b);
+		p3 = new Player(TEAM1, c);
+		p4 = new Player(TEAM2, d);
 
 		game.shuffle(gameDeck);
 		game.printCards(gameDeck);
 		game.deal();
-		printHand(p1.getHand());
-		printHand(p2.getHand());
-		printHand(p3.getHand());
-		printHand(p4.getHand());
+		// printHand(p1.getHand());
+		// printHand(p2.getHand());
+		// printHand(p3.getHand());
+		// printHand(p4.getHand());
+		game.playTrick(p1, p2, p3, p4, trump);
+		System.out.println(t1Trick);
+		System.out.println(t2Trick);
 
 	}
 
@@ -202,12 +203,13 @@ public class Euchre {
 		}
 	}
 
-	public void playTrick(Player pl1,Player pl2, Player pl3, Player pl4, Suits t) {
+	public void playTrick(Player pl1, Player pl2, Player pl3, Player pl4, Suits t) {
 
 		printHand(pl1.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
 		played[0] = pl1.getCard(n);
+		pl1.setCard(n, new Card());
 
 		printHand(pl2.getHand());
 		System.out.println("Play a Card: ");
@@ -219,6 +221,7 @@ public class Euchre {
 			n = reader.nextInt();
 		}
 		played[1] = pl2.getCard(n);
+		pl2.setCard(n, new Card());
 
 		printHand(pl3.getHand());
 		System.out.println("Play a Card: ");
@@ -230,6 +233,7 @@ public class Euchre {
 			n = reader.nextInt();
 		}
 		played[2] = pl3.getCard(n);
+		pl3.setCard(n, new Card());
 
 		printHand(pl4.getHand());
 		System.out.println("Play a Card: ");
@@ -241,22 +245,31 @@ public class Euchre {
 			n = reader.nextInt();
 		}
 		played[3] = pl4.getCard(n);
-		
+		pl4.setCard(n, new Card());
+
 		highCard = takeTrick(played, t);
-		if(highCard==played[0]||highCard==played[2])
-		{
-			if(pl1.getTeam()==TEAM1||pl3.getTeam()==TEAM1)
+		if (highCard == played[0] || highCard == played[2]) {
+			if (pl1.getTeam() == TEAM1 || pl3.getTeam() == TEAM1)
+				t1Trick++;
+			else
+				t2Trick++;
+		} else {
+			if (pl2.getTeam() == TEAM1 || pl4.getTeam() == TEAM1)
 				t1Trick++;
 			else
 				t2Trick++;
 		}
-		else
-		{
-			if(pl2.getTeam()==TEAM1||pl4.getTeam()==TEAM1)
-				t1Trick++;
+		if (t1Trick + t2Trick < 5) {
+			if (highCard == played[0])
+				playTrick(pl1, pl2, pl3, pl4, t);
+			else if (highCard == played[1])
+				playTrick(pl2, pl3, pl4, pl1, t);
+			else if (highCard == played[2])
+				playTrick(pl3, pl4, pl1, pl2, t);
 			else
-				t2Trick++;
+				playTrick(pl4, pl1, pl2, pl3, t);
 		}
+
 	}
 
 	public static void printHand(Card hand[]) {
@@ -264,6 +277,8 @@ public class Euchre {
 		for (int i = 0; i < hand.length; i++) {
 			System.out.print(i + ":");
 			switch (hand[i].getCardName()) {
+			case -1:
+				break;
 			case 0:
 				System.out.println("9 of " + hand[i].getSuit());
 				break;
