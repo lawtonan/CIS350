@@ -98,7 +98,7 @@ public class Euchre {
 					return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	public void setTrump(Suits t) {
@@ -234,6 +234,7 @@ public class Euchre {
 			n = reader.nextInt();
 		}
 		played[3] = h4[n];
+		takeTrick(played, t);
 	}
 
 	public static void printHand(Card hand[]) {
