@@ -148,16 +148,76 @@ public class Euchre {
 	public Card takeTrick(Card active[], Suits t) { // order played
 		Card High;
 		High = active[0];
-		for (int i = 1; i < active.length; i++) {
-			if (High.getSuit() != active[i].getSuit()) {
-				if (active[i].getSuit() == t) {
+		for (int i = 1; i < 4; i++) {
+			if (rightBower(High, t))
+				return High;
+			else if (rightBower(active[i], t))
+				return active[i];
+			else if (leftBower(High, t)) {
+
+			}
+			else if (High.getSuit() == t && active[i].getSuit() == t) {
+				if (active[i].getCardName() > High.getCardName() || leftBower(active[i], t))
 					High = active[i];
-				}
-			} else if (High.getCardName() < active[i].getCardName())
+			}
+			else if (High.getSuit() != t && (active[i].getSuit() == t || leftBower(active[i], t))) {
 				High = active[i];
+			}
+			else if (High.getSuit() == active[i].getSuit())
+				if (High.getCardName() < active[i].getCardName())
+					High = active[i];
+		// if (High.getSuit() != active[i].getSuit()) {
+		// 		if (active[i].getSuit() == t) {
+		// 			High = active[i];
+		// 		}
+		// 	} else if (High.getCardName() < active[i].getCardName())
+		// 		High = active[i];
 		}
 		return High;
 	}
+
+private boolean rightBower(Card c, Suits t) {
+	if (c.getCardName() == 2 && c.getSuit() == t)
+		return true;
+	return false;
+}
+private boolean leftBower(Card c, Suits t) {
+	if (t == SPADE) {
+		if (c.getCardName() == 2 && c.getSuit() == CLUB)
+			return true;
+		return false;
+	}
+	if (t == CLUB) {
+		if (c.getCardName() == 2 && c.getSuit() == SPADE)
+			return true;
+		return false;
+	}
+	if (t == HEART) {
+		if (c.getCardName() == 2 && c.getSuit() == DIAMOND)
+			return true;
+		return false;
+	}
+	if (t == DIAMOND) {
+		if (c.getCardName() == 2 && c.getSuit() == HEART)
+			return true;
+		return false;
+	}
+	return false;
+
+}
+//	public Card takeTrick(Card active[], Suits t) { // order played
+//		Card High;
+//		High = active[0];
+//		for (int i = 1; i < active.length; i++) {
+//			if (High.getSuit() != active[i].getSuit()) {
+//				if (active[i].getSuit() == t) {
+//					High = active[i];
+//				}
+//			} else if (High.getCardName() < active[i].getCardName())
+//				High = active[i];
+//		}
+//		return High;
+//	}
 
 	public void deal() {
 		cardCount = 0;
