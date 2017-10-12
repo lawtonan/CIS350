@@ -1155,6 +1155,53 @@ private boolean leftBower(Card c, Suits t) {
 				playTrick(p1,p2,p3,p4,trump);
 			}
 		}
+		else
+		{
+			if(p1.isDealer())
+			{
+				if(caller == 1)
+					playTrick(p2,p4,p1,trump);
+				else if(caller == 2)
+					playTrick(p2,p3,p1,trump);
+				else if(caller == 3)
+					playTrick(p2,p3,p4,trump);	
+				else
+					playTrick(p3,p4,p1,trump);
+			}
+			else if(p2.isDealer())
+			{
+				if(caller == 1)
+					playTrick(p4,p1,p2,trump);
+				else if(caller == 2)
+					playTrick(p3,p1,p2,trump);
+				else if(caller == 3)
+					playTrick(p3,p4,p2,trump);	
+				else
+					playTrick(p3,p4,p1,trump);
+			}	
+			else if(p3.isDealer())
+			{
+				if(caller == 1)
+					playTrick(p4,p1,p2,trump);
+				else if(caller == 2)
+					playTrick(p1,p2,p3,trump);
+				else if(caller == 3)
+					playTrick(p4,p2,p3,trump);	
+				else
+					playTrick(p4,p1,p3,trump);
+			}	
+			else
+			{
+				if(caller == 1)
+					playTrick(p1,p2,p4,trump);
+				else if(caller == 2)
+					playTrick(p1,p2,p3,trump);
+				else if(caller == 3)
+					playTrick(p2,p3,p4,trump);	
+				else
+					playTrick(p1,p3,p4,trump);
+			}
+		}
 	}
 	
 	public void goAlone()
