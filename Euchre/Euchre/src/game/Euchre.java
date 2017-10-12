@@ -25,6 +25,7 @@ public class Euchre {
 	public static Player p3;
 	public static Player p4;
 	public Card played[] = new Card[4];
+	public Card play[] = new Card[4];
 	Card turnUp;
 	public boolean t1CallSuit, alone;
 	int n;
@@ -34,7 +35,7 @@ public class Euchre {
 	public static int t2Trick;
 	public Card Blank = new Card();
 	char yorn, cSuit;
-	public int call;
+	public int call, caller;
 
 	public ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
@@ -147,7 +148,7 @@ public class Euchre {
 	public Card takeTrick(Card active[], Suits t) { // order played
 		Card High;
 		High = active[0];
-		for (int i = 1; i < 4; i++) {
+		for (int i = 1; i < active.length; i++) {
 			if (High.getSuit() != active[i].getSuit()) {
 				if (active[i].getSuit() == t) {
 					High = active[i];
@@ -393,6 +394,119 @@ public class Euchre {
 			shuffle(deck);
 		}
 	}
+	
+	public void playTrick(Player pl1, Player pl2, Player pl3, Suits t) {
+
+		printHand(pl1.getHand());
+		System.out.println("Play a Card: ");
+		n = reader.nextInt();
+		play[0] = pl1.getCard(n);
+		pl1.setCard(n, Blank);
+
+		printHand(pl2.getHand());
+		System.out.println("Play a Card: ");
+		n = reader.nextInt();
+		while (playable(play[0], pl2.getCard(n), pl2.getHand()) == false) {
+			System.out.println("not a valid card");
+			printHand(pl2.getHand());
+			System.out.println("Play a Card: ");
+			n = reader.nextInt();
+		}
+		play[1] = pl2.getCard(n);
+		pl2.setCard(n, Blank);
+
+		printHand(pl3.getHand());
+		System.out.println("Play a Card: ");
+		n = reader.nextInt();
+		while (playable(play[0], pl3.getCard(n), pl3.getHand()) == false) {
+			System.out.println("not a valid card");
+			printHand(pl3.getHand());
+			System.out.println("Play a Card: ");
+			n = reader.nextInt();
+		}
+		play[2] = pl3.getCard(n);
+		pl3.setCard(n, Blank);
+
+
+		highCard = takeTrick(play, t);
+		if (highCard == play[0]) {
+			if (pl1.getTeam() == TEAM1)
+				t1Trick++;
+			else
+				t2Trick++;
+		} else if (highCard == play[1]) {
+			if (pl2.getTeam() == TEAM1)
+				t1Trick++;
+			else
+				t2Trick++;
+		}
+		else
+		{
+			if (pl3.getTeam() == TEAM1)
+				t1Trick++;
+			else
+				t2Trick++;
+		}
+		System.out.println("Team 1 Tricks: " + t1Trick);
+		System.out.println("Team 2 Tricks: " + t2Trick);
+		if (t1Trick + t2Trick < 5) {
+			if (highCard == play[0])
+				playTrick(pl1, pl2, pl3, t);
+			else if (highCard == play[1])
+				playTrick(pl2, pl3, pl1, t);
+			else
+				playTrick(pl3, pl1, pl2, t);
+		} 
+		
+		if (t1CallSuit) 
+		{
+			if (t1Trick >= 3 && t1Trick < 5)
+				T1Point();
+			else if (t1Trick == 5) 
+			{
+				T1Point();
+				T1Point();
+			}
+			else
+			{
+				T2Point();
+				T2Point();
+			}
+		} 
+		else 
+		{
+			if (t2Trick >= 3 && t2Trick < 5)
+				T2Point();
+			else if (t2Trick == 5) 
+			{
+				T2Point();
+				T2Point();
+			} 
+			else {
+				T1Point();
+				T1Point();
+			}
+		}
+		if (GameStatus()) 
+		{
+			System.out.println("Would you like to play again? (y) or (n)");
+			yorn = reader.next().charAt(0);
+			if (yorn == 'y' || yorn == 'Y') 
+			{
+				t1Score = 0;
+				t2Score = 0;
+				swapDealer();
+				shuffle(deck);
+			}
+		} 
+		else 
+		{
+			t1Trick = 0;
+			t2Trick = 0;
+			swapDealer();
+			shuffle(deck);
+		}
+	}
 
 	public static void printHand(Card hand[]) 
 	{
@@ -476,6 +590,7 @@ public class Euchre {
 						pickUp(p1,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = false;
+						caller = 2;
 					}
 					else
 						call++;
@@ -492,6 +607,7 @@ public class Euchre {
 						pickUp(p1,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = false;
+						caller = 4;
 					}
 					else
 						call++;
@@ -508,6 +624,7 @@ public class Euchre {
 						pickUp(p1,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = true;
+						caller = 1;
 					}
 					else
 						call++;
@@ -524,6 +641,7 @@ public class Euchre {
 						pickUp(p1,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = true;
+						caller = 3;
 					}
 					else
 						call++;
@@ -544,6 +662,7 @@ public class Euchre {
 						pickUp(p2,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = true;
+						caller = 3;
 					}
 					else
 						call++;
@@ -551,8 +670,6 @@ public class Euchre {
 				else if(call==2)
 				{
 					printHand(p1.getHand());
-					printCard(tUp);
-					printHand(p2.getHand());
 					printCard(tUp);
 					System.out.println("Would you like the dealer to pick it up: (y or n)");
 					yorn = reader.next().charAt(0);
@@ -562,6 +679,7 @@ public class Euchre {
 						pickUp(p2,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = true;
+						caller = 1;
 					}
 					else
 						call++;
@@ -578,6 +696,7 @@ public class Euchre {
 						pickUp(p2,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = false;
+						caller = 4;
 					}
 					else
 						call++;
@@ -594,6 +713,7 @@ public class Euchre {
 						pickUp(p2,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = false;
+						caller = 2;
 					}
 					else
 						call++;
@@ -614,6 +734,7 @@ public class Euchre {
 						pickUp(p3,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = false;
+						caller = 4;
 					}
 					else
 						call++;
@@ -630,6 +751,7 @@ public class Euchre {
 						pickUp(p3,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = false;
+						caller = 2;
 					}
 					else
 						call++;
@@ -646,6 +768,7 @@ public class Euchre {
 						pickUp(p3,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = true;
+						caller = 1;
 					}
 					else
 						call++;
@@ -662,6 +785,7 @@ public class Euchre {
 						pickUp(p3,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = true;
+						caller = 3;
 					}
 					else
 						call++;
@@ -682,6 +806,7 @@ public class Euchre {
 						pickUp(p4,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = true;
+						caller = 1;
 					}
 					else
 						call++;
@@ -700,6 +825,7 @@ public class Euchre {
 						pickUp(p4,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = true;
+						caller = 3;
 					}
 					else
 						call++;
@@ -716,6 +842,7 @@ public class Euchre {
 						pickUp(p4,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = false;
+						caller = 2;
 					}
 					else
 						call++;
@@ -732,6 +859,7 @@ public class Euchre {
 						pickUp(p4,tUp);
 						trump = tUp.getSuit();
 						t1CallSuit = false;
+						caller = 4;
 					}
 					else
 						call++;
@@ -748,18 +876,21 @@ public class Euchre {
 					printHand(p2.getHand());
 					trump = secondround(dead);
 					t1CallSuit = false;
+					caller = 2;
 				}
 				else if(call == 5)
 				{
 					printHand(p3.getHand());
 					trump = secondround(dead);
 					t1CallSuit = true;
+					caller = 3;
 				}
 				else
 				{
 					printHand(p4.getHand());
 					trump = secondround(dead);
 					t1CallSuit = false;
+					caller = 4;
 				}
 			}
 			else if(p2.isDealer())
@@ -769,18 +900,21 @@ public class Euchre {
 					printHand(p3.getHand());
 					trump = secondround(dead);
 					t1CallSuit = true;
+					caller = 3;
 				}
 				else if(call == 5)
 				{
 					printHand(p4.getHand());
 					trump = secondround(dead);
 					t1CallSuit = false;
+					caller = 4;
 				}
 				else
 				{
 					printHand(p1.getHand());
 					trump = secondround(dead);
 					t1CallSuit = true;
+					caller = 1;
 				}
 			}
 			else if(p3.isDealer())
@@ -790,18 +924,21 @@ public class Euchre {
 					printHand(p4.getHand());
 					trump = secondround(dead);
 					t1CallSuit = false;
+					caller = 4;
 				}
 				else if(call == 5)
 				{
 					printHand(p1.getHand());
 					trump = secondround(dead);
 					t1CallSuit = true;
+					caller = 1;
 				}
 				else
 				{
 					printHand(p2.getHand());
 					trump = secondround(dead);
 					t1CallSuit = false;
+					caller = 2;
 				}
 			}
 			else 
@@ -811,18 +948,21 @@ public class Euchre {
 					printHand(p1.getHand());
 					trump = secondround(dead);
 					t1CallSuit = true;
+					caller = 1;
 				}
 				else if(call == 5)
 				{
 					printHand(p2.getHand());
 					trump = secondround(dead);
 					t1CallSuit = false;
+					caller = 2;
 				}
 				else
 				{
 					printHand(p3.getHand());
 					trump = secondround(dead);
 					t1CallSuit = true;
+					caller = 3;
 				}
 			}
 		if(trump == null)	
@@ -834,21 +974,25 @@ public class Euchre {
 			{
 				printHand(p1.getHand());
 				t1CallSuit = true;
+				caller = 1;
 			}
 			else if(p2.isDealer())
 			{
 				printHand(p2.getHand());
 				t1CallSuit = false;
+				caller = 2;
 			}
 			else if(p3.isDealer())
 			{
 				printHand(p3.getHand());
 				t1CallSuit = true;
+				caller = 3;
 			}
 			else
 			{
 				printHand(p4.getHand());
 				t1CallSuit = false;
+				caller = 4;
 			}
 			if(dead==DIAMOND)
 			{
@@ -932,21 +1076,24 @@ public class Euchre {
 				}		
 			}
 		}
-		if(p1.isDealer())
+		if(!alone)
 		{
-			playTrick(p2,p3,p4,p1,trump);
-		}
-		else if(p2.isDealer())
-		{
-			playTrick(p3,p4,p1,p2,trump);
-		}	
-		else if(p3.isDealer())
-		{
-			playTrick(p4,p1,p2,p3,trump);
-		}	
-		else
-		{
-			playTrick(p1,p2,p3,p4,trump);
+			if(p1.isDealer())
+			{
+				playTrick(p2,p3,p4,p1,trump);
+			}
+			else if(p2.isDealer())
+			{
+				playTrick(p3,p4,p1,p2,trump);
+			}	
+			else if(p3.isDealer())
+			{
+				playTrick(p4,p1,p2,p3,trump);
+			}	
+			else
+			{
+				playTrick(p1,p2,p3,p4,trump);
+			}
 		}
 	}
 	
