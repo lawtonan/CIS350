@@ -26,7 +26,7 @@ public class Euchre {
 	public static Player p4;
 	public Card played[] = new Card[4];
 	Card turnUp;
-	public boolean t1CallSuit,goAlone;
+	public boolean t1CallSuit, goAlone;
 	int n;
 	public Card highCard;
 	Scanner reader = new Scanner(System.in); // Reading from System.in
@@ -34,7 +34,8 @@ public class Euchre {
 	public static int t2Trick;
 	public Card Blank = new Card();
 	String yorn;
-	
+	public int call;
+
 	public ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
 			deck.add(new Card(i, DIAMOND));
@@ -63,7 +64,7 @@ public class Euchre {
 
 		game.shuffle(gameDeck);
 		game.printCards(gameDeck);
-		game.deal();
+		//game.deal();
 		// printHand(p1.getHand());
 		// printHand(p2.getHand());
 		// printHand(p3.getHand());
@@ -72,6 +73,30 @@ public class Euchre {
 		System.out.println(t1Trick);
 		System.out.println(t2Trick);
 
+	}
+	
+	public void swapDealer()
+	{
+		if(p1.isDealer())
+		{
+			p1.setDealer(false);
+			p2.setDealer(true);
+		}
+		else if(p2.isDealer())
+		{
+			p2.setDealer(false);
+			p3.setDealer(true);
+		}
+		else if(p3.isDealer())
+		{
+			p3.setDealer(false);
+			p4.setDealer(true);
+		}
+		else if(p4.isDealer())
+		{
+			p4.setDealer(false);
+			p1.setDealer(true);
+		}
 	}
 
 	public void T1Point() {
@@ -83,18 +108,13 @@ public class Euchre {
 	}
 
 	public boolean GameStatus() {
-		if (t1Score >= 10)
-		{
+		if (t1Score >= 10) {
 			System.out.println("Team 1 wins");
 			return true;
-		}
-		else if (t2Score >= 10)
-		{
+		} else if (t2Score >= 10) {
 			System.out.println("Team 2 wins");
 			return true;
-		}
-		else
-		{
+		} else {
 			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
 			return false;
 		}
@@ -102,12 +122,13 @@ public class Euchre {
 
 	public void shuffle(ArrayList<Card> deck) {
 		Collections.shuffle(deck);
+		deal();
 	}
 
 	public boolean playable(Card Lead, Card Played, Card hand[]) { // also need
 																	// users
-		if(Played.getSuit()==null)
-			return false;											// hand
+		if (Played.getSuit() == null)
+			return false; // hand
 		if (Lead.getSuit() == Played.getSuit())
 			return true;
 		else if (Lead.getSuit() != Played.getSuit()) {
@@ -141,15 +162,52 @@ public class Euchre {
 		cardCount = 0;
 		t1Trick = 0;
 		t2Trick = 0;
-		for (int i = 0; i < 5; i++) {
-			p1.setCard(i, this.deck.get(cardCount));
-			cardCount++;
-			p2.setCard(i, this.deck.get(cardCount));
-			cardCount++;
-			p3.setCard(i, this.deck.get(cardCount));
-			cardCount++;
-			p4.setCard(i, this.deck.get(cardCount));
-			cardCount++;
+		for (int i = 0; i < 5; i++) 
+		{
+			if(p1.isDealer())
+			{
+				p2.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p3.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p4.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p1.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+			}
+			else if(p2.isDealer())
+			{
+				p3.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p4.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p1.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p2.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+			}
+			else if(p3.isDealer())
+			{
+				p4.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p1.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p2.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p3.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+			}
+			else
+			{
+				p1.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p2.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p3.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+				p4.setCard(i, this.deck.get(cardCount));
+				cardCount++;
+			}
 		}
 		turnUp = deck.get(cardCount);
 		organizeHand(p1.getHand());
@@ -282,68 +340,52 @@ public class Euchre {
 				playTrick(pl3, pl4, pl1, pl2, t);
 			else
 				playTrick(pl4, pl1, pl2, pl3, t);
-		}
-		else if(t1CallSuit)
-		{
-			
-			if(t1Trick>=3 && t1Trick<5)
+		} else if (t1CallSuit) {
+
+			if (t1Trick >= 3 && t1Trick < 5)
 				T1Point();
-			else if(t1Trick==5&&goAlone)
-			{
+			else if (t1Trick == 5 && goAlone) {
 				T1Point();
 				T1Point();
 				T1Point();
 				T1Point();
-			}
-			else if(t1Trick==5)
-			{
+			} else if (t1Trick == 5) {
 				T1Point();
 				T1Point();
-			}
-			else
-			{
+			} else {
 				T2Point();
 				T2Point();
 			}
-		}
-		else
-		{	
-			if(t2Trick>=3 && t2Trick<5)
+		} else {
+			if (t2Trick >= 3 && t2Trick < 5)
 				T2Point();
-			else if(t2Trick==5 && goAlone)
-			{
+			else if (t2Trick == 5 && goAlone) {
 				T2Point();
 				T2Point();
 				T2Point();
 				T2Point();
-			}
-			else if(t2Trick==5)
-			{
+			} else if (t2Trick == 5) {
 				T2Point();
 				T2Point();
-			}
-			else
-			{
+			} else {
 				T1Point();
 				T1Point();
 			}
 		}
-		if(GameStatus())
-		{
+		if (GameStatus()) {
 			System.out.println("Would you like to play again? (y) or (n)");
 			yorn = reader.next();
-			if(yorn== "y" || yorn == "Y" )
-			{
+			if (yorn == "y" || yorn == "Y") {
 				t1Score = 0;
 				t2Score = 0;
-				deal();
+				swapDealer();
+				shuffle(deck);
 			}
-		}
-		else
-		{
-			t1Trick=0;
-			t2Trick=0;
-			deal();
+		} else {
+			t1Trick = 0;
+			t2Trick = 0;
+			swapDealer();
+			shuffle(deck);
 		}
 	}
 
@@ -374,5 +416,10 @@ public class Euchre {
 				break;
 			}
 		}
+	}
+	
+	public void callTrump(Card tUp)
+	{
+		call = 0;
 	}
 }
