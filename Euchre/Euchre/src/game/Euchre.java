@@ -342,34 +342,33 @@ public class Euchre {
 				playTrick(pl3, pl4, pl1, pl2, t);
 			else
 				playTrick(pl4, pl1, pl2, pl3, t);
-		} else if (t1CallSuit) {
-
+		} 
+		
+		if (t1CallSuit) 
+		{
 			if (t1Trick >= 3 && t1Trick < 5)
 				T1Point();
-			else if (t1Trick == 5 && alone) {
+			else if (t1Trick == 5) 
+			{
 				T1Point();
 				T1Point();
-				T1Point();
-				T1Point();
-			} else if (t1Trick == 5) {
-				T1Point();
-				T1Point();
-			} else {
+			}
+			else
+			{
 				T2Point();
 				T2Point();
 			}
-		} else {
+		} 
+		else 
+		{
 			if (t2Trick >= 3 && t2Trick < 5)
 				T2Point();
-			else if (t2Trick == 5 && alone) {
+			else if (t2Trick == 5) 
+			{
 				T2Point();
 				T2Point();
-				T2Point();
-				T2Point();
-			} else if (t2Trick == 5) {
-				T2Point();
-				T2Point();
-			} else {
+			} 
+			else {
 				T1Point();
 				T1Point();
 			}
@@ -476,6 +475,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p1,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = false;
 					}
 					else
 						call++;
@@ -491,6 +491,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p1,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = false;
 					}
 					else
 						call++;
@@ -506,6 +507,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p1,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = true;
 					}
 					else
 						call++;
@@ -521,6 +523,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p1,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = true;
 					}
 					else
 						call++;
@@ -540,6 +543,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p2,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = true;
 					}
 					else
 						call++;
@@ -557,13 +561,14 @@ public class Euchre {
 						goAlone();
 						pickUp(p2,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = true;
 					}
 					else
 						call++;
 				}
 				else if(call==1)
 				{
-					printHand(p3.getHand());
+					printHand(p4.getHand());
 					printCard(tUp);
 					System.out.println("Would you like to order it up: (y or n)");
 					yorn = reader.next().charAt(0);
@@ -572,6 +577,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p2,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = false;
 					}
 					else
 						call++;
@@ -587,6 +593,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p2,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = false;
 					}
 					else
 						call++;
@@ -606,6 +613,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p3,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = false;
 					}
 					else
 						call++;
@@ -621,6 +629,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p3,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = false;
 					}
 					else
 						call++;
@@ -636,6 +645,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p3,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = true;
 					}
 					else
 						call++;
@@ -651,6 +661,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p3,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = true;
 					}
 					else
 						call++;
@@ -670,6 +681,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p4,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = true;
 					}
 					else
 						call++;
@@ -687,6 +699,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p4,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = true;
 					}
 					else
 						call++;
@@ -702,6 +715,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p4,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = false;
 					}
 					else
 						call++;
@@ -717,6 +731,7 @@ public class Euchre {
 						goAlone();
 						pickUp(p4,tUp);
 						trump = tUp.getSuit();
+						t1CallSuit = false;
 					}
 					else
 						call++;
@@ -732,16 +747,19 @@ public class Euchre {
 				{
 					printHand(p2.getHand());
 					trump = secondround(dead);
+					t1CallSuit = false;
 				}
 				else if(call == 5)
 				{
 					printHand(p3.getHand());
 					trump = secondround(dead);
+					t1CallSuit = true;
 				}
 				else
 				{
 					printHand(p4.getHand());
 					trump = secondround(dead);
+					t1CallSuit = false;
 				}
 			}
 			else if(p2.isDealer())
@@ -750,16 +768,19 @@ public class Euchre {
 				{
 					printHand(p3.getHand());
 					trump = secondround(dead);
+					t1CallSuit = true;
 				}
 				else if(call == 5)
 				{
 					printHand(p4.getHand());
 					trump = secondround(dead);
+					t1CallSuit = false;
 				}
 				else
 				{
 					printHand(p1.getHand());
 					trump = secondround(dead);
+					t1CallSuit = true;
 				}
 			}
 			else if(p3.isDealer())
@@ -768,16 +789,19 @@ public class Euchre {
 				{
 					printHand(p4.getHand());
 					trump = secondround(dead);
+					t1CallSuit = false;
 				}
 				else if(call == 5)
 				{
 					printHand(p1.getHand());
 					trump = secondround(dead);
+					t1CallSuit = true;
 				}
 				else
 				{
 					printHand(p2.getHand());
 					trump = secondround(dead);
+					t1CallSuit = false;
 				}
 			}
 			else 
@@ -786,16 +810,19 @@ public class Euchre {
 				{
 					printHand(p1.getHand());
 					trump = secondround(dead);
+					t1CallSuit = true;
 				}
 				else if(call == 5)
 				{
 					printHand(p2.getHand());
 					trump = secondround(dead);
+					t1CallSuit = false;
 				}
 				else
 				{
 					printHand(p3.getHand());
 					trump = secondround(dead);
+					t1CallSuit = true;
 				}
 			}
 		if(trump == null)	
@@ -804,13 +831,25 @@ public class Euchre {
 		while(trump==null)
 		{
 			if(p1.isDealer())
+			{
 				printHand(p1.getHand());
+				t1CallSuit = true;
+			}
 			else if(p2.isDealer())
+			{
 				printHand(p2.getHand());
+				t1CallSuit = false;
+			}
 			else if(p3.isDealer())
+			{
 				printHand(p3.getHand());
+				t1CallSuit = true;
+			}
 			else
+			{
 				printHand(p4.getHand());
+				t1CallSuit = false;
+			}
 			if(dead==DIAMOND)
 			{
 				System.out.println("Stick the dealer. Call Trump (h = Hearts, s = spades, c=clubs, n=no): ");
