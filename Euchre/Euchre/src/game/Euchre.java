@@ -25,7 +25,7 @@ public class Euchre {
 	public static Player p3;
 	public static Player p4;
 	public Card played[] = new Card[4];
-	public Card play[] = new Card[4];
+	public Card play[] = new Card[3];
 	Card turnUp;
 	public boolean t1CallSuit, alone;
 	int n;
@@ -148,7 +148,7 @@ public class Euchre {
 	public Card takeTrick(Card active[], Suits t) { // order played
 		Card High;
 		High = active[0];
-		for (int i = 1; i < 4; i++) {
+		for (int i = 1; i < active.length; i++) {
 			if (rightBower(High, t))
 				return High;
 			else if (rightBower(active[i], t))
@@ -526,6 +526,8 @@ private boolean leftBower(Card c, Suits t) {
 			{
 				T1Point();
 				T1Point();
+				T1Point();
+				T1Point();
 			}
 			else
 			{
@@ -539,6 +541,8 @@ private boolean leftBower(Card c, Suits t) {
 				T2Point();
 			else if (t2Trick == 5) 
 			{
+				T2Point();
+				T2Point();
 				T2Point();
 				T2Point();
 			} 
