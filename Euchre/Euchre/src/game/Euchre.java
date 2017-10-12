@@ -26,12 +26,15 @@ public class Euchre {
 	public static Player p4;
 	public Card played[] = new Card[4];
 	Card turnUp;
+	public boolean t1CallSuit,goAlone;
 	int n;
 	public Card highCard;
 	Scanner reader = new Scanner(System.in); // Reading from System.in
 	public static int t1Trick;
 	public static int t2Trick;
-
+	public Card Blank = new Card();
+	String yorn;
+	
 	public ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
 			deck.add(new Card(i, DIAMOND));
@@ -79,13 +82,22 @@ public class Euchre {
 		t2Score++;
 	}
 
-	public void GameStatus() {
+	public boolean GameStatus() {
 		if (t1Score >= 10)
+		{
 			System.out.println("Team 1 wins");
+			return true;
+		}
 		else if (t2Score >= 10)
+		{
 			System.out.println("Team 2 wins");
+			return true;
+		}
 		else
+		{
 			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
+			return false;
+		}
 	}
 
 	public void shuffle(ArrayList<Card> deck) {
@@ -94,7 +106,8 @@ public class Euchre {
 
 	public boolean playable(Card Lead, Card Played, Card hand[]) { // also need
 																	// users
-																	// hand
+		if(Played.getSuit()==null)
+			return false;											// hand
 		if (Lead.getSuit() == Played.getSuit())
 			return true;
 		else if (Lead.getSuit() != Played.getSuit()) {
@@ -143,6 +156,7 @@ public class Euchre {
 		organizeHand(p2.getHand());
 		organizeHand(p3.getHand());
 		organizeHand(p4.getHand());
+		playTrick(p1,p2,p3,p4,trump);
 	}
 
 	public void organizeHand(Card hand[]) { // still need to move cards down
@@ -209,7 +223,7 @@ public class Euchre {
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
 		played[0] = pl1.getCard(n);
-		pl1.setCard(n, new Card());
+		pl1.setCard(n, Blank);
 
 		printHand(pl2.getHand());
 		System.out.println("Play a Card: ");
@@ -221,7 +235,7 @@ public class Euchre {
 			n = reader.nextInt();
 		}
 		played[1] = pl2.getCard(n);
-		pl2.setCard(n, new Card());
+		pl2.setCard(n, Blank);
 
 		printHand(pl3.getHand());
 		System.out.println("Play a Card: ");
@@ -233,7 +247,7 @@ public class Euchre {
 			n = reader.nextInt();
 		}
 		played[2] = pl3.getCard(n);
-		pl3.setCard(n, new Card());
+		pl3.setCard(n, Blank);
 
 		printHand(pl4.getHand());
 		System.out.println("Play a Card: ");
@@ -245,7 +259,7 @@ public class Euchre {
 			n = reader.nextInt();
 		}
 		played[3] = pl4.getCard(n);
-		pl4.setCard(n, new Card());
+		pl4.setCard(n, Blank);
 
 		highCard = takeTrick(played, t);
 		if (highCard == played[0] || highCard == played[2]) {
@@ -269,7 +283,68 @@ public class Euchre {
 			else
 				playTrick(pl4, pl1, pl2, pl3, t);
 		}
-
+		else if(t1CallSuit)
+		{
+			
+			if(t1Trick>=3 && t1Trick<5)
+				T1Point();
+			else if(t1Trick==5&&goAlone)
+			{
+				T1Point();
+				T1Point();
+				T1Point();
+				T1Point();
+			}
+			else if(t1Trick==5)
+			{
+				T1Point();
+				T1Point();
+			}
+			else
+			{
+				T2Point();
+				T2Point();
+			}
+		}
+		else
+		{	
+			if(t2Trick>=3 && t2Trick<5)
+				T2Point();
+			else if(t2Trick==5 && goAlone)
+			{
+				T2Point();
+				T2Point();
+				T2Point();
+				T2Point();
+			}
+			else if(t2Trick==5)
+			{
+				T2Point();
+				T2Point();
+			}
+			else
+			{
+				T1Point();
+				T1Point();
+			}
+		}
+		if(GameStatus())
+		{
+			System.out.println("Would you like to play again? (y) or (n)");
+			yorn = reader.next();
+			if(yorn== "y" || yorn == "Y" )
+			{
+				t1Score = 0;
+				t2Score = 0;
+				deal();
+			}
+		}
+		else
+		{
+			t1Trick=0;
+			t2Trick=0;
+			deal();
+		}
 	}
 
 	public static void printHand(Card hand[]) {

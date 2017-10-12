@@ -6,6 +6,7 @@ public class Card {
 	
 	public Card() {
 		cardName = -1;
+		this.suit = null;
 	}
 	
 	public Card(int card, Suits suit){
