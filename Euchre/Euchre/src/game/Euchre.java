@@ -11,7 +11,7 @@ public class Euchre {
 	private Suits CLUB = Suits.Clubs;
 	private static Team TEAM1 = Team.Team1;
 	private static Team TEAM2 = Team.Team2;
-	private static Suits trump;
+	private static Suits trump, dead;
 	public static Card a[] = new Card[5];
 	public static Card b[] = new Card[5];
 	public static Card c[] = new Card[5];
@@ -26,14 +26,14 @@ public class Euchre {
 	public static Player p4;
 	public Card played[] = new Card[4];
 	Card turnUp;
-	public boolean t1CallSuit, goAlone;
+	public boolean t1CallSuit, alone;
 	int n;
 	public Card highCard;
 	Scanner reader = new Scanner(System.in); // Reading from System.in
 	public static int t1Trick;
 	public static int t2Trick;
 	public Card Blank = new Card();
-	String yorn;
+	char yorn, cSuit;
 	public int call;
 
 	public ArrayList<Card> createDeck() {
@@ -214,7 +214,7 @@ public class Euchre {
 		organizeHand(p2.getHand());
 		organizeHand(p3.getHand());
 		organizeHand(p4.getHand());
-		playTrick(p1,p2,p3,p4,trump);
+		callTrump(turnUp);
 	}
 
 	public void organizeHand(Card hand[]) { // still need to move cards down
@@ -344,7 +344,7 @@ public class Euchre {
 
 			if (t1Trick >= 3 && t1Trick < 5)
 				T1Point();
-			else if (t1Trick == 5 && goAlone) {
+			else if (t1Trick == 5 && alone) {
 				T1Point();
 				T1Point();
 				T1Point();
@@ -359,7 +359,7 @@ public class Euchre {
 		} else {
 			if (t2Trick >= 3 && t2Trick < 5)
 				T2Point();
-			else if (t2Trick == 5 && goAlone) {
+			else if (t2Trick == 5 && alone) {
 				T2Point();
 				T2Point();
 				T2Point();
@@ -372,16 +372,20 @@ public class Euchre {
 				T1Point();
 			}
 		}
-		if (GameStatus()) {
+		if (GameStatus()) 
+		{
 			System.out.println("Would you like to play again? (y) or (n)");
-			yorn = reader.next();
-			if (yorn == "y" || yorn == "Y") {
+			yorn = reader.next().charAt(0);
+			if (yorn == 'y' || yorn == 'Y') 
+			{
 				t1Score = 0;
 				t2Score = 0;
 				swapDealer();
 				shuffle(deck);
 			}
-		} else {
+		} 
+		else 
+		{
 			t1Trick = 0;
 			t2Trick = 0;
 			swapDealer();
@@ -389,37 +393,641 @@ public class Euchre {
 		}
 	}
 
-	public static void printHand(Card hand[]) {
+	public static void printHand(Card hand[]) 
+	{
 		System.out.println("\nyour hand is:");
 		for (int i = 0; i < hand.length; i++) {
-			System.out.print(i + ":");
 			switch (hand[i].getCardName()) {
 			case -1:
 				break;
 			case 0:
+				System.out.print(i + ":");
 				System.out.println("9 of " + hand[i].getSuit());
 				break;
 			case 1:
+				System.out.print(i + ":");
 				System.out.println("10 of " + hand[i].getSuit());
 				break;
 			case 2:
+				System.out.print(i + ":");
 				System.out.println("Jack of " + hand[i].getSuit());
 				break;
 			case 3:
+				System.out.print(i + ":");
 				System.out.println("Queen of " + hand[i].getSuit());
 				break;
 			case 4:
+				System.out.print(i + ":");
 				System.out.println("King of " + hand[i].getSuit());
 				break;
 			case 5:
+				System.out.print(i + ":");
 				System.out.println("Ace of " + hand[i].getSuit());
 				break;
 			}
 		}
 	}
 	
+	public static void printCard(Card c) 
+	{
+		System.out.println("\nThe card turned up is:");
+		switch (c.getCardName()) {
+			case -1:
+				break;
+			case 0:
+				System.out.println("9 of " + c.getSuit());
+				break;
+			case 1:
+				System.out.println("10 of " + c.getSuit());
+				break;
+			case 2:
+				System.out.println("Jack of " + c.getSuit());
+				break;
+			case 3:
+				System.out.println("Queen of " + c.getSuit());
+				break;
+			case 4:
+				System.out.println("King of " + c.getSuit());
+				break;
+			case 5:
+				System.out.println("Ace of " + c.getSuit());
+				break;
+		}
+	}
+	
 	public void callTrump(Card tUp)
 	{
 		call = 0;
+		trump = null;
+		while(call<4&&trump==null)
+		{
+			if(p1.isDealer())
+			{
+				if(call==0)
+				{
+					printHand(p2.getHand());
+					printCard(tUp);
+					System.out.println("Would you like the dealer to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p1,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==2)
+				{
+					printHand(p4.getHand());
+					printCard(tUp);
+					System.out.println("Would you like the dealer to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p1,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==1)
+				{
+					printHand(p3.getHand());
+					printCard(tUp);
+					System.out.println("Would you like to order it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p1,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==3)
+				{
+					printHand(p1.getHand());
+					printCard(tUp);
+					System.out.println("Would you like to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p1,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+			}
+			
+			else if(p2.isDealer())
+			{
+				if(call==0)
+				{
+					printHand(p3.getHand());
+					printCard(tUp);
+					System.out.println("Would you like the dealer to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p2,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==2)
+				{
+					printHand(p1.getHand());
+					printCard(tUp);
+					printHand(p2.getHand());
+					printCard(tUp);
+					System.out.println("Would you like the dealer to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p2,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==1)
+				{
+					printHand(p3.getHand());
+					printCard(tUp);
+					System.out.println("Would you like to order it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p2,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==3)
+				{
+					printHand(p2.getHand());
+					printCard(tUp);
+					System.out.println("Would you like to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p2,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+			}
+			
+			else if(p3.isDealer())
+			{
+				if(call==0)
+				{	
+					printHand(p4.getHand());
+					printCard(tUp);
+					System.out.println("Would you like the dealer to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p3,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==2)
+				{
+					printHand(p2.getHand());
+					printCard(tUp);
+					System.out.println("Would you like the dealer to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p3,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==1)
+				{
+					printHand(p1.getHand());
+					printCard(tUp);
+					System.out.println("Would you like to order it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p3,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==3)
+				{
+					printHand(p3.getHand());
+					printCard(tUp);
+					System.out.println("Would you like to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p3,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+			}
+			
+			else
+			{
+				if(call==0)
+				{
+					printHand(p1.getHand());
+					printCard(tUp);
+					System.out.println("Would you like the dealer to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p4,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==2)
+				{
+					printHand(p3.getHand());
+					printCard(tUp);
+					printHand(p1.getHand());
+					printCard(tUp);
+					System.out.println("Would you like the dealer to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p4,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				else if(call==1)
+				{
+					printHand(p2.getHand());
+					printCard(tUp);
+					System.out.println("Would you like to order it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p4,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+				if(call==3)
+				{
+					printHand(p4.getHand());
+					printCard(tUp);
+					System.out.println("Would you like to pick it up: (y or n)");
+					yorn = reader.next().charAt(0);
+					if(yorn == 'y' || yorn == 'Y')
+					{
+						goAlone();
+						pickUp(p4,tUp);
+						trump = tUp.getSuit();
+					}
+					else
+						call++;
+				}
+			}
+		}
+		dead = tUp.getSuit();
+		while(call<7&&trump == null)
+		{
+			if(p1.isDealer())
+			{
+				if(call==4)
+				{
+					printHand(p2.getHand());
+					trump = secondround(dead);
+				}
+				else if(call == 5)
+				{
+					printHand(p3.getHand());
+					trump = secondround(dead);
+				}
+				else
+				{
+					printHand(p4.getHand());
+					trump = secondround(dead);
+				}
+			}
+			else if(p2.isDealer())
+			{
+				if(call==4)
+				{
+					printHand(p3.getHand());
+					trump = secondround(dead);
+				}
+				else if(call == 5)
+				{
+					printHand(p4.getHand());
+					trump = secondround(dead);
+				}
+				else
+				{
+					printHand(p1.getHand());
+					trump = secondround(dead);
+				}
+			}
+			else if(p3.isDealer())
+			{
+				if(call==4)
+				{
+					printHand(p4.getHand());
+					trump = secondround(dead);
+				}
+				else if(call == 5)
+				{
+					printHand(p1.getHand());
+					trump = secondround(dead);
+				}
+				else
+				{
+					printHand(p2.getHand());
+					trump = secondround(dead);
+				}
+			}
+			else 
+			{
+				if(call==4)
+				{
+					printHand(p1.getHand());
+					trump = secondround(dead);
+				}
+				else if(call == 5)
+				{
+					printHand(p2.getHand());
+					trump = secondround(dead);
+				}
+				else
+				{
+					printHand(p3.getHand());
+					trump = secondround(dead);
+				}
+			}
+		if(trump == null)	
+			call++;
+		}
+		while(trump==null)
+		{
+			if(p1.isDealer())
+				printHand(p1.getHand());
+			else if(p2.isDealer())
+				printHand(p2.getHand());
+			else if(p3.isDealer())
+				printHand(p3.getHand());
+			else
+				printHand(p4.getHand());
+			if(dead==DIAMOND)
+			{
+				System.out.println("Stick the dealer. Call Trump (h = Hearts, s = spades, c=clubs, n=no): ");
+				cSuit = reader.next().charAt(0);
+				if(cSuit == 'h' || cSuit == 'H')
+				{
+					goAlone();
+					trump = HEART;
+				}
+				else if(cSuit == 's' || cSuit == 'S')
+				{
+					goAlone();
+					trump = SPADE;
+				}
+				else if(cSuit == 'c' || cSuit == 'C')
+				{
+					goAlone();
+					trump = CLUB;
+				}
+			}
+			
+			if(dead==HEART)
+			{
+				System.out.println("Stick the dealer. Call Trump (s = spades, c=clubs, d=diamonds, n=no): ");
+				cSuit = reader.next().charAt(0);
+				if(cSuit == 's' || cSuit == 'S')
+				{
+					goAlone();
+					trump = SPADE;
+				}
+				else if(cSuit == 'c' || cSuit == 'C')
+				{
+					goAlone();
+					trump = CLUB;
+				}
+				else if(cSuit == 'd' || cSuit == 'D')
+				{
+					goAlone();
+					trump = DIAMOND;
+				}
+			}
+			if(dead==SPADE)
+			{
+				System.out.println("Stick the dealer. Call Trump (h = Hearts, c=clubs, d=diamonds, n=no): ");
+				cSuit = reader.next().charAt(0);
+				if(cSuit == 'h' || cSuit == 'H')
+				{
+					goAlone();
+					trump = HEART;
+				}
+				else if(cSuit == 'c' || cSuit == 'C')
+				{
+					goAlone();
+					trump = CLUB;
+				}
+				else if(cSuit == 'd' || cSuit == 'D')
+				{
+					goAlone();
+					trump = DIAMOND;
+				}	
+			}
+			else
+			{
+				System.out.println("Stick the dealer. Call Trump (h = Hearts, s = spades, d=diamonds, n=no): ");
+				cSuit = reader.next().charAt(0);
+				if(cSuit == 'h' || cSuit == 'H')
+				{
+					goAlone();
+					trump = HEART;
+				}
+				else if(cSuit == 's' || cSuit == 'S')
+				{
+					goAlone();
+					trump = SPADE;
+				}
+				else if(cSuit == 'd' || cSuit == 'D')
+				{
+					goAlone();
+					trump = DIAMOND;
+				}		
+			}
+		}
+		if(p1.isDealer())
+		{
+			playTrick(p2,p3,p4,p1,trump);
+		}
+		else if(p2.isDealer())
+		{
+			playTrick(p3,p4,p1,p2,trump);
+		}	
+		else if(p3.isDealer())
+		{
+			playTrick(p4,p1,p2,p3,trump);
+		}	
+		else
+		{
+			playTrick(p1,p2,p3,p4,trump);
+		}
+	}
+	
+	public void goAlone()
+	{
+		System.out.println("would you like to go alone? (y = yes, n = no): ");
+		yorn = reader.next().charAt(0);
+		if(yorn == 'y' || yorn == 'Y')
+			alone = true;
+		else
+			alone = false;
+	}
+	
+	public void pickUp(Player p, Card c)
+	{
+		System.out.println("Pick a card to replace: ");
+		printHand(p.getHand());
+		n = reader.nextInt();
+		p.setCard(n,c);
+		organizeHand(p.getHand());
+	}
+
+
+	public Suits secondround(Suits dead)
+	{
+		if(dead==DIAMOND)
+		{
+			System.out.println("Would you like to call Trump? (h = Hearts, s = spades, c=clubs, n=no): ");
+			cSuit = reader.next().charAt(0);
+			if(cSuit == 'h' || cSuit == 'H')
+			{
+				goAlone();
+				return HEART;
+			}
+			else if(cSuit == 's' || cSuit == 'S')
+			{
+				goAlone();
+				return SPADE;
+			}
+			else if(cSuit == 'c' || cSuit == 'C')
+			{
+				goAlone();
+				return CLUB;
+			}
+			else
+			{
+				return null;
+			}		
+		}
+		
+		else if(dead==HEART)
+		{
+			System.out.println("Would you like to call Trump? (s = spades, c=clubs, d=diamonds, n=no): ");
+			cSuit = reader.next().charAt(0);
+			if(cSuit == 's' || cSuit == 'S')
+			{
+				goAlone();
+				return SPADE;
+			}
+			else if(cSuit == 'c' || cSuit == 'C')
+			{
+				goAlone();
+				return CLUB;
+			}
+			else if(cSuit == 'd' || cSuit == 'D')
+			{
+				goAlone();
+				return DIAMOND;
+			}
+			else
+			{
+				return null;
+			}		
+		}
+		
+		else if(dead==SPADE)
+		{
+			System.out.println("Would you like to call Trump? (h = Hearts, c=clubs, d=diamonds, n=no): ");
+			cSuit = reader.next().charAt(0);
+			if(cSuit == 'h' || cSuit == 'H')
+			{
+				goAlone();
+				return HEART;
+			}
+			else if(cSuit == 'c' || cSuit == 'C')
+			{
+				goAlone();
+				return CLUB;
+			}
+			else if(cSuit == 'd' || cSuit == 'D')
+			{
+				goAlone();
+				return DIAMOND;
+			}
+			else
+			{
+				return null;
+			}		
+		}
+		else
+		{
+			System.out.println("Would you like to call Trump? (h = Hearts, s = spades, d=diamonds, n=no): ");
+			cSuit = reader.next().charAt(0);
+			if(cSuit == 'h' || cSuit == 'H')
+			{
+				goAlone();
+				return HEART;
+			}
+			else if(cSuit == 's' || cSuit == 'S')
+			{
+				goAlone();
+				return SPADE;
+			}
+			else if(cSuit == 'd' || cSuit == 'D')
+			{
+				goAlone();
+				return DIAMOND;
+			}
+			else
+			{
+				return null;
+			}		
+		}
 	}
 }
