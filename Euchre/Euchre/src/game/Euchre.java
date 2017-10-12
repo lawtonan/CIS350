@@ -331,6 +331,8 @@ public class Euchre {
 			else
 				t2Trick++;
 		}
+		System.out.println("Team 1 Tricks: " + t1Trick);
+		System.out.println("Team 2 Tricks: " + t2Trick);
 		if (t1Trick + t2Trick < 5) {
 			if (highCard == played[0])
 				playTrick(pl1, pl2, pl3, pl4, t);
