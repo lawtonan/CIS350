@@ -574,64 +574,15 @@ private boolean leftBower(Card c, Suits t) {
 
 	public static void printHand(Card hand[]) 
 	{
-		System.out.println("\nyour hand is:");
+		System.out.println("\nYour hand is:");
 		for (int i = 0; i < hand.length; i++) {
-			switch (hand[i].getCardName()) {
-			case -1:
-				break;
-			case 0:
-				System.out.print(i + ":");
-				System.out.println("9 of " + hand[i].getSuit());
-				break;
-			case 1:
-				System.out.print(i + ":");
-				System.out.println("10 of " + hand[i].getSuit());
-				break;
-			case 2:
-				System.out.print(i + ":");
-				System.out.println("Jack of " + hand[i].getSuit());
-				break;
-			case 3:
-				System.out.print(i + ":");
-				System.out.println("Queen of " + hand[i].getSuit());
-				break;
-			case 4:
-				System.out.print(i + ":");
-				System.out.println("King of " + hand[i].getSuit());
-				break;
-			case 5:
-				System.out.print(i + ":");
-				System.out.println("Ace of " + hand[i].getSuit());
-				break;
-			}
-		}
+			System.out.println(i + ": " + hand[i]);
+		}				
 	}
 	
 	public static void printCard(Card c) 
 	{
-		System.out.println("\nThe card turned up is:");
-		switch (c.getCardName()) {
-			case -1:
-				break;
-			case 0:
-				System.out.println("9 of " + c.getSuit());
-				break;
-			case 1:
-				System.out.println("10 of " + c.getSuit());
-				break;
-			case 2:
-				System.out.println("Jack of " + c.getSuit());
-				break;
-			case 3:
-				System.out.println("Queen of " + c.getSuit());
-				break;
-			case 4:
-				System.out.println("King of " + c.getSuit());
-				break;
-			case 5:
-				System.out.println("Ace of " + c.getSuit());
-				break;
-		}
+		System.out.println("\nThe card turned up is: " + c);
 	}
 	
 	public void callTrump(Card tUp)
