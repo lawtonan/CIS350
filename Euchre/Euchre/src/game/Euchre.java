@@ -589,7 +589,7 @@ private boolean leftBower(Card c, Suits t) {
 	{
 		call = 0;
 		trump = null;
-		while(call<4&&trump==null)
+		while(call<4 && trump==null)
 		{
 			if(p1.isDealer())
 			{
