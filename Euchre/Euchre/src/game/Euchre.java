@@ -110,9 +110,11 @@ public class Euchre {
 
 	public boolean GameStatus() {
 		if (t1Score >= 10) {
+			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
 			System.out.println("Team 1 wins");
 			return true;
 		} else if (t2Score >= 10) {
+			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
 			System.out.println("Team 2 wins");
 			return true;
 		} else {
@@ -126,20 +128,50 @@ public class Euchre {
 		deal();
 	}
 
-	public boolean playable(Card Lead, Card Played, Card hand[]) { // also need
-																	// users
-		if (Played.getSuit() == null)
-			return false; // hand
-		if (Lead.getSuit() == Played.getSuit())
-			return true;
-		else if (Lead.getSuit() != Played.getSuit()) {
-			for (int i = 0; i < hand.length; i++) {
-				if (Lead.getSuit() == hand[i].getSuit())
+	public boolean playable(Card Lead, Card Played, Card hand[],Suits t) {
+
+		if (Lead.getSuit() == t || leftBower(Lead,t))
+		{
+			if(Played.getSuit() == t || leftBower(Played,t))
+			{
+				return true;
+			}
+			else
+			{	
+				for (int i = 0; i < hand.length; i++) 
+				{
+					if (hand[i].getSuit() == t || leftBower(hand[i],t))
+						return false;
+				}
+			}
+		}
+		else 
+		{
+			if(Lead.getSuit() == Played.getSuit() && !leftBower(Played,t))
+				return true;
+			for (int i = 0; i < hand.length; i++) 
+			{
+				if (Lead.getSuit() == hand[i].getSuit() && !leftBower(hand[i],t))
 					return false;
 			}
 		}
 		return true;
 	}
+	
+//	public boolean playable(Card Lead, Card Played, Card hand[]) { // also need
+//																	// users
+//		if (Played.getSuit() == null)
+//			return false; // hand
+//		if (Lead.getSuit() == Played.getSuit())
+//			return true;
+//		else if (Lead.getSuit() != Played.getSuit()) {
+//			for (int i = 0; i < hand.length; i++) {
+//				if (Lead.getSuit() == hand[i].getSuit())
+//					return false;
+//			}
+//		}
+//		return true;
+//	}
 
 	public void setTrump(Suits t) {
 		trump = t;
@@ -347,7 +379,7 @@ private boolean leftBower(Card c, Suits t) {
 		printHand(pl2.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while (playable(played[0], pl2.getCard(n), pl2.getHand()) == false) {
+		while (playable(played[0], pl2.getCard(n), pl2.getHand(),t ) == false) {
 			System.out.println("not a valid card");
 			printHand(pl2.getHand());
 			System.out.println("Play a Card: ");
@@ -359,7 +391,7 @@ private boolean leftBower(Card c, Suits t) {
 		printHand(pl3.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while (playable(played[0], pl3.getCard(n), pl3.getHand()) == false) {
+		while (playable(played[0], pl3.getCard(n), pl3.getHand(),t) == false) {
 			System.out.println("not a valid card");
 			printHand(pl3.getHand());
 			System.out.println("Play a Card: ");
@@ -371,7 +403,7 @@ private boolean leftBower(Card c, Suits t) {
 		printHand(pl4.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while (playable(played[0], pl4.getCard(n), pl4.getHand()) == false) {
+		while (playable(played[0], pl4.getCard(n), pl4.getHand(),t) == false) {
 			System.out.println("not a valid card");
 			printHand(pl4.getHand());
 			System.out.println("Play a Card: ");
@@ -466,7 +498,7 @@ private boolean leftBower(Card c, Suits t) {
 		printHand(pl2.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while (playable(play[0], pl2.getCard(n), pl2.getHand()) == false) {
+		while (playable(play[0], pl2.getCard(n), pl2.getHand(),t) == false) {
 			System.out.println("not a valid card");
 			printHand(pl2.getHand());
 			System.out.println("Play a Card: ");
@@ -478,7 +510,7 @@ private boolean leftBower(Card c, Suits t) {
 		printHand(pl3.getHand());
 		System.out.println("Play a Card: ");
 		n = reader.nextInt();
-		while (playable(play[0], pl3.getCard(n), pl3.getHand()) == false) {
+		while (playable(play[0], pl3.getCard(n), pl3.getHand(),t) == false) {
 			System.out.println("not a valid card");
 			printHand(pl3.getHand());
 			System.out.println("Play a Card: ");
@@ -1011,7 +1043,7 @@ private boolean leftBower(Card c, Suits t) {
 			}
 			if(dead==DIAMOND)
 			{
-				System.out.println("Stick the dealer. Call Trump (h = Hearts, s = spades, c=clubs, n=no): ");
+				System.out.println("Stick the dealer. Call Trump (h = Hearts, s = spades, c = clubs): ");
 				cSuit = reader.next().charAt(0);
 				if(cSuit == 'h' || cSuit == 'H')
 				{
@@ -1032,7 +1064,7 @@ private boolean leftBower(Card c, Suits t) {
 			
 			if(dead==HEART)
 			{
-				System.out.println("Stick the dealer. Call Trump (s = spades, c=clubs, d=diamonds, n=no): ");
+				System.out.println("Stick the dealer. Call Trump (s = spades, c = clubs, d = diamonds): ");
 				cSuit = reader.next().charAt(0);
 				if(cSuit == 's' || cSuit == 'S')
 				{
@@ -1052,7 +1084,7 @@ private boolean leftBower(Card c, Suits t) {
 			}
 			if(dead==SPADE)
 			{
-				System.out.println("Stick the dealer. Call Trump (h = Hearts, c=clubs, d=diamonds, n=no): ");
+				System.out.println("Stick the dealer. Call Trump (h = Hearts, c = clubs, d = diamonds): ");
 				cSuit = reader.next().charAt(0);
 				if(cSuit == 'h' || cSuit == 'H')
 				{
@@ -1072,7 +1104,7 @@ private boolean leftBower(Card c, Suits t) {
 			}
 			else
 			{
-				System.out.println("Stick the dealer. Call Trump (h = Hearts, s = spades, d=diamonds, n=no): ");
+				System.out.println("Stick the dealer. Call Trump (h = Hearts, s = spades, d = diamonds): ");
 				cSuit = reader.next().charAt(0);
 				if(cSuit == 'h' || cSuit == 'H')
 				{
@@ -1183,7 +1215,7 @@ private boolean leftBower(Card c, Suits t) {
 	{
 		if(dead==DIAMOND)
 		{
-			System.out.println("Would you like to call Trump? (h = Hearts, s = spades, c=clubs, n=no): ");
+			System.out.println("Would you like to call Trump? (h = Hearts, s = spades, c = clubs, n = no): ");
 			cSuit = reader.next().charAt(0);
 			if(cSuit == 'h' || cSuit == 'H')
 			{
@@ -1208,7 +1240,7 @@ private boolean leftBower(Card c, Suits t) {
 		
 		else if(dead==HEART)
 		{
-			System.out.println("Would you like to call Trump? (s = spades, c=clubs, d=diamonds, n=no): ");
+			System.out.println("Would you like to call Trump? (s = spades, c = clubs, d = diamonds, n = no): ");
 			cSuit = reader.next().charAt(0);
 			if(cSuit == 's' || cSuit == 'S')
 			{
@@ -1233,7 +1265,7 @@ private boolean leftBower(Card c, Suits t) {
 		
 		else if(dead==SPADE)
 		{
-			System.out.println("Would you like to call Trump? (h = Hearts, c=clubs, d=diamonds, n=no): ");
+			System.out.println("Would you like to call Trump? (h = Hearts, c = clubs, d = diamonds, n = no): ");
 			cSuit = reader.next().charAt(0);
 			if(cSuit == 'h' || cSuit == 'H')
 			{
@@ -1257,7 +1289,7 @@ private boolean leftBower(Card c, Suits t) {
 		}
 		else
 		{
-			System.out.println("Would you like to call Trump? (h = Hearts, s = spades, d=diamonds, n=no): ");
+			System.out.println("Would you like to call Trump? (h = Hearts, s = spades, d = diamonds, n = no): ");
 			cSuit = reader.next().charAt(0);
 			if(cSuit == 'h' || cSuit == 'H')
 			{
