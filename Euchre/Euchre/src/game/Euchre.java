@@ -4,38 +4,97 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+/**********************************************************************
+ * The Euchre class is our main class that controls the functionality
+ * of the game to be played in the console window. It can create a 
+ * deck and keep track of score as the game is played.
+ * 
+ * @author Andrew Lawton
+ * @author Dan Schroeder
+ * @author Aron Ockerse
+ * @version 1.0
+ *********************************************************************/
 public class Euchre {
+	/** A suit created by an enumerated type for the deck */
 	private Suits DIAMOND = Suits.Diamonds;
+	
+	/** A suit created by an enumerated type for the deck */
 	private Suits HEART = Suits.Hearts;
+	
+	/** A suit created by an enumerated type for the deck */
 	private Suits SPADE = Suits.Spades;
+	
+	/** A suit created by an enumerated type for the deck */
 	private Suits CLUB = Suits.Clubs;
+	
+	/** A type to assign Team 1 */
 	private static Team TEAM1 = Team.Team1;
+	
+	/** A type to assign Team 2 */
 	private static Team TEAM2 = Team.Team2;
-	private static Suits trump, dead;
-	public static Card a[] = new Card[5];
-	public static Card b[] = new Card[5];
-	public static Card c[] = new Card[5];
-	public static Card d[] = new Card[5];
+	
+	/** A suit used to keep track of trump */
+	private static Suits trump;
+	
+	/** A suit used to keep track of the dead suit */
+	private static Suits dead;
+	
+	/** An ArrayList of cards for the deck  */
 	public ArrayList<Card> deck = new ArrayList<Card>();
+	
+	/** An integer to keep track of team 1's score */
 	static int t1Score;
+	
+	/** An integer to keep track of team 2's score */
 	static int t2Score;
-	public int cardCount;
+	
+	/** A player object declared in main  */
 	public static Player p1;
+	
+	/** A player object declared in main  */
 	public static Player p2;
+	
+	/** A player object declared in main  */
 	public static Player p3;
+	
+	/** A player object declared in main  */
 	public static Player p4;
+	
+	/** An array to keep track of what cards have been played */
 	public Card played[] = new Card[4];
+	
+	/** An array to keep track of what cards are played for going alone */
 	public Card play[] = new Card[3];
+	
+	/** A card used to keep track of the turn up */
 	Card turnUp;
-	public boolean t1CallSuit, alone;
-	int n;
-	public Card highCard;
-	Scanner reader = new Scanner(System.in); // Reading from System.in
+	
+	/** A boolean used to see who called the trump */
+	public boolean t1CallSuit;
+	
+	/** A boolean used to see who goes alone */
+	public boolean alone;
+	
+	/** An integer to be used for the scanner */
+	int input;
+	
+	/** A scanner used to read user input */
+	Scanner reader = new Scanner(System.in); 
+	
+	/** An integer to keep track of team 1's trick count */
 	public static int t1Trick;
+	
+	/** An integer to keep track of team 2's trick count */
 	public static int t2Trick;
+	
+	/** A default card */
 	public Card Blank = new Card();
-	char yorn, cSuit;
-	public int call, caller;
+	
+	/** A character to read if the user calls yes or no */
+	char yorn;
+	
+	/** A character to read what the user calls for trump */
+	char cSuit;
 
 	public ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
@@ -58,6 +117,11 @@ public class Euchre {
 		t1Score = 0;
 		t2Score = 0;
 
+		Card a[] = new Card[5];
+		Card b[] = new Card[5];
+		Card c[] = new Card[5];
+		Card d[] = new Card[5];
+		
 		p1 = new Player(TEAM1, a);
 		p2 = new Player(TEAM2, b);
 		p3 = new Player(TEAM1, c);
@@ -252,7 +316,7 @@ private boolean leftBower(Card c, Suits t) {
 //	}
 
 	public void deal() {
-		cardCount = 0;
+		int cardCount = 0;
 		t1Trick = 0;
 		t2Trick = 0;
 		for (int i = 0; i < 5; i++) 
@@ -369,48 +433,50 @@ private boolean leftBower(Card c, Suits t) {
 	}
 
 	public void playTrick(Player pl1, Player pl2, Player pl3, Player pl4, Suits t) {
+		
+		Card highCard;
 
 		printHand(pl1.getHand());
 		System.out.println("Play a Card: ");
-		n = reader.nextInt();
-		played[0] = pl1.getCard(n);
-		pl1.setCard(n, Blank);
+		input = reader.nextInt();
+		played[0] = pl1.getCard(input);
+		pl1.setCard(input, Blank);
 
 		printHand(pl2.getHand());
 		System.out.println("Play a Card: ");
-		n = reader.nextInt();
-		while (playable(played[0], pl2.getCard(n), pl2.getHand(),t ) == false) {
+		input = reader.nextInt();
+		while (playable(played[0], pl2.getCard(input), pl2.getHand(),t ) == false) {
 			System.out.println("not a valid card");
 			printHand(pl2.getHand());
 			System.out.println("Play a Card: ");
-			n = reader.nextInt();
+			input = reader.nextInt();
 		}
-		played[1] = pl2.getCard(n);
-		pl2.setCard(n, Blank);
+		played[1] = pl2.getCard(input);
+		pl2.setCard(input, Blank);
 
 		printHand(pl3.getHand());
 		System.out.println("Play a Card: ");
-		n = reader.nextInt();
-		while (playable(played[0], pl3.getCard(n), pl3.getHand(),t) == false) {
+		input = reader.nextInt();
+		while (playable(played[0], pl3.getCard(input), pl3.getHand(),t) == false) {
 			System.out.println("not a valid card");
 			printHand(pl3.getHand());
 			System.out.println("Play a Card: ");
-			n = reader.nextInt();
+			input = reader.nextInt();
 		}
-		played[2] = pl3.getCard(n);
-		pl3.setCard(n, Blank);
+		played[2] = pl3.getCard(input);
+		pl3.setCard(input, Blank);
 
 		printHand(pl4.getHand());
 		System.out.println("Play a Card: ");
-		n = reader.nextInt();
-		while (playable(played[0], pl4.getCard(n), pl4.getHand(),t) == false) {
+		input = reader.nextInt();
+		while (playable(played[0], pl4.getCard(input), pl4.getHand(),t) == false) {
 			System.out.println("not a valid card");
 			printHand(pl4.getHand());
 			System.out.println("Play a Card: ");
-			n = reader.nextInt();
+			input = reader.nextInt();
 		}
-		played[3] = pl4.getCard(n);
-		pl4.setCard(n, Blank);
+		played[3] = pl4.getCard(input);
+		pl4.setCard(input, Blank);
 
 		highCard = takeTrick(played, t);
 		if (highCard == played[0] || highCard == played[2]) {
@@ -488,36 +554,38 @@ private boolean leftBower(Card c, Suits t) {
 	}
 	
 	public void playTrick(Player pl1, Player pl2, Player pl3, Suits t) {
+		
+		Card highCard;
 
 		printHand(pl1.getHand());
 		System.out.println("Play a Card: ");
-		n = reader.nextInt();
-		play[0] = pl1.getCard(n);
-		pl1.setCard(n, Blank);
+		input = reader.nextInt();
+		play[0] = pl1.getCard(input);
+		pl1.setCard(input, Blank);
 
 		printHand(pl2.getHand());
 		System.out.println("Play a Card: ");
-		n = reader.nextInt();
-		while (playable(play[0], pl2.getCard(n), pl2.getHand(),t) == false) {
+		input = reader.nextInt();
+		while (playable(play[0], pl2.getCard(input), pl2.getHand(),t) == false) {
 			System.out.println("not a valid card");
 			printHand(pl2.getHand());
 			System.out.println("Play a Card: ");
-			n = reader.nextInt();
+			input = reader.nextInt();
 		}
-		play[1] = pl2.getCard(n);
-		pl2.setCard(n, Blank);
+		play[1] = pl2.getCard(input);
+		pl2.setCard(input, Blank);
 
 		printHand(pl3.getHand());
 		System.out.println("Play a Card: ");
-		n = reader.nextInt();
-		while (playable(play[0], pl3.getCard(n), pl3.getHand(),t) == false) {
+		input = reader.nextInt();
+		while (playable(play[0], pl3.getCard(input), pl3.getHand(),t) == false) {
 			System.out.println("not a valid card");
 			printHand(pl3.getHand());
 			System.out.println("Play a Card: ");
-			n = reader.nextInt();
+			input = reader.nextInt();
 		}
-		play[2] = pl3.getCard(n);
-		pl3.setCard(n, Blank);
+		play[2] = pl3.getCard(input);
+		pl3.setCard(input, Blank);
 
 
 		highCard = takeTrick(play, t);
@@ -619,7 +687,8 @@ private boolean leftBower(Card c, Suits t) {
 	
 	public void callTrump(Card tUp)
 	{
-		call = 0;
+		int call = 0;
+		int caller = 0;
 		trump = null;
 		while(call<4 && trump==null)
 		{
@@ -1205,8 +1274,8 @@ private boolean leftBower(Card c, Suits t) {
 	{
 		System.out.println("Pick a card to replace: ");
 		printHand(p.getHand());
-		n = reader.nextInt();
-		p.setCard(n,c);
+		input = reader.nextInt();
+		p.setCard(input, c);
 		organizeHand(p.getHand());
 	}
 
