@@ -101,8 +101,7 @@ public class Euchre {
 	 * variables to then create the game itself. This will change in 
 	 * release 2 as we will move to a GUI instead of command terminal
 	 * 
-	 * @param String[] args An array of strings for arguments
-	 * @return void
+	 * @param args An array of strings for arguments
 	 *****************************************************************/
 	public static void main(String[] args) {
 		Euchre game = new Euchre();
@@ -135,8 +134,7 @@ public class Euchre {
 	/******************************************************************
 	 * A helper method used to create the deck in main
 	 * 
-	 * @param none
-	 * @return ArrayList<Card> an ArrayList of card objects (the deck)
+	 * @return 		returns an ArrayList of card objects (the deck)
 	 *****************************************************************/
 	private ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
@@ -152,8 +150,6 @@ public class Euchre {
 	 * A method used to swap the dealer. Changes dealer to the next 
 	 * player
 	 * 
-	 * @param none
-	 * @return void
 	 *****************************************************************/
 	public void swapDealer()
 	{
@@ -182,8 +178,7 @@ public class Euchre {
 	/******************************************************************
 	 * A accessor used to get team 1s' score
 	 * 
-	 * @param none
-	 * @return int returns t1Score
+	 * @return 		returns t1Score
 	 *****************************************************************/
 	public int getT1Score() {
 		return t1Score;
@@ -192,8 +187,7 @@ public class Euchre {
 	/******************************************************************
 	 * A mutator used to change team 1s' score
 	 * 
-	 * @param int t1 a desired score
-	 * @return void
+	 * @param t1 a desired score
 	 *****************************************************************/
 	public static void setT1Score(int t1) {
 		t1Score = t1;
@@ -202,8 +196,6 @@ public class Euchre {
 	/******************************************************************
 	 * An incrementor that increments team 1's score
 	 * 
-	 * @param none
-	 * @return void
 	 *****************************************************************/
 	public void T1Point() {
 		setT1Score(getT1Score() +1);
@@ -212,8 +204,7 @@ public class Euchre {
 	/******************************************************************
 	 * A accessor used to get team 2s' score
 	 * 
-	 * @param none
-	 * @return int returns t2Score
+	 * @return		returns t2Score
 	 *****************************************************************/
 	public int getT2Score() {
 		return t2Score;
@@ -222,8 +213,7 @@ public class Euchre {
 	/******************************************************************
 	 * A mutator used to change team 2s' score
 	 * 
-	 * @param int t2 a desired score
-	 * @return void
+	 * @param t2 a desired score
 	 *****************************************************************/
 	public static void setT2Score(int t2) {
 		t2Score = t2;
@@ -242,8 +232,7 @@ public class Euchre {
 	/******************************************************************
 	 * A method that returns the games status
 	 * 
-	 * @param none
-	 * @return boolean returns a boolean whether the game is complete
+	 * @return 		returns a boolean whether the game is complete
 	 *****************************************************************/
 	public boolean gameStatus() {
 		if (t1Score >= 10) {
@@ -263,8 +252,7 @@ public class Euchre {
 	/******************************************************************
 	 * A method that shuffles the deck ArrayList then deals.
 	 * 
-	 * @param ArrayList<Card> deck the games deck
-	 * @return void
+	 * @param deck the games deck
 	 *****************************************************************/
 	public void shuffle(ArrayList<Card> deck) {
 		Collections.shuffle(deck);
@@ -274,10 +262,10 @@ public class Euchre {
 	/******************************************************************
 	 * A method that checks if the card played is playable or not
 	 * 
-	 * @param Card Lead The lead card
-	 * @param Card Played The card to check if valid
-	 * @param Suits t Trump
-	 * @return boolean returns True if played is a valid card
+	 * @param Lead The lead card
+	 * @param Played The card to check if valid
+	 * @param t Trump
+	 * @return 		returns True if played is a valid card
 	 *****************************************************************/
 	public boolean playable(Card Lead, Card Played, Card hand[],Suits t) {
 
@@ -312,8 +300,7 @@ public class Euchre {
 	/******************************************************************
 	 * A mutator that sets trump
 	 * 
-	 * @param Suits t the suit to set trump
-	 * @return void
+	 * @param t the suit to set trump
 	 *****************************************************************/
 	public static void setTrump(Suits t) {
 		trump = t;
@@ -323,9 +310,9 @@ public class Euchre {
 	 * A method that determines which card is the highest out of those
 	 * played, and will return that card
 	 * 
-	 * @param Card active[] an array of cards that were played
-	 * @param suits t trump
-	 * @return Card returns the highest value card
+	 * @param active[] an array of cards that were played
+	 * @param t trump
+	 * @return		returns the highest value card
 	 *****************************************************************/
 public Card takeTrick(Card active[], Suits t) {
 		Card High;
@@ -355,9 +342,9 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A helper method to determine if a card is the right bower
 	 * 
-	 * @param Card c The card in question
-	 * @param suits t trump
-	 * @return boolean if the card is a right bower
+	 * @param c The card in question
+	 * @param t trump
+	 * @return		returns a boolean of if the card is the right bower
 	 *****************************************************************/
 	private boolean rightBower(Card c, Suits t) {
 		if (c.getCardName() == 2 && c.getSuit() == t)
@@ -368,9 +355,9 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A helper method to determine if a card is the left bower
 	 * 
-	 * @param Card c The card in question
-	 * @param suits t trump
-	 * @return boolean if the card is a left bower
+	 * @param c The card in question
+	 * @param t trump
+	 * @return 		return a boolean of if the card is tje left bower
 	 *****************************************************************/
 	private boolean leftBower(Card c, Suits t) {
 		if (t == SPADE) {
@@ -400,8 +387,7 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A accessor to return team 1's trick count
 	 * 
-	 * @param none
-	 * @return int returns t1Trick
+	 * @return 		returns t1Trick
 	 *****************************************************************/
 	public int getT1Trick() {
 		return t1Trick;
@@ -410,8 +396,7 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A mutator to set team 1's trick count
 	 * 
-	 * @param int t1 What you want to set the trick to
-	 * @return void
+	 * @param t1 What you want to set the trick to
 	 *****************************************************************/
 	public static void setT1Trick(int t1) {
 		t1Trick = t1;
@@ -420,8 +405,7 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A accessor to return team 2's trick count
 	 * 
-	 * @param none
-	 * @return int returns t2Trick
+	 * @return 		returns t2Trick
 	 *****************************************************************/
 	public int getT2Trick() {
 		return t2Trick;
@@ -430,8 +414,7 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A mutator to set team 2's trick count
 	 * 
-	 * @param int t2 What you want to set the trick to
-	 * @return void
+	 * @param t2 What you want to set the trick to
 	 *****************************************************************/
 	public static void setT2Trick(int t2) {
 		t2Trick = t2;
@@ -440,8 +423,6 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A method that give each player 5 cards from the shuffled deck
 	 * 
-	 * @param none
-	 * @return void
 	 *****************************************************************/
 	public void deal() {
 		int cardCount = 0;
@@ -505,8 +486,7 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A method used to organize the hand.
 	 * 
-	 * @param Card hand[] an Array of cards that represents the hand
-	 * @return void
+	 * @param hand[] an Array of cards that represents the hand
 	 *****************************************************************/
 	public void organizeHand(Card hand[]) { 
 		
@@ -514,13 +494,13 @@ public Card takeTrick(Card active[], Suits t) {
 		for (int i = 2; i < hand.length; i++) {
 			for (int j = 0; j < i; j++) {
 				if (hand[i].getSuit() == hand[j].getSuit()) {
-					if (j + 1 < 5) {
+					if (j + 1 < i) {
 						if (hand[i].getSuit() == hand[j + 1].getSuit()) {
-							if (j + 2 < 5) {
+							if (j + 2 < i) {
 								if (hand[i].getSuit() == hand[j + 2].getSuit()) {
-									if (j + 3 < 5) {
+									if (j + 3 < i) {
 										if (hand[i].getSuit() == hand[j + 3].getSuit()) {
-											if (j + 4 < 5) {
+											if (j + 4 < i) {
 												if (hand[i].getSuit() == hand[j + 3].getSuit()) {
 													i = hand.length;
 													j = i;
@@ -570,12 +550,11 @@ public Card takeTrick(Card active[], Suits t) {
 	 * scoring for each team. This method is recursive to play the 
 	 * entire game.
 	 * 
-	 * @param Player pl1 Player 1
-	 * @param Player pl2 Player 2
-	 * @param Player pl3 Player 3
-	 * @param Player pl4 Player 4
-	 * @param Suits t Trump
-	 * @return void
+	 * @param pl1 Player 1
+	 * @param pl2 Player 2
+	 * @param pl3 Player 3
+	 * @param pl4 Player 4
+	 * @param t Trump
 	 *****************************************************************/
 	public void playTrick(Player pl1, Player pl2, Player pl3, Player pl4, Suits t) {
 		
@@ -704,11 +683,10 @@ public Card takeTrick(Card active[], Suits t) {
 	 * recursive to play the entire game. This method is used when a 
 	 * player chooses to play alone.
 	 * 
-	 * @param Player pl1 Player 1
-	 * @param Player pl2 Player 2
-	 * @param Player pl3 Player 3
-	 * @param Suits t Trump
-	 * @return void
+	 * @param pl1 Player 1
+	 * @param pl2 Player 2
+	 * @param pl3 Player 3
+	 * @param t Trump
 	 *****************************************************************/
 	public void playTrick(Player pl1, Player pl2, Player pl3, Suits t) {
 		
@@ -832,8 +810,7 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A method that prints the hand.
 	 * 
-	 * @param Card hand[] An array of a cards to be printed
-	 * @return void
+	 * @param hand[] An array of a cards to be printed
 	 *****************************************************************/
 	public static void printHand(Card hand[]) 
 	{
@@ -846,8 +823,7 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A method that prints a card for turn up
 	 * 
-	 * @param Card c A card to be printed
-	 * @return void
+	 * @param c A card to be printed
 	 *****************************************************************/
 	public static void printCard(Card c) 
 	{
@@ -858,8 +834,7 @@ public Card takeTrick(Card active[], Suits t) {
 	 * A method that is used to ask each player to determine trump at 
 	 * the beginning of each hand.
 	 * 
-	 * @param Card tUp the turned up card
-	 * @return void
+	 * @param tUp the turned up card
 	 *****************************************************************/
 	public void callTrump(Card tUp)
 	{
@@ -1439,9 +1414,7 @@ public Card takeTrick(Card active[], Suits t) {
 	/******************************************************************
 	 * A method that reads a character from the user on whether or not
 	 * they want to go alone. It sets a boolean accordingly
-	 * 
-	 * @param none
-	 * @return void
+	 *
 	 *****************************************************************/
 	public void goAlone()
 	{
@@ -1457,9 +1430,8 @@ public Card takeTrick(Card active[], Suits t) {
 	 * A method that asks which card the player will remove from their 
 	 * hand to pickup the new card
 	 * 
-	 * @param Player p the player that is picking up a card
-	 * @param Card c the card the player is picking up
-	 * @return void
+	 * @param p the player that is picking up a card
+	 * @param c the card the player is picking up
 	 *****************************************************************/
 	public void pickUp(Player p, Card c)
 	{
@@ -1474,8 +1446,8 @@ public Card takeTrick(Card active[], Suits t) {
 	 * A method that runs when the turned up card is turned down and 
 	 * the users get to choose trump.
 	 * 
-	 * @param Suits dead The suit of the turned over card
-	 * @return Suits returns the suit chosen
+	 * @param dead The suit of the turned over card
+	 * @return 		returns the suit chosen
 	 *****************************************************************/
 	public Suits secondround(Suits dead)
 	{

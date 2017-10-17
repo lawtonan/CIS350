@@ -25,8 +25,8 @@ public class Player {
 	 * A Constructor that sets the players team and hand, while setting
 	 * dealer to false.
 	 * 
-	 * @param Team team The players team
-	 * @param Card hand[] an array of the players hand
+	 * @param team The players team
+	 * @param hand[] an array of the players hand
 	 *****************************************************************/
 	public Player(Team team, Card hand[]) {
 		this.team = team;
@@ -37,8 +37,7 @@ public class Player {
 	/******************************************************************
 	 * A accessor that returns the hand
 	 * 
-	 * @param none
-	 * @return Card[] returns the hand Array
+	 * @return 		returns the hand Array
 	 *****************************************************************/
 	public Card[] getHand() {
 		return hand;
@@ -47,8 +46,7 @@ public class Player {
 	/******************************************************************
 	 * A mutator that sets the hand.
 	 * 
-	 * @param Card hand[] the players hand to be set
-	 * @return void
+	 * @param hand[] the players hand to be set
 	 *****************************************************************/
 	public void setHand(Card hand[]) {
 		this.hand = hand;
@@ -57,8 +55,8 @@ public class Player {
 	/******************************************************************
 	 * A mutator to set a card to a certain index in the hand
 	 * 
-	 * @param int cnum the index of the Array
-	 * @param Card c the card to set to the index
+	 * @param cnum the index of the Array
+	 * @param c the card to set to the index
 	 *****************************************************************/
 	public void setCard(int cnum, Card c) {
 		this.hand[cnum]=c;
@@ -67,8 +65,8 @@ public class Player {
 	/******************************************************************
 	 * A accessor that returns the Card given by a certain index.
 	 * 
-	 * @param int cnum the index in the array
-	 * @return Card returns the card from the desired index
+	 * @param cnum the index in the array
+	 * @return 		returns the card from the desired index
 	 *****************************************************************/
 	public Card getCard(int cnum) {
 		return this.hand[cnum];
@@ -77,8 +75,7 @@ public class Player {
 	/******************************************************************
 	 * A accessor that returns the players team
 	 * 
-	 * @param none
-	 * @return Team returns team
+	 * @return 		returns team
 	 *****************************************************************/
 	public Team getTeam() {
 		return team;
@@ -87,8 +84,7 @@ public class Player {
 	/******************************************************************
 	 * A mutator that sets the team of the player
 	 * 
-	 * @param Team team The desired team to set
-	 * @return void
+	 * @param team The desired team to set
 	 *****************************************************************/
 	public void setTeam(Team team) {
 		this.team = team;
@@ -97,8 +93,7 @@ public class Player {
 	/******************************************************************
 	 * A method that returns if the player is the dealer or not
 	 * 
-	 * @param none
-	 * @return boolean returns dealer
+	 * @return 		returns true if dealer
 	 *****************************************************************/
 	public boolean isDealer() {
 		return dealer;
@@ -108,8 +103,7 @@ public class Player {
 	 * A method that sets the boolean to whether or not the player is
 	 * the dealer.
 	 * 
-	 * @param boolean dealer the desired boolean for this player
-	 * @return void
+	 * @param dealer the desired boolean for this player
 	 *****************************************************************/
 	public void setDealer(boolean dealer) {
 		this.dealer = dealer;

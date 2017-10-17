@@ -23,7 +23,7 @@ public class Card {
 	 * A default constructor that sets card name to -1 and the suit to
 	 * null.
 	 * 
-	 * @param none
+	 *
 	 *****************************************************************/
 	public Card() {
 		cardName = -1;
@@ -34,8 +34,8 @@ public class Card {
 	 * A Constructor that takes an integer for the card name and a suit 
 	 * for the card itself
 	 * 
-	 * @param int card The designated card name
-	 * @param Suits suit the suit the card will be
+	 * @param card The designated card name
+	 * @param suit the suit the card will be
 	 *****************************************************************/
 	public Card(int card, Suits suit){
 		cardName = card;
@@ -45,8 +45,7 @@ public class Card {
 	/******************************************************************
 	 * A method that returns card name
 	 * 
-	 * @param none
-	 * @return int returns cardName
+	 * @return 		returns cardName
 	 *****************************************************************/
 	public int getCardName() {
 		return cardName;
@@ -55,8 +54,7 @@ public class Card {
 	/******************************************************************
 	 * A method that sets the card name
 	 * 
-	 * @param int cardName The desired cardName
-	 * @return void
+	 * @param cardName The desired cardName
 	 *****************************************************************/
 	public void setCardName(int cardName) {
 		this.cardName = cardName;
@@ -65,8 +63,7 @@ public class Card {
 	/******************************************************************
 	 * A method that returns the suit
 	 * 
-	 * @param none
-	 * @return Suits returns suit
+	 * @return 		returns suit
 	 *****************************************************************/
 	public Suits getSuit() {
 		return suit;
@@ -75,8 +72,7 @@ public class Card {
 	/******************************************************************
 	 * A method that sets the suit
 	 * 
-	 * @param Suits suit The desired suit
-	 * @return void
+	 * @param suit The desired suit
 	 *****************************************************************/
 	public void setSuit(Suits suit) {
 		this.suit = suit;
@@ -86,8 +82,7 @@ public class Card {
 	 * A toString method that returns a string for each card depending
 	 * on their set number from cardName.
 	 * 
-	 * @param none
-	 * @return String the Correct string for Card Name
+	 * @return 		the Correct string for Card Name
 	 *****************************************************************/
 	public String toString(){
 		if (cardName == 0)
