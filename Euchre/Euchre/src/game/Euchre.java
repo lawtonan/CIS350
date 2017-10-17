@@ -43,22 +43,22 @@ public class Euchre {
 	public ArrayList<Card> deck = new ArrayList<Card>();
 	
 	/** An integer to keep track of team 1's score */
-	static int t1Score;
+	private static int t1Score;
 	
 	/** An integer to keep track of team 2's score */
-	static int t2Score;
+	private static int t2Score;
 	
 	/** A player object declared in main  */
-	public static Player p1;
+	private static Player p1;
 	
 	/** A player object declared in main  */
-	public static Player p2;
+	private static Player p2;
 	
 	/** A player object declared in main  */
-	public static Player p3;
+	private static Player p3;
 	
 	/** A player object declared in main  */
-	public static Player p4;
+	private static Player p4;
 	
 	/** An array to keep track of what cards have been played */
 	public Card played[] = new Card[4];
@@ -79,16 +79,16 @@ public class Euchre {
 	int input;
 	
 	/** A scanner used to read user input */
-	Scanner reader = new Scanner(System.in); 
+	private Scanner reader = new Scanner(System.in); 
 	
 	/** An integer to keep track of team 1's trick count */
-	public static int t1Trick;
+	private static int t1Trick;
 	
 	/** An integer to keep track of team 2's trick count */
-	public static int t2Trick;
+	private static int t2Trick;
 	
 	/** A default card */
-	public Card Blank = new Card();
+	private Card Blank = new Card();
 	
 	/** A character to read if the user calls yes or no */
 	char yorn;
@@ -96,26 +96,12 @@ public class Euchre {
 	/** A character to read what the user calls for trump */
 	char cSuit;
 
-	public ArrayList<Card> createDeck() {
-		for (int i = 0; i <= 5; i++) {
-			deck.add(new Card(i, DIAMOND));
-			deck.add(new Card(i, HEART));
-			deck.add(new Card(i, CLUB));
-			deck.add(new Card(i, SPADE));
-		}
-		return deck;
-	}
-
-	public void printCards(ArrayList<Card> deck) {
-		System.out.println(deck);
-	}
-
 	public static void main(String[] args) {
 		Euchre game = new Euchre();
 		ArrayList<Card> gameDeck = game.createDeck();
 		game.printCards(gameDeck);
-		t1Score = 0;
-		t2Score = 0;
+		setT1Score(0);
+		setT2Score(0);
 
 		Card a[] = new Card[5];
 		Card b[] = new Card[5];
@@ -138,6 +124,20 @@ public class Euchre {
 		System.out.println(t1Trick);
 		System.out.println(t2Trick);
 
+	}
+	
+	public ArrayList<Card> createDeck() {
+		for (int i = 0; i <= 5; i++) {
+			deck.add(new Card(i, DIAMOND));
+			deck.add(new Card(i, HEART));
+			deck.add(new Card(i, CLUB));
+			deck.add(new Card(i, SPADE));
+		}
+		return deck;
+	}
+
+	public void printCards(ArrayList<Card> deck) {
+		System.out.println(deck);
 	}
 	
 	public void swapDealer()
@@ -164,15 +164,27 @@ public class Euchre {
 		}
 	}
 
+	public int getT1Score() {
+		return t1Score;
+	}
+	public static void setT1Score(int t1) {
+		t1Score = t1;
+	}
 	public void T1Point() {
-		t1Score++;
+		setT1Score(getT1Score() +1);
 	}
 
+	public int getT2Score() {
+		return t2Score;
+	}
+	public static void setT2Score(int t2) {
+		t2Score = t2;
+	}
 	public void T2Point() {
-		t2Score++;
+		setT2Score(getT2Score() +1);
 	}
 
-	public boolean GameStatus() {
+	public boolean gameStatus() {
 		if (t1Score >= 10) {
 			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
 			System.out.println("Team 1 wins");
@@ -221,23 +233,8 @@ public class Euchre {
 		}
 		return true;
 	}
-	
-//	public boolean playable(Card Lead, Card Played, Card hand[]) { // also need
-//																	// users
-//		if (Played.getSuit() == null)
-//			return false; // hand
-//		if (Lead.getSuit() == Played.getSuit())
-//			return true;
-//		else if (Lead.getSuit() != Played.getSuit()) {
-//			for (int i = 0; i < hand.length; i++) {
-//				if (Lead.getSuit() == hand[i].getSuit())
-//					return false;
-//			}
-//		}
-//		return true;
-//	}
 
-	public void setTrump(Suits t) {
+	public static void setTrump(Suits t) {
 		trump = t;
 	}
 
@@ -315,10 +312,25 @@ private boolean leftBower(Card c, Suits t) {
 //		return High;
 //	}
 
+	public int getT1Trick() {
+		return t1Trick;
+	}
+	
+	public static void setT1Trick(int t1) {
+		t1Trick = t1;
+	}
+	
+	public int getT2Trick() {
+		return t2Trick;
+	}
+	
+	public static void setT2Trick(int t2) {
+		t2Trick = t2;
+	}
 	public void deal() {
 		int cardCount = 0;
-		t1Trick = 0;
-		t2Trick = 0;
+		setT1Trick(0);
+		setT2Trick(0);
 		for (int i = 0; i < 5; i++) 
 		{
 			if(p1.isDealer())
@@ -481,14 +493,14 @@ private boolean leftBower(Card c, Suits t) {
 		highCard = takeTrick(played, t);
 		if (highCard == played[0] || highCard == played[2]) {
 			if (pl1.getTeam() == TEAM1 || pl3.getTeam() == TEAM1)
-				t1Trick++;
+				setT1Trick(getT1Trick() +1);
 			else
-				t2Trick++;
+				setT2Trick(getT2Trick() +1);
 		} else {
 			if (pl2.getTeam() == TEAM1 || pl4.getTeam() == TEAM1)
-				t1Trick++;
+				setT1Trick(getT1Trick() +1);
 			else
-				t2Trick++;
+				setT2Trick(getT2Trick() +1);
 		}
 		System.out.println("Team 1 Tricks: " + t1Trick);
 		System.out.println("Team 2 Tricks: " + t2Trick);
@@ -532,22 +544,22 @@ private boolean leftBower(Card c, Suits t) {
 				T1Point();
 			}
 		}
-		if (GameStatus()) 
+		if (gameStatus()) 
 		{
 			System.out.println("Would you like to play again? (y) or (n)");
 			yorn = reader.next().charAt(0);
 			if (yorn == 'y' || yorn == 'Y') 
 			{
-				t1Score = 0;
-				t2Score = 0;
+				setT1Score(0);
+				setT2Score(0);
 				swapDealer();
 				shuffle(deck);
 			}
 		} 
 		else 
 		{
-			t1Trick = 0;
-			t2Trick = 0;
+			setT1Trick(0);
+			setT2Trick(0);
 			swapDealer();
 			shuffle(deck);
 		}
@@ -591,21 +603,21 @@ private boolean leftBower(Card c, Suits t) {
 		highCard = takeTrick(play, t);
 		if (highCard == play[0]) {
 			if (pl1.getTeam() == TEAM1)
-				t1Trick++;
+				setT1Trick(getT1Trick() +1);
 			else
-				t2Trick++;
+				setT2Trick(getT2Trick() +1);
 		} else if (highCard == play[1]) {
 			if (pl2.getTeam() == TEAM1)
-				t1Trick++;
+				setT1Trick(getT1Trick() +1);
 			else
-				t2Trick++;
+				setT2Trick(getT2Trick() +1);
 		}
 		else
 		{
 			if (pl3.getTeam() == TEAM1)
-				t1Trick++;
+				setT1Trick(getT1Trick() +1);
 			else
-				t2Trick++;
+				setT2Trick(getT2Trick() +1);
 		}
 		System.out.println("Team 1 Tricks: " + t1Trick);
 		System.out.println("Team 2 Tricks: " + t2Trick);
@@ -651,22 +663,22 @@ private boolean leftBower(Card c, Suits t) {
 				T1Point();
 			}
 		}
-		if (GameStatus()) 
+		if (gameStatus()) 
 		{
 			System.out.println("Would you like to play again? (y) or (n)");
 			yorn = reader.next().charAt(0);
 			if (yorn == 'y' || yorn == 'Y') 
 			{
-				t1Score = 0;
-				t2Score = 0;
+				setT1Score(0);
+				setT2Score(0);
 				swapDealer();
 				shuffle(deck);
 			}
 		} 
 		else 
 		{
-			t1Trick = 0;
-			t2Trick = 0;
+			setT1Trick(0);
+			setT2Trick(0);
 			swapDealer();
 			shuffle(deck);
 		}
