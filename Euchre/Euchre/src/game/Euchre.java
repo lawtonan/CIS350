@@ -96,10 +96,17 @@ public class Euchre {
 	/** A character to read what the user calls for trump */
 	char cSuit;
 
+	/******************************************************************
+	 * A main method used to start the game after setting a few 
+	 * variables to then create the game itself. This will change in 
+	 * release 2 as we will move to a GUI instead of command terminal
+	 * 
+	 * @param String[] args An array of strings for arguments
+	 * @return void
+	 *****************************************************************/
 	public static void main(String[] args) {
 		Euchre game = new Euchre();
 		ArrayList<Card> gameDeck = game.createDeck();
-		game.printCards(gameDeck);
 		setT1Score(0);
 		setT2Score(0);
 
@@ -114,7 +121,6 @@ public class Euchre {
 		p4 = new Player(TEAM2, d);
 
 		game.shuffle(gameDeck);
-		game.printCards(gameDeck);
 		//game.deal();
 		// printHand(p1.getHand());
 		// printHand(p2.getHand());
@@ -126,7 +132,13 @@ public class Euchre {
 
 	}
 	
-	public ArrayList<Card> createDeck() {
+	/******************************************************************
+	 * A helper method used to create the deck in main
+	 * 
+	 * @param none
+	 * @return ArrayList<Card> an ArrayList of card objects (the deck)
+	 *****************************************************************/
+	private ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
 			deck.add(new Card(i, DIAMOND));
 			deck.add(new Card(i, HEART));
@@ -135,11 +147,14 @@ public class Euchre {
 		}
 		return deck;
 	}
-
-	public void printCards(ArrayList<Card> deck) {
-		System.out.println(deck);
-	}
 	
+	/******************************************************************
+	 * A method used to swap the dealer. Changes dealer to the next 
+	 * player
+	 * 
+	 * @param none
+	 * @return void
+	 *****************************************************************/
 	public void swapDealer()
 	{
 		if(p1.isDealer())
@@ -164,26 +179,72 @@ public class Euchre {
 		}
 	}
 
+	/******************************************************************
+	 * A accessor used to get team 1s' score
+	 * 
+	 * @param none
+	 * @return int returns t1Score
+	 *****************************************************************/
 	public int getT1Score() {
 		return t1Score;
 	}
+	
+	/******************************************************************
+	 * A mutator used to change team 1s' score
+	 * 
+	 * @param int t1 a desired score
+	 * @return void
+	 *****************************************************************/
 	public static void setT1Score(int t1) {
 		t1Score = t1;
 	}
+	
+	/******************************************************************
+	 * An incrementor that increments team 1's score
+	 * 
+	 * @param none
+	 * @return void
+	 *****************************************************************/
 	public void T1Point() {
 		setT1Score(getT1Score() +1);
 	}
 
+	/******************************************************************
+	 * A accessor used to get team 2s' score
+	 * 
+	 * @param none
+	 * @return int returns t2Score
+	 *****************************************************************/
 	public int getT2Score() {
 		return t2Score;
 	}
+	
+	/******************************************************************
+	 * A mutator used to change team 2s' score
+	 * 
+	 * @param int t2 a desired score
+	 * @return void
+	 *****************************************************************/
 	public static void setT2Score(int t2) {
 		t2Score = t2;
 	}
+	
+	/******************************************************************
+	 * An incrementor that increments team 2's score
+	 * 
+	 * @param none
+	 * @return void
+	 *****************************************************************/
 	public void T2Point() {
 		setT2Score(getT2Score() +1);
 	}
-
+	
+	/******************************************************************
+	 * A method that returns the games status
+	 * 
+	 * @param none
+	 * @return boolean returns a boolean whether the game is complete
+	 *****************************************************************/
 	public boolean gameStatus() {
 		if (t1Score >= 10) {
 			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
@@ -199,11 +260,25 @@ public class Euchre {
 		}
 	}
 
+	/******************************************************************
+	 * A method that shuffles the deck ArrayList then deals.
+	 * 
+	 * @param ArrayList<Card> deck the games deck
+	 * @return void
+	 *****************************************************************/
 	public void shuffle(ArrayList<Card> deck) {
 		Collections.shuffle(deck);
 		deal();
 	}
 
+	/******************************************************************
+	 * A method that checks if the card played is playable or not
+	 * 
+	 * @param Card Lead The lead card
+	 * @param Card Played The card to check if valid
+	 * @param Suits t Trump
+	 * @return boolean returns True if played is a valid card
+	 *****************************************************************/
 	public boolean playable(Card Lead, Card Played, Card hand[],Suits t) {
 
 		if (Lead.getSuit() == t || leftBower(Lead,t))
@@ -234,11 +309,25 @@ public class Euchre {
 		return true;
 	}
 
+	/******************************************************************
+	 * A mutator that sets trump
+	 * 
+	 * @param Suits t the suit to set trump
+	 * @return void
+	 *****************************************************************/
 	public static void setTrump(Suits t) {
 		trump = t;
 	}
 
-	public Card takeTrick(Card active[], Suits t) { // order played
+	/******************************************************************
+	 * A method that determines which card is the highest out of those
+	 * played, and will return that card
+	 * 
+	 * @param Card active[] an array of cards that were played
+	 * @param suits t trump
+	 * @return Card returns the highest value card
+	 *****************************************************************/
+public Card takeTrick(Card active[], Suits t) {
 		Card High;
 		High = active[0];
 		for (int i = 1; i < active.length; i++) {
@@ -259,74 +348,101 @@ public class Euchre {
 			else if (High.getSuit() == active[i].getSuit())
 				if (High.getCardName() < active[i].getCardName())
 					High = active[i];
-		// if (High.getSuit() != active[i].getSuit()) {
-		// 		if (active[i].getSuit() == t) {
-		// 			High = active[i];
-		// 		}
-		// 	} else if (High.getCardName() < active[i].getCardName())
-		// 		High = active[i];
 		}
 		return High;
 	}
 
-private boolean rightBower(Card c, Suits t) {
-	if (c.getCardName() == 2 && c.getSuit() == t)
-		return true;
-	return false;
-}
-private boolean leftBower(Card c, Suits t) {
-	if (t == SPADE) {
-		if (c.getCardName() == 2 && c.getSuit() == CLUB)
+	/******************************************************************
+	 * A helper method to determine if a card is the right bower
+	 * 
+	 * @param Card c The card in question
+	 * @param suits t trump
+	 * @return boolean if the card is a right bower
+	 *****************************************************************/
+	private boolean rightBower(Card c, Suits t) {
+		if (c.getCardName() == 2 && c.getSuit() == t)
 			return true;
 		return false;
 	}
-	if (t == CLUB) {
-		if (c.getCardName() == 2 && c.getSuit() == SPADE)
-			return true;
+	
+	/******************************************************************
+	 * A helper method to determine if a card is the left bower
+	 * 
+	 * @param Card c The card in question
+	 * @param suits t trump
+	 * @return boolean if the card is a left bower
+	 *****************************************************************/
+	private boolean leftBower(Card c, Suits t) {
+		if (t == SPADE) {
+			if (c.getCardName() == 2 && c.getSuit() == CLUB)
+				return true;
+			return false;
+		}
+		if (t == CLUB) {
+			if (c.getCardName() == 2 && c.getSuit() == SPADE)
+				return true;
+			return false;
+		}
+		if (t == HEART) {
+			if (c.getCardName() == 2 && c.getSuit() == DIAMOND)
+				return true;
+			return false;
+		}
+		if (t == DIAMOND) {
+			if (c.getCardName() == 2 && c.getSuit() == HEART)
+				return true;
+			return false;
+		}
 		return false;
-	}
-	if (t == HEART) {
-		if (c.getCardName() == 2 && c.getSuit() == DIAMOND)
-			return true;
-		return false;
-	}
-	if (t == DIAMOND) {
-		if (c.getCardName() == 2 && c.getSuit() == HEART)
-			return true;
-		return false;
-	}
-	return false;
 
-}
-//	public Card takeTrick(Card active[], Suits t) { // order played
-//		Card High;
-//		High = active[0];
-//		for (int i = 1; i < active.length; i++) {
-//			if (High.getSuit() != active[i].getSuit()) {
-//				if (active[i].getSuit() == t) {
-//					High = active[i];
-//				}
-//			} else if (High.getCardName() < active[i].getCardName())
-//				High = active[i];
-//		}
-//		return High;
-//	}
+	}
 
+	/******************************************************************
+	 * A accessor to return team 1's trick count
+	 * 
+	 * @param none
+	 * @return int returns t1Trick
+	 *****************************************************************/
 	public int getT1Trick() {
 		return t1Trick;
 	}
 	
+	/******************************************************************
+	 * A mutator to set team 1's trick count
+	 * 
+	 * @param int t1 What you want to set the trick to
+	 * @return void
+	 *****************************************************************/
 	public static void setT1Trick(int t1) {
 		t1Trick = t1;
 	}
 	
+	/******************************************************************
+	 * A accessor to return team 2's trick count
+	 * 
+	 * @param none
+	 * @return int returns t2Trick
+	 *****************************************************************/
 	public int getT2Trick() {
 		return t2Trick;
 	}
 	
+	/******************************************************************
+	 * A mutator to set team 2's trick count
+	 * 
+	 * @param int t2 What you want to set the trick to
+	 * @return void
+	 *****************************************************************/
 	public static void setT2Trick(int t2) {
 		t2Trick = t2;
 	}
+	
+	/******************************************************************
+	 * A method that give each player 5 cards from the shuffled deck
+	 * 
+	 * @param none
+	 * @return void
+	 *****************************************************************/
 	public void deal() {
 		int cardCount = 0;
 		setT1Trick(0);
@@ -386,9 +502,14 @@ private boolean leftBower(Card c, Suits t) {
 		callTrump(turnUp);
 	}
 
-	public void organizeHand(Card hand[]) { // still need to move cards down
-											// were just swapping cards right
-											// now
+	/******************************************************************
+	 * A method used to organize the hand.
+	 * 
+	 * @param Card hand[] an Array of cards that represents the hand
+	 * @return void
+	 *****************************************************************/
+	public void organizeHand(Card hand[]) { 
+		
 		Card change;
 		for (int i = 2; i < hand.length; i++) {
 			for (int j = 0; j < i; j++) {
@@ -444,6 +565,18 @@ private boolean leftBower(Card c, Suits t) {
 		}
 	}
 
+	/******************************************************************
+	 * A method that allows each player to play a card and handles the
+	 * scoring for each team. This method is recursive to play the 
+	 * entire game.
+	 * 
+	 * @param Player pl1 Player 1
+	 * @param Player pl2 Player 2
+	 * @param Player pl3 Player 3
+	 * @param Player pl4 Player 4
+	 * @param Suits t Trump
+	 * @return void
+	 *****************************************************************/
 	public void playTrick(Player pl1, Player pl2, Player pl3, Player pl4, Suits t) {
 		
 		Card highCard;
@@ -565,6 +698,18 @@ private boolean leftBower(Card c, Suits t) {
 		}
 	}
 	
+	/******************************************************************
+	 * A method that allows each player to play a card when a player 
+	 * goes alone and handles the scoring for each team. This method is 
+	 * recursive to play the entire game. This method is used when a 
+	 * player chooses to play alone.
+	 * 
+	 * @param Player pl1 Player 1
+	 * @param Player pl2 Player 2
+	 * @param Player pl3 Player 3
+	 * @param Suits t Trump
+	 * @return void
+	 *****************************************************************/
 	public void playTrick(Player pl1, Player pl2, Player pl3, Suits t) {
 		
 		Card highCard;
@@ -684,6 +829,12 @@ private boolean leftBower(Card c, Suits t) {
 		}
 	}
 
+	/******************************************************************
+	 * A method that prints the hand.
+	 * 
+	 * @param Card hand[] An array of a cards to be printed
+	 * @return void
+	 *****************************************************************/
 	public static void printHand(Card hand[]) 
 	{
 		System.out.println("\nYour hand is:");
@@ -692,11 +843,24 @@ private boolean leftBower(Card c, Suits t) {
 		}				
 	}
 	
+	/******************************************************************
+	 * A method that prints a card for turn up
+	 * 
+	 * @param Card c A card to be printed
+	 * @return void
+	 *****************************************************************/
 	public static void printCard(Card c) 
 	{
 		System.out.println("\nThe card turned up is: " + c);
 	}
 	
+	/******************************************************************
+	 * A method that is used to ask each player to determine trump at 
+	 * the beginning of each hand.
+	 * 
+	 * @param Card tUp the turned up card
+	 * @return void
+	 *****************************************************************/
 	public void callTrump(Card tUp)
 	{
 		int call = 0;
@@ -1272,6 +1436,13 @@ private boolean leftBower(Card c, Suits t) {
 		}
 	}
 	
+	/******************************************************************
+	 * A method that reads a character from the user on whether or not
+	 * they want to go alone. It sets a boolean accordingly
+	 * 
+	 * @param none
+	 * @return void
+	 *****************************************************************/
 	public void goAlone()
 	{
 		System.out.println("would you like to go alone? (y = yes, n = no): ");
@@ -1282,6 +1453,14 @@ private boolean leftBower(Card c, Suits t) {
 			alone = false;
 	}
 	
+	/******************************************************************
+	 * A method that asks which card the player will remove from their 
+	 * hand to pickup the new card
+	 * 
+	 * @param Player p the player that is picking up a card
+	 * @param Card c the card the player is picking up
+	 * @return void
+	 *****************************************************************/
 	public void pickUp(Player p, Card c)
 	{
 		System.out.println("Pick a card to replace: ");
@@ -1291,7 +1470,13 @@ private boolean leftBower(Card c, Suits t) {
 		organizeHand(p.getHand());
 	}
 
-
+	/******************************************************************
+	 * A method that runs when the turned up card is turned down and 
+	 * the users get to choose trump.
+	 * 
+	 * @param Suits dead The suit of the turned over card
+	 * @return Suits returns the suit chosen
+	 *****************************************************************/
 	public Suits secondround(Suits dead)
 	{
 		if(dead==DIAMOND)
