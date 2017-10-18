@@ -136,7 +136,7 @@ public class Euchre {
 	 * 
 	 * @return 		returns an ArrayList of card objects (the deck)
 	 *****************************************************************/
-	private ArrayList<Card> createDeck() {
+	public ArrayList<Card> createDeck() {
 		for (int i = 0; i <= 5; i++) {
 			deck.add(new Card(i, DIAMOND));
 			deck.add(new Card(i, HEART));
@@ -257,6 +257,15 @@ public class Euchre {
 	public void shuffle(ArrayList<Card> deck) {
 		Collections.shuffle(deck);
 		deal();
+	}
+	
+	/******************************************************************
+	 * A test method for the shuffle 
+	 * 
+	 * @param deck the games deck
+	 *****************************************************************/
+	public void shuffleTest(ArrayList<Card> deck) {
+		Collections.shuffle(deck);		
 	}
 
 	/******************************************************************
