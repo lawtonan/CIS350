@@ -1,12 +1,8 @@
 package game;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 class EuchreTest {
 
@@ -41,7 +37,7 @@ class EuchreTest {
 		Euchre junit = new Euchre();
 		junit.T1Point();
 
-		assertFalse(junit.ameStatus());
+		assertFalse(junit.gameStatus());
 	}
 
 	@Test
@@ -55,6 +51,5 @@ class EuchreTest {
 
 		assertNotSame(deck.toArray(), deck2.toArray());
 	}
-
 
 }

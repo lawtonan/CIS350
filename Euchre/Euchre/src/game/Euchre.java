@@ -259,14 +259,7 @@ public class Euchre {
 		deal();
 	}
 	
-	/******************************************************************
-	 * A test method for the shuffle 
-	 * 
-	 * @param deck the games deck
-	 *****************************************************************/
-	public void shuffleTest(ArrayList<Card> deck) {
-		Collections.shuffle(deck);		
-	}
+	
 
 	/******************************************************************
 	 * A method that checks if the card played is playable or not
