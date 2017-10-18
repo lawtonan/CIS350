@@ -2,12 +2,17 @@ package game;
 
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+
 import org.junit.Test;
 
-class EuchreTest {
+public class EuchreTest {
 
 	@Test
-	void testCreateDeck() {
+	public void testCreateDeck() {
 		Euchre junit = new Euchre();
 		ArrayList<Card> result = junit.createDeck();
 		ArrayList<Card> test = new ArrayList<Card>();
@@ -24,7 +29,7 @@ class EuchreTest {
 	}
 
 	@Test
-	void testPrintCards() {
+	public void testPrintCards() {
 		Euchre junit = new Euchre();
 		ArrayList<Card> deck = junit.createDeck();
 
@@ -33,7 +38,7 @@ class EuchreTest {
 	}
 
 	@Test
-	void testGameStatus() {
+ 	public void testGameStatus() {
 		Euchre junit = new Euchre();
 		junit.T1Point();
 
@@ -41,7 +46,7 @@ class EuchreTest {
 	}
 
 	@Test
-	void testShuffle() {
+	public void testShuffle() {
 		Euchre junit = new Euchre();
 
 		ArrayList<Card> deck = junit.createDeck();
