@@ -180,7 +180,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * An incrementor that increments team 1's score
+	 * An incrementor that increments team 1's score.
 	 * 
 	 *****************************************************************/
 	public void T1Point() {
