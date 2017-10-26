@@ -15,82 +15,82 @@ import java.util.Scanner;
  * @version 1.0
  *********************************************************************/
 public class Euchre {
-	/** A suit created by an enumerated type for the deck */
+	/** A suit created by an enumerated type for the deck. */
 	private Suits DIAMOND = Suits.Diamonds;
 
-	/** A suit created by an enumerated type for the deck */
+	/** A suit created by an enumerated type for the deck. */
 	private Suits HEART = Suits.Hearts;
 
-	/** A suit created by an enumerated type for the deck */
+	/** A suit created by an enumerated type for the deck. */
 	private Suits SPADE = Suits.Spades;
 
-	/** A suit created by an enumerated type for the deck */
+	/** A suit created by an enumerated type for the deck. */
 	private Suits CLUB = Suits.Clubs;
 
-	/** A type to assign Team 1 */
+	/** A type to assign Team 1. */
 	private static Team TEAM1 = Team.Team1;
 
-	/** A type to assign Team 2 */
+	/** A type to assign Team 2. */
 	private static Team TEAM2 = Team.Team2;
 
-	/** A suit used to keep track of trump */
+	/** A suit used to keep track of trump. */
 	private static Suits trump;
 
-	/** A suit used to keep track of the dead suit */
+	/** A suit used to keep track of the dead suit. */
 	private static Suits dead;
 
-	/** An ArrayList of cards for the deck */
+	/** An ArrayList of cards for the deck. */
 	public ArrayList<Card> deck = new ArrayList<Card>();
 
-	/** An integer to keep track of team 1's score */
+	/** An integer to keep track of team 1's score. */
 	private static int t1Score;
 
-	/** An integer to keep track of team 2's score */
+	/** An integer to keep track of team 2's score. */
 	private static int t2Score;
 
-	/** A player object declared in main */
+	/** A player object declared in main. */
 	private static Player p1;
 
-	/** A player object declared in main */
+	/** A player object declared in main. */
 	private static Player p2;
 
-	/** A player object declared in main */
+	/** A player object declared in main. */
 	private static Player p3;
 
-	/** A player object declared in main */
+	/** A player object declared in main. */
 	private static Player p4;
 
-	/** A card used to keep track of the turn up */
-	Card turnUp;
+	/** A card used to keep track of the turn up. */
+	public Card turnUp;
 
-	/** A boolean used to see who called the trump */
+	/** A boolean used to see who called the trump. */
 	public boolean t1CallSuit;
 
-	/** A boolean used to see who goes alone */
+	/** A boolean used to see who goes alone. */
 	public boolean alone;
 
-	/** An integer to be used for the scanner */
-	int input;
+	/** An integer to be used for the scanner. */
+	public int input;
 
-	/** A scanner used to read user input */
+	/** A scanner used to read user input. */
 	private Scanner reader = new Scanner(System.in);
 
-	/** An integer to keep track of team 1's trick count */
+	/** An integer to keep track of team 1's trick count. */
 	private static int t1Trick;
 
-	/** An integer to keep track of team 2's trick count */
+	/** An integer to keep track of team 2's trick count. */
 	private static int t2Trick;
 
-	/** A character to read if the user calls yes or no */
-	char yorn;
+	/** A character to read if the user calls yes or no. */
+	public char yorn;
 
-	/** A character to read what the user calls for trump */
-	char cSuit;
+	/** A character to read what the user calls for trump. */
+	public char cSuit;
 
 	/******************************************************************
-	 * A main method used to start the game after setting a few variables to then
-	 * create the game itself. This will change in release 2 as we will move to a
-	 * GUI instead of command terminal
+	 * A main method used to start the game after setting a few 
+	 * variables to then create the game itself. This will change in 
+	 * release 2 as we will move to a GUI instead of command terminal.
 	 * 
 	 * @param args
 	 *            An array of strings for arguments
@@ -126,7 +126,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A helper method used to create the deck in main
+	 * A helper method used to create the deck in main.
 	 * 
 	 * @return returns an ArrayList of card objects (the deck)
 	 *****************************************************************/
@@ -141,7 +141,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method used to swap the dealer. Changes dealer to the next player
+	 * A method used to swap the dealer. Changes dealer to the next player.
 	 * 
 	 *****************************************************************/
 	public void swapDealer() {
@@ -161,7 +161,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A accessor used to get team 1s' score
+	 * A accessor used to get team 1s' score.
 	 * 
 	 * @return returns t1Score
 	 *****************************************************************/
@@ -170,7 +170,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A mutator used to change team 1s' score
+	 * A mutator used to change team 1s' score.
 	 * 
 	 * @param t1
 	 *            a desired score
@@ -188,7 +188,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A accessor used to get team 2s' score
+	 * A accessor used to get team 2s' score.
 	 * 
 	 * @return returns t2Score
 	 *****************************************************************/
@@ -197,7 +197,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A mutator used to change team 2s' score
+	 * A mutator used to change team 2s' score.
 	 * 
 	 * @param t2
 	 *            a desired score
@@ -207,31 +207,32 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * An incrementor that increments team 2's score
+	 * An incrementor that increments team 2's score.
 	 * 
-	 * @param none
-	 * @return void
 	 *****************************************************************/
 	public void T2Point() {
 		setT2Score(getT2Score() + 1);
 	}
 
 	/******************************************************************
-	 * A method that returns the games status
+	 * A method that returns the games status.
 	 * 
 	 * @return returns a boolean whether the game is complete
 	 *****************************************************************/
 	public boolean gameStatus() {
 		if (t1Score >= 10) {
-			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
+			System.out.println("Team one score: " + t1Score 
+					+ "\nTeam two score: " + t2Score);
 			System.out.println("Team 1 wins");
 			return true;
 		} else if (t2Score >= 10) {
-			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
+			System.out.println("Team one score: " + t1Score
+					+ "\nTeam two score: " + t2Score);
 			System.out.println("Team 2 wins");
 			return true;
 		} else {
-			System.out.println("Team one score: " + t1Score + "\nTeam two score: " + t2Score);
+			System.out.println("Team one score: " + t1Score
+					+ "\nTeam two score: " + t2Score);
 			return false;
 		}
 	}
@@ -239,8 +240,7 @@ public class Euchre {
 	/******************************************************************
 	 * A method that shuffles the deck ArrayList then deals.
 	 * 
-	 * @param deck
-	 *            the games deck
+	 * @param deck the games deck
 	 *****************************************************************/
 	public void shuffle(ArrayList<Card> deck) {
 		Collections.shuffle(deck);
@@ -259,32 +259,38 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method that checks if the card played is playable or not
+	 * A method that checks if the card played is playable or not.
 	 * 
-	 * @param Lead
+	 * @param lead
 	 *            The lead card
-	 * @param Played
+	 * @param played
 	 *            The card to check if valid
+	 * @param hand
+	 * 			  The players hand
 	 * @param t
 	 *            Trump
 	 * @return returns True if played is a valid card
 	 *****************************************************************/
-	public boolean playable(Card Lead, Card Played, ArrayList<Card> hand, Suits t) {
+	public boolean playable(Card lead, Card played, ArrayList<Card> hand, 
+			Suits t) {
 
-		if (Lead.getSuit() == t || leftBower(Lead, t)) {
-			if (Played.getSuit() == t || leftBower(Played, t)) {
+		if (lead.getSuit() == t || leftBower(lead, t)) {
+			if (played.getSuit() == t || leftBower(played, t)) {
 				return true;
 			} else {
 				for (int i = 0; i < hand.size(); i++) {
-					if (hand.get(i).getSuit() == t || leftBower(hand.get(i), t))
+					if (hand.get(i).getSuit() == t 
+						|| leftBower(hand.get(i), t)) 
 						return false;
 				}
 			}
 		} else {
-			if (Lead.getSuit() == Played.getSuit() && !leftBower(Played, t))
+			if (lead.getSuit() == played.getSuit() 
+				&& !leftBower(played, t))
 				return true;
 			for (int i = 0; i < hand.size(); i++) {
-				if (Lead.getSuit() == hand.get(i).getSuit() && !leftBower(hand.get(i), t))
+				if (lead.getSuit() == hand.get(i).getSuit() 
+					&& !leftBower(hand.get(i), t))
 					return false;
 			}
 		}
@@ -292,7 +298,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A mutator that sets trump
+	 * A mutator that sets trump.
 	 * 
 	 * @param t
 	 *            the suit to set trump
@@ -302,39 +308,39 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method that determines which card is the highest out of those played, and
-	 * will return that card
+	 * A method that determines which card is the highest out of those 
+	 * played, and will return that card.
 	 * 
-	 * @param active[]
-	 *            an array of cards that were played
+	 * @param active
+	 *            an array list of cards that were played
 	 * @param t
 	 *            trump
 	 * @return returns the highest value card
 	 *****************************************************************/
 	public Card takeTrick(ArrayList<Card> active, Suits t) {
-		Card High;
-		High = active.get(0);
+		Card high;
+		high = active.get(0);
 		for (int i = 1; i < active.size(); i++) {
-			if (rightBower(High, t))
-				return High;
+			if (rightBower(high, t))
+				return high;
 			else if (rightBower(active.get(i), t))
 				return active.get(i);
-			else if (leftBower(High, t)) {
-
-			} else if (High.getSuit() == t && active.get(i).getSuit() == t) {
-				if (active.get(i).getCardName() > High.getCardName() || leftBower(active.get(i), t))
-					High = active.get(i);
-			} else if (High.getSuit() != t && (active.get(i).getSuit() == t || leftBower(active.get(i), t))) {
-				High = active.get(i);
-			} else if (High.getSuit() == active.get(i).getSuit())
-				if (High.getCardName() < active.get(i).getCardName())
-					High = active.get(i);
+			else if (leftBower(high, t)) {
+				continue;
+			}else if (high.getSuit() == t && active.get(i).getSuit() == t) {
+				if (active.get(i).getCardName() > high.getCardName() || leftBower(active.get(i), t))
+					high = active.get(i);
+			} else if (high.getSuit() != t && (active.get(i).getSuit() == t || leftBower(active.get(i), t))) {
+				high = active.get(i);
+			} else if (high.getSuit() == active.get(i).getSuit())
+				if (high.getCardName() < active.get(i).getCardName())
+					high = active.get(i);
 		}
-		return High;
+		return high;
 	}
 
 	/******************************************************************
-	 * A helper method to determine if a card is the right bower
+	 * A helper method to determine if a card is the right bower.
 	 * 
 	 * @param c
 	 *            The card in question
@@ -349,7 +355,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A helper method to determine if a card is the left bower
+	 * A helper method to determine if a card is the left bower.
 	 * 
 	 * @param c
 	 *            The card in question
@@ -383,7 +389,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A accessor to return team 1's trick count
+	 * A accessor to return team 1's trick count.
 	 * 
 	 * @return returns t1Trick
 	 *****************************************************************/
@@ -392,7 +398,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A mutator to set team 1's trick count
+	 * A mutator to set team 1's trick count.
 	 * 
 	 * @param t1
 	 *            What you want to set the trick to
@@ -402,7 +408,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A accessor to return team 2's trick count
+	 * A accessor to return team 2's trick count.
 	 * 
 	 * @return returns t2Trick
 	 *****************************************************************/
@@ -411,7 +417,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A mutator to set team 2's trick count
+	 * A mutator to set team 2's trick count.
 	 * 
 	 * @param t2
 	 *            What you want to set the trick to
@@ -421,7 +427,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method that give each player 5 cards from the shuffled deck
+	 * A method that give each player 5 cards from the shuffled deck.
 	 * 
 	 *****************************************************************/
 	public void deal() {
@@ -449,26 +455,27 @@ public class Euchre {
 	/******************************************************************
 	 * A method used to organize the hand.
 	 * 
-	 * @param hand[]
-	 *            an Array of cards that represents the hand
+	 * @param hand
+	 *            an ArrayList of cards that represents the hand
+	 * @return returns the new organized hand
 	 *****************************************************************/
 	public ArrayList<Card> organizeHand(ArrayList<Card> hand) {
 
 		Card change;
 		ArrayList<Card> temp = new ArrayList<Card>();
-		for(int i = 0; i < hand.size(); i++) {
+		for (int i = 0; i < hand.size(); i++) {
 			if (hand.get(i).getSuit() == HEART)
 				temp.add(hand.get(i));
 		}
-		for(int i = 0; i < hand.size(); i++) {
+		for (int i = 0; i < hand.size(); i++) {
 			if (hand.get(i).getSuit() == CLUB)
 				temp.add(hand.get(i));
 		}
-		for(int i = 0; i < hand.size(); i++) {
+		for (int i = 0; i < hand.size(); i++) {
 			if (hand.get(i).getSuit() == DIAMOND)
 				temp.add(hand.get(i));
 		}
-		for(int i = 0; i < hand.size(); i++) {
+		for (int i = 0; i < hand.size(); i++) {
 			if (hand.get(i).getSuit() == SPADE)
 				temp.add(hand.get(i));
 		}
@@ -484,64 +491,13 @@ public class Euchre {
 			}
 		}
 		return temp;
-		//Card change;
-//		for (int i = 2; i < hand.length; i++) {
-//			for (int j = 0; j < i; j++) {
-//				if (hand[i].getSuit() == hand[j].getSuit()) {
-//					if (j + 1 < i) {
-//						if (hand[i].getSuit() == hand[j + 1].getSuit()) {
-//							if (j + 2 < i) {
-//								if (hand[i].getSuit() == hand[j + 2].getSuit()) {
-//									if (j + 3 < i) {
-//										if (hand[i].getSuit() == hand[j + 3].getSuit()) {
-//											if (j + 4 < i) {
-//												if (hand[i].getSuit() == hand[j + 3].getSuit()) {
-//													i = hand.length;
-//													j = i;
-//												} else if (hand[i].getSuit() != hand[j + 4].getSuit()) {
-//													change = hand[i];
-//													hand[i] = hand[j + 4];
-//													hand[j + 4] = change;
-//												}
-//											}
-//										} else if (hand[i].getSuit() != hand[j + 3].getSuit()) {
-//											change = hand[i];
-//											hand[i] = hand[j + 3];
-//											hand[j + 3] = change;
-//										}
-//									}
-//								} else if (hand[i].getSuit() != hand[j + 2].getSuit()) {
-//									change = hand[i];
-//									hand[i] = hand[j + 2];
-//									hand[j + 2] = change;
-//								}
-//							}
-//						} else if (hand[i].getSuit() != hand[j + 1].getSuit()) {
-//							change = hand[i];
-//							hand[i] = hand[j + 1];
-//							hand[j + 1] = change;
-//						}
-//					}
-//				}
-//
-//			}
-//		}
-//		for (int i = 1; i < 5; i++) {
-//			for (int j = 0; j < i; j++) {
-//				if (hand[i].getSuit() == hand[j].getSuit()) {
-//					if (hand[i].getCardName() > hand[j].getCardName()) {
-//						change = hand[i];
-//						hand[i] = hand[j];
-//						hand[j] = change;
-//					}
-//				}
-//			}
-//		}
+		
 	}
 
 	/******************************************************************
-	 * A method that allows each player to play a card and handles the scoring for
-	 * each team. This method is recursive to play the entire game.
+	 * A method that allows each player to play a card and handles the 
+	 * scoring for each team. This method is recursive to play the entire 
+	 * game.
 	 * 
 	 * @param pl1
 	 *            Player 1
@@ -665,9 +621,10 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method that allows each player to play a card when a player goes alone and
-	 * handles the scoring for each team. This method is recursive to play the
-	 * entire game. This method is used when a player chooses to play alone.
+	 * A method that allows each player to play a card when a player 
+	 * goes alone and handles the scoring for each team. This method is 
+	 * recursive to play the entire game. This method is used when a 
+	 * player chooses to play alone.
 	 * 
 	 * @param pl1
 	 *            Player 1
@@ -786,8 +743,8 @@ public class Euchre {
 	/******************************************************************
 	 * A method that prints the hand.
 	 * 
-	 * @param hand[]
-	 *            An array of a cards to be printed
+	 * @param hand
+	 *            An array list of a cards to be printed
 	 *****************************************************************/
 	public static void printHand(ArrayList<Card> hand) {
 		System.out.println("\nYour hand is:");
@@ -797,7 +754,7 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method that prints a card for turn up
+	 * A method that prints a card for turn up.
 	 * 
 	 * @param c
 	 *            A card to be printed
@@ -807,8 +764,8 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method that is used to ask each player to determine trump at the beginning
-	 * of each hand.
+	 * A method that is used to ask each player to determine trump at 
+	 * the beginning of each hand.
 	 * 
 	 * @param tUp
 	 *            the turned up card
@@ -1246,8 +1203,8 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method that reads a character from the user on whether or not they want to
-	 * go alone. It sets a boolean accordingly
+	 * A method that reads a character from the user on whether or not 
+	 * they want to go alone. It sets a boolean accordingly.
 	 *
 	 *****************************************************************/
 	public void goAlone() {
@@ -1260,8 +1217,8 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method that asks which card the player will remove from their hand to
-	 * pickup the new card
+	 * A method that asks which card the player will remove from their 
+	 * hand to pickup the new card.
 	 * 
 	 * @param p
 	 *            the player that is picking up a card
@@ -1278,8 +1235,8 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * A method that runs when the turned up card is turned down and the users get
-	 * to choose trump.
+	 * A method that runs when the turned up card is turned down and 
+	 * the users get to choose trump.
 	 * 
 	 * @param dead
 	 *            The suit of the turned over card

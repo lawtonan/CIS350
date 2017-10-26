@@ -14,13 +14,13 @@ import java.util.ArrayList;
  *********************************************************************/
 public class Player {
 	
-	/** An array of Cards that designates the hand */
+	/** An array of Cards that designates the hand. */
 	public ArrayList<Card> hand = new ArrayList<Card>();
 	
-	/** A enumerated type to hold which team the player belongs */
+	/** A enumerated type to hold which team the player belongs. */
 	public Team team;
 	
-	/** A boolean to determine if the player is the dealer */
+	/** A boolean to determine if the player is the dealer. */
 	public boolean dealer;
 	
 	/******************************************************************
@@ -28,7 +28,7 @@ public class Player {
 	 * dealer to false.
 	 * 
 	 * @param team The players team
-	 * @param hand[] an array of the players hand
+	 * @param hand an array list of the players hand
 	 *****************************************************************/
 	public Player(Team team, ArrayList<Card> hand) {
 		this.team = team;
@@ -37,7 +37,7 @@ public class Player {
 	}
 
 	/******************************************************************
-	 * A accessor that returns the hand
+	 * A accessor that returns the hand.
 	 * 
 	 * @return 		returns the hand Array
 	 *****************************************************************/
@@ -48,16 +48,15 @@ public class Player {
 	/******************************************************************
 	 * A mutator that sets the hand.
 	 * 
-	 * @param hand[] the players hand to be set
+	 * @param hand the players hand to be set
 	 *****************************************************************/
 	public void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
 	}
 	
 	/******************************************************************
-	 * A mutator to set a card to a certain index in the hand
+	 * A mutator to set a card to a certain index in the hand.
 	 * 
-	 * @param cnum the index of the Array
 	 * @param c the card to set to the index
 	 *****************************************************************/
 	public void setCard(Card c) {
@@ -75,7 +74,7 @@ public class Player {
 	}
 
 	/******************************************************************
-	 * A accessor that returns the players team
+	 * A accessor that returns the players team.
 	 * 
 	 * @return 		returns team
 	 *****************************************************************/
@@ -84,7 +83,7 @@ public class Player {
 	}
 
 	/******************************************************************
-	 * A mutator that sets the team of the player
+	 * A mutator that sets the team of the player.
 	 * 
 	 * @param team The desired team to set
 	 *****************************************************************/
@@ -93,7 +92,7 @@ public class Player {
 	}
 
 	/******************************************************************
-	 * A method that returns if the player is the dealer or not
+	 * A method that returns if the player is the dealer or not.
 	 * 
 	 * @return 		returns true if dealer
 	 *****************************************************************/
