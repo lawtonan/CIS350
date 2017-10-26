@@ -32,7 +32,7 @@ public class Card {
 	
 	/******************************************************************
 	 * A Constructor that takes an integer for the card name and a suit 
-	 * for the card itself
+	 * for the card itself.
 	 * 
 	 * @param card The designated card name
 	 * @param suit the suit the card will be
@@ -43,7 +43,7 @@ public class Card {
 	}
 
 	/******************************************************************
-	 * A method that returns card name
+	 * A method that returns card name.
 	 * 
 	 * @return 		returns cardName
 	 *****************************************************************/
@@ -52,7 +52,7 @@ public class Card {
 	}
 
 	/******************************************************************
-	 * A method that sets the card name
+	 * A method that sets the card name.
 	 * 
 	 * @param cardName The desired cardName
 	 *****************************************************************/
@@ -61,7 +61,7 @@ public class Card {
 	}
 
 	/******************************************************************
-	 * A method that returns the suit
+	 * A method that returns the suit.
 	 * 
 	 * @return 		returns suit
 	 *****************************************************************/
@@ -70,7 +70,7 @@ public class Card {
 	}
 
 	/******************************************************************
-	 * A method that sets the suit
+	 * A method that sets the suit.
 	 * 
 	 * @param suit The desired suit
 	 *****************************************************************/
