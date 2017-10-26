@@ -12,10 +12,10 @@ package game;
  *********************************************************************/
 public class Card {
 	
-	/** An integer that keeps track of the card name */
+	/** An integer that keeps track of the card name. */
 	private int cardName;
 	
-	/** The suit of the card */
+	/** The suit of the card. */
 	private Suits suit;
 	
 	
@@ -37,7 +37,7 @@ public class Card {
 	 * @param card The designated card name
 	 * @param suit the suit the card will be
 	 *****************************************************************/
-	public Card(int card, Suits suit){
+	public Card(int card, Suits suit) {
 		cardName = card;
 		this.suit = suit;
 	}
@@ -84,7 +84,7 @@ public class Card {
 	 * 
 	 * @return 		the Correct string for Card Name
 	 *****************************************************************/
-	public String toString(){
+	public String toString() {
 		if (cardName == 0)
 			return "9 of " + suit;
 		else if (cardName == 1)
