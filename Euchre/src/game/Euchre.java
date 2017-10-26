@@ -327,7 +327,7 @@ public class Euchre {
 				return active.get(i);
 			else if (leftBower(high, t)) {
 				continue;
-			}else if (high.getSuit() == t && active.get(i).getSuit() == t) {
+			} else if (high.getSuit() == t && active.get(i).getSuit() == t) {
 				if (active.get(i).getCardName() > high.getCardName() || leftBower(active.get(i), t))
 					high = active.get(i);
 			} else if (high.getSuit() != t && (active.get(i).getSuit() == t || leftBower(active.get(i), t))) {
@@ -524,7 +524,7 @@ public class Euchre {
 		printHand(pl2.getHand());
 		System.out.println("Play a Card: ");
 		input = reader.nextInt();
-		while (playable(played.get(0), pl2.getCard(input), pl2.getHand(), t) == false) {
+		while (playable(played.get(0), pl2.getCard(input), pl2.getHand(), t)) {
 			System.out.println("not a valid card");
 			printHand(pl2.getHand());
 			System.out.println("Play a Card: ");
@@ -536,7 +536,7 @@ public class Euchre {
 		printHand(pl3.getHand());
 		System.out.println("Play a Card: ");
 		input = reader.nextInt();
-		while (playable(played.get(0), pl3.getCard(input), pl3.getHand(), t) == false) {
+		while (playable(played.get(0), pl3.getCard(input), pl3.getHand(), t)) {
 			System.out.println("not a valid card");
 			printHand(pl3.getHand());
 			System.out.println("Play a Card: ");
@@ -548,7 +548,7 @@ public class Euchre {
 		printHand(pl4.getHand());
 		System.out.println("Play a Card: ");
 		input = reader.nextInt();
-		while (playable(played.get(0), pl4.getCard(input), pl4.getHand(), t) == false) {
+		while (playable(played.get(0), pl4.getCard(input), pl4.getHand(), t)) {
 			System.out.println("not a valid card");
 			printHand(pl4.getHand());
 			System.out.println("Play a Card: ");
@@ -649,7 +649,7 @@ public class Euchre {
 		printHand(pl2.getHand());
 		System.out.println("Play a Card: ");
 		input = reader.nextInt();
-		while (playable(play.get(0), pl2.getCard(input), pl2.getHand(), t) == false) {
+		while (playable(play.get(0), pl2.getCard(input), pl2.getHand(), t)) {
 			System.out.println("not a valid card");
 			printHand(pl2.getHand());
 			System.out.println("Play a Card: ");
@@ -661,7 +661,7 @@ public class Euchre {
 		printHand(pl3.getHand());
 		System.out.println("Play a Card: ");
 		input = reader.nextInt();
-		while (playable(play.get(0), pl3.getCard(input), pl3.getHand(), t) == false) {
+		while (playable(play.get(0), pl3.getCard(input), pl3.getHand(), t)) {
 			System.out.println("not a valid card");
 			printHand(pl3.getHand());
 			System.out.println("Play a Card: ");
@@ -829,9 +829,7 @@ public class Euchre {
 					} else
 						call++;
 				}
-			}
-
-			else if (p2.isDealer()) {
+			} else if (p2.isDealer()) {
 				if (call == 0) {
 					printHand(p3.getHand());
 					printCard(tUp);
@@ -885,9 +883,7 @@ public class Euchre {
 					} else
 						call++;
 				}
-			}
-
-			else if (p3.isDealer()) {
+			} else if (p3.isDealer()) {
 				if (call == 0) {
 					printHand(p4.getHand());
 					printCard(tUp);
@@ -941,9 +937,7 @@ public class Euchre {
 					} else
 						call++;
 				}
-			}
-
-			else {
+			} else {
 				if (call == 0) {
 					printHand(p1.getHand());
 					printCard(tUp);
@@ -1258,9 +1252,7 @@ public class Euchre {
 			} else {
 				return null;
 			}
-		}
-
-		else if (dead == HEART) {
+		} else if (dead == HEART) {
 			System.out.println("Would you like to call Trump? (s = spades, c = clubs, d = diamonds, n = no): ");
 			cSuit = reader.next().charAt(0);
 			if (cSuit == 's' || cSuit == 'S') {
@@ -1275,9 +1267,7 @@ public class Euchre {
 			} else {
 				return null;
 			}
-		}
-
-		else if (dead == SPADE) {
+		} else if (dead == SPADE) {
 			System.out.println("Would you like to call Trump? (h = Hearts, c = clubs, d = diamonds, n = no): ");
 			cSuit = reader.next().charAt(0);
 			if (cSuit == 'h' || cSuit == 'H') {
