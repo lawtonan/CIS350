@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 /**********************************************************************
  * The Player class is a class that holds each players information. 
  * Such as their hand, their team, and whether or not they are the
@@ -13,7 +15,7 @@ package game;
 public class Player {
 	
 	/** An array of Cards that designates the hand */
-	public Card hand[] = new Card[5];
+	public ArrayList<Card> hand = new ArrayList<Card>();
 	
 	/** A enumerated type to hold which team the player belongs */
 	public Team team;
@@ -28,7 +30,7 @@ public class Player {
 	 * @param team The players team
 	 * @param hand[] an array of the players hand
 	 *****************************************************************/
-	public Player(Team team, Card hand[]) {
+	public Player(Team team, ArrayList<Card> hand) {
 		this.team = team;
 		this.hand = hand;
 		dealer = false;
@@ -39,7 +41,7 @@ public class Player {
 	 * 
 	 * @return 		returns the hand Array
 	 *****************************************************************/
-	public Card[] getHand() {
+	public ArrayList<Card> getHand() {
 		return hand;
 	}
 
@@ -48,7 +50,7 @@ public class Player {
 	 * 
 	 * @param hand[] the players hand to be set
 	 *****************************************************************/
-	public void setHand(Card hand[]) {
+	public void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
 	}
 	
@@ -58,8 +60,8 @@ public class Player {
 	 * @param cnum the index of the Array
 	 * @param c the card to set to the index
 	 *****************************************************************/
-	public void setCard(int cnum, Card c) {
-		this.hand[cnum]=c;
+	public void setCard(Card c) {
+		this.hand.add(c);
 	}
 	
 	/******************************************************************
@@ -69,7 +71,7 @@ public class Player {
 	 * @return 		returns the card from the desired index
 	 *****************************************************************/
 	public Card getCard(int cnum) {
-		return this.hand[cnum];
+		return this.hand.get(cnum);
 	}
 
 	/******************************************************************
