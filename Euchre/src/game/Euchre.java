@@ -123,6 +123,7 @@ public class Euchre {
 
 
 		shuffle(deck);
+		deal();
 	}
 	
 	public void playGame() {

@@ -21,9 +21,7 @@ public class EuchrePanel extends JPanel {
 		Euchre game = new Euchre();
 		ArrayList<Player> players = game.getPlayers();
 
-
 		createHand(players.get(1).getHand().size());
-		
 		
 		frame.setSize(600,500);
 		frame.setLayout(null);
