@@ -21,17 +21,17 @@ public class EuchrePanel extends JPanel {
 		Euchre game = new Euchre();
 		ArrayList<Player> players = game.getPlayers();
 
-		createHand(players.get(1).getHand().size());
+		createHand(players.get(1).getHand());
 		
-		frame.setSize(600,500);
+		frame.setSize(800,600);
 		frame.setLayout(null);
 		frame.setVisible(true);
 	}
 	
-	private void createHand(int size) {
-		for (int i = 0; i < size; i++) {
-			hand.add(new JButton("card"));
-			hand.get(i).setBounds(20+(110 *i),400,100, 40);
+	private void createHand(ArrayList<Card> cards) {
+		for (int i = 0; i < cards.size(); i++) {
+			hand.add(new JButton(cards.get(i).toString()));
+			hand.get(i).setBounds(10+(155 *i),500,145, 40);
 			frame.add(hand.get(i));
 		}
 	}
