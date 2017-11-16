@@ -113,8 +113,8 @@ public class Euchre {
 		players.add(p4);
 
 
-		shuffle(deck);
-		deal();
+//		shuffle(deck);
+//		deal();
 	}
 	
 	/******************************************************************

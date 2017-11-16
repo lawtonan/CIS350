@@ -23,15 +23,16 @@ public class EuchrePanel extends JPanel {
 	private void display() {
 		Euchre game = new Euchre();
 		players = game.getPlayers();
-		
-
-		displayHand(players.get(1).getHand());
-		//setMiddle(players.get(0).getHand().get(0));
-		
+				
 		frame.setSize(800,600);
 		frame.setLayout(null);
 		frame.setVisible(true);
+		
 		playGame(game);
+		displayHand(players.get(1).getHand());
+		//setMiddle(players.get(0).getHand().get(0));
+		
+		
 	}
 	
 	private void displayHand(ArrayList<Card> cards) {
@@ -52,6 +53,7 @@ public class EuchrePanel extends JPanel {
 	public void playGame(Euchre game) {
 		game.shuffle(game.deck);
 		Card tUp = game.deal();
+		setMiddle(tUp);
 		Suits t = pickTrump(tUp);
 		game.setTrump(t);
 		//System.out.println(t);
