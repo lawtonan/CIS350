@@ -1,16 +1,23 @@
 package game;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
 public class EuchrePanel extends JPanel {
+	
+	private static final long serialVersionUID = 1L;
 	public ArrayList<JButton> hand = new ArrayList<JButton>();
 	public ArrayList<Player> players;
-	public JLabel[] left = new JLabel[5];
+	private ButtonListener actionL = new ButtonListener();
+	JLabel middle = new JLabel();
+	JLabel left = new JLabel();
+	JLabel right = new JLabel();
 	public int aloneCount = 0;
 	
 	public JFrame frame;
@@ -23,6 +30,13 @@ public class EuchrePanel extends JPanel {
 	private void display() {
 		Euchre game = new Euchre();
 		players = game.getPlayers();
+		
+		int i=0;
+		while (i < 5) {
+			hand.add(new JButton());
+			hand.get(i).addActionListener(actionL);
+			i++;
+		}
 				
 		frame.setSize(800,600);
 		frame.setLayout(null);
@@ -36,18 +50,24 @@ public class EuchrePanel extends JPanel {
 	}
 	
 	private void displayHand(ArrayList<Card> cards) {
+		//removeHand();
 		for (int i = 0; i < cards.size(); i++) {
-			hand.add(new JButton(cards.get(i).toString()));
+			hand.get(i).setText(cards.get(i).toString());
 			hand.get(i).setBounds(10+(155 *i),500,145, 40);
 			frame.add(hand.get(i));
 		}
+		
+		frame.setVisible(true);
+		frame.revalidate();
+		frame.repaint();
 	}
 	
-	private void setMiddle(Card card) {
-		JLabel middle = new JLabel(card.toString());
-		middle.setBounds(320, 250, 145, 40);
-		middle.setBorder(BorderFactory.createLineBorder(Color.black));
-		frame.add(middle);
+	public void removeHand() {
+		for (int i=0; i<hand.size(); i++) {
+			frame.remove(hand.get(i));
+		}
+		frame.revalidate();
+		frame.repaint();
 	}
 	
 	public void playGame(Euchre game) {
@@ -57,8 +77,55 @@ public class EuchrePanel extends JPanel {
 		Suits t = pickTrump(tUp);
 		game.setTrump(t);
 		//System.out.println(t);
-		game.playHand(players, aloneCount, t);
+		playHand(aloneCount, game);
 		
+	}
+	
+	public void playHand(int dead, Euchre game)
+	{
+		Player nPlayer = game.getFirstPlayer(dead);
+		while(game.getT1Trick() + game.getT2Trick() < 5) {
+			 displayHand(nPlayer.getHand());
+			 //NEED TO WAIT FOR BUTTON PRESS HERE
+			 game.playTrick(nPlayer.getHand());
+			 if(game.play.size()==4 || !(game.play.size()==3 && game.alone)){
+				 	nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
+				 	nPlayer = game.assignTrick(players, dead, nPlayer);
+				 	game.play.clear();
+				}
+			 else{
+				 nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
+			 }
+		}
+		game.assignPoints();
+		game.gameStatus();
+	}
+	
+	private void setMiddle(Card card) {
+		middle.setText(card.toString());
+		middle.setBounds(320, 250, 145, 40);
+		middle.setBorder(BorderFactory.createLineBorder(Color.black));
+		frame.add(middle);
+		frame.revalidate();
+		frame.repaint();
+	}
+	
+	private void setLeft(Card card) {
+		left.setText(card.toString());
+		left.setBounds(170, 250, 145, 40);
+		left.setBorder(BorderFactory.createLineBorder(Color.black));
+		frame.add(left);
+		frame.revalidate();
+		frame.repaint();
+	}
+	
+	private void setRight(Card card) {
+		right.setText(card.toString());
+		right.setBounds(470, 250, 145, 40);
+		right.setBorder(BorderFactory.createLineBorder(Color.black));
+		frame.add(right);
+		frame.revalidate();
+		frame.repaint();
 	}
 	
 	public Suits pickTrump(Card top) {
@@ -115,7 +182,10 @@ public class EuchrePanel extends JPanel {
 				"Call Trump", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
 				null, options, options[0]);
 			count++;
+
 		}
+		Card c = new Card();
+		setMiddle(c);
 		if (count > 3) {
 			count = 0;
 			n = 3;
@@ -133,7 +203,7 @@ public class EuchrePanel extends JPanel {
 					null, second, second[0]);
 				count++;
 			}
-			aloneCount = goAlone(count);
+			aloneCount = goAlone(count-1);
 			String suit = second[n].toString();
 			if (suit.equals("Hearts"))
 				return Suits.Hearts;
@@ -144,8 +214,9 @@ public class EuchrePanel extends JPanel {
 			if (suit.equals("Spades"))
 				return Suits.Spades;
 			
+			
 		}
-		aloneCount = goAlone(count);
+		aloneCount = goAlone(count-1);
 		return top.getSuit();
 
 	}
@@ -159,6 +230,35 @@ public class EuchrePanel extends JPanel {
 			return (count + 2) % 4;
 		else
 			return 4;
+	}
+	private class ButtonListener implements ActionListener, MouseListener {
+
+		public void actionPerformed(ActionEvent e) {
+			if (hand.get(0) == e.getSource()) {
+				
+			}
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent r) { //Right Mouse Button
+			
+		}
 	}
 }
 

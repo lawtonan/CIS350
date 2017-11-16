@@ -40,7 +40,7 @@ public class EuchreTest {
 	@Test
  	public void testGameStatus() {
 		Euchre junit = new Euchre();
-		junit.T1Point();
+		junit.t1Point(1);
 
 		assertFalse(junit.gameStatus());
 	}

@@ -36,9 +36,6 @@ public class Euchre {
 	/** A suit used to keep track of trump. */
 	private Suits trump;
 
-	/** A suit used to keep track of the dead suit. */
-	private static Suits dead;
-
 	/** An ArrayList of cards for the deck. */
 	public ArrayList<Card> deck = new ArrayList<Card>();
 	
@@ -181,11 +178,11 @@ public class Euchre {
 	}
 
 	/******************************************************************
-	 * An incrementor that increments team 1's score.
+	 * An adder that increments team 1's score.
 	 * 
 	 *****************************************************************/
-	public void T1Point() {
-		setT1Score(getT1Score() + 1);
+	public void t1Point(int p) {
+		setT1Score(getT1Score() + p);
 	}
 
 	/******************************************************************
@@ -211,8 +208,8 @@ public class Euchre {
 	 * An incrementor that increments team 2's score.
 	 * 
 	 *****************************************************************/
-	public void T2Point() {
-		setT2Score(getT2Score() + 1);
+	public void t2Point(int p) {
+		setT2Score(getT2Score() + p);
 	}
 
 	/******************************************************************
@@ -271,26 +268,25 @@ public class Euchre {
 	 *            Trump
 	 * @return returns True if played is a valid card
 	 *****************************************************************/
-	public boolean playable(Card lead, Card played, ArrayList<Card> hand, 
-			Suits t) {
+	public boolean playable(Card lead, Card played, ArrayList<Card> hand) {
 
-		if (lead.getSuit() == t || leftBower(lead, t)) {
-			if (played.getSuit() == t || leftBower(played, t)) {
+		if (lead.getSuit() == trump || leftBower(lead, trump)) {
+			if (played.getSuit() == trump || leftBower(played, trump)) {
 				return true;
 			} else {
 				for (int i = 0; i < hand.size(); i++) {
-					if (hand.get(i).getSuit() == t 
-						|| leftBower(hand.get(i), t)) 
+					if (hand.get(i).getSuit() == trump 
+						|| leftBower(hand.get(i), trump)) 
 						return false;
 				}
 			}
 		} else {
 			if (lead.getSuit() == played.getSuit() 
-				&& !leftBower(played, t))
+				&& !leftBower(played, trump))
 				return true;
 			for (int i = 0; i < hand.size(); i++) {
 				if (lead.getSuit() == hand.get(i).getSuit() 
-					&& !leftBower(hand.get(i), t))
+					&& !leftBower(hand.get(i), trump))
 					return false;
 			}
 		}
@@ -317,20 +313,20 @@ public class Euchre {
 	 *            trump
 	 * @return returns the highest value card
 	 *****************************************************************/
-	public Card takeTrick(ArrayList<Card> active, Suits t) {
+	public Card takeTrick(ArrayList<Card> active) {
 		Card high;
 		high = active.get(0);
 		for (int i = 1; i < active.size(); i++) {
-			if (rightBower(high, t))
+			if (rightBower(high, trump))
 				return high;
-			else if (rightBower(active.get(i), t))
+			else if (rightBower(active.get(i), trump))
 				return active.get(i);
-			else if (leftBower(high, t)) {
+			else if (leftBower(high, trump)) {
 				continue;
-			} else if (high.getSuit() == t && active.get(i).getSuit() == t) {
-				if (active.get(i).getCardName() > high.getCardName() || leftBower(active.get(i), t))
+			} else if (high.getSuit() == trump && active.get(i).getSuit() == trump) {
+				if (active.get(i).getCardName() > high.getCardName() || leftBower(active.get(i), trump))
 					high = active.get(i);
-			} else if (high.getSuit() != t && (active.get(i).getSuit() == t || leftBower(active.get(i), t))) {
+			} else if (high.getSuit() != trump && (active.get(i).getSuit() == trump || leftBower(active.get(i), trump))) {
 				high = active.get(i);
 			} else if (high.getSuit() == active.get(i).getSuit())
 				if (high.getCardName() < active.get(i).getCardName())
@@ -647,14 +643,14 @@ public class Euchre {
 		}
 	}
 	
-	public void playHand(ArrayList<Player> players,int dead,Suits t)
+	public void playHand(ArrayList<Player> players,int dead)
 	{
 		Player nPlayer = getFirstPlayer(dead);
 		while(t1Trick + t2Trick < 5) {
-			 playTrick(nPlayer.getHand(),t);
+			 playTrick(nPlayer.getHand());
 			 if(play.size()!=4 || !(play.size()==3 && alone)){
 				 	nPlayer = nextPlayer(players.indexOf(nPlayer),dead);
-				 	nPlayer = assignTrick(players, dead, t, nPlayer);
+				 	nPlayer = assignTrick(players, dead, nPlayer);
 				 	play.clear();
 				}
 			 else{
@@ -669,41 +665,31 @@ public class Euchre {
 	{
 		if (t1CallSuit) {
 			if (t1Trick == 5 && alone) {
-				T1Point();
-				T1Point();
-				T1Point();
-				T1Point();
+				t1Point(4);
 			} else if(t1Trick == 5) {
-				T1Point();
-				T1Point();
+				t1Point(2);
 			} else if(t1Trick >= 3){
-				T1Point();
+				t1Point(1);
 			} else{
-				T2Point();
-				T2Point();
+				t2Point(2);
 			}
 		} else {
 			if (t2Trick == 5 && alone) {
-				T2Point();
-				T2Point();
-				T2Point();
-				T2Point();
+				t2Point(4);
 			} else if(t2Trick == 5) {
-				T2Point();
-				T2Point();
+				t2Point(2);
 			} else if(t2Trick >= 3) {
-				T2Point();
+				t2Point(1);
 			} else {
-				T1Point();
-				T1Point();
+				t1Point(2);
 			}
 		}
 		
 	}
 	
-	public Player assignTrick(ArrayList<Player> players, int dead, Suits t, Player current)
+	public Player assignTrick(ArrayList<Player> players, int dead, Player current)
 	{
-		highCard = takeTrick(play, t);
+		highCard = takeTrick(play);
 		for(int i = 0;i<play.size();i++)
 		{	
 			if (highCard == play.get(i)) {
@@ -726,12 +712,12 @@ public class Euchre {
 	Card highCard;
 	ArrayList<Card> play = new ArrayList<Card>();
 	
-	public void playTrick(ArrayList<Card> hand, Suits t)
+	public void playTrick(ArrayList<Card> hand)
 	{
 		printHand(hand);
 		System.out.println("Play a Card: ");
 		input = reader.nextInt();
-		while (playable(play.get(0), hand.get(input), hand, t)) {
+		while (playable(play.get(0), hand.get(input), hand)) {
 			System.out.println("not a valid card");
 			printHand(hand);
 			System.out.println("Play a Card: ");
