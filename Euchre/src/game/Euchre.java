@@ -34,7 +34,7 @@ public class Euchre {
 	private static Team TEAM2 = Team.Team2;
 
 	/** A suit used to keep track of trump. */
-	private Suits trump;
+	public Suits trump;
 
 	/** An ArrayList of cards for the deck. */
 	public ArrayList<Card> deck = new ArrayList<Card>();
@@ -270,6 +270,9 @@ public class Euchre {
 	 *****************************************************************/
 	public boolean playable(Card lead, Card played, ArrayList<Card> hand) {
 
+		if(lead == null)
+			return true;
+		
 		if (lead.getSuit() == trump || leftBower(lead, trump)) {
 			if (played.getSuit() == trump || leftBower(played, trump)) {
 				return true;
@@ -684,7 +687,8 @@ public class Euchre {
 				t1Point(2);
 			}
 		}
-		
+		t1Trick = 0;
+		t2Trick = 0;
 	}
 	
 	public Player assignTrick(ArrayList<Player> players, int dead, Player current)

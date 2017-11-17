@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class EuchrePanel extends JPanel {
-	
+	Euchre game;
+	Player nPlayer;
 	private static final long serialVersionUID = 1L;
 	public ArrayList<JButton> hand = new ArrayList<JButton>();
 	public ArrayList<Player> players;
@@ -18,6 +19,9 @@ public class EuchrePanel extends JPanel {
 	JLabel middle = new JLabel();
 	JLabel left = new JLabel();
 	JLabel right = new JLabel();
+	JLabel checkbut = new JLabel();
+	JLabel gStats = new JLabel();
+	JLabel hStats = new JLabel();
 	public int aloneCount = 0;
 	
 	public JFrame frame;
@@ -28,7 +32,7 @@ public class EuchrePanel extends JPanel {
 	}
 	
 	private void display() {
-		Euchre game = new Euchre();
+		game = new Euchre();
 		players = game.getPlayers();
 		
 		int i=0;
@@ -53,8 +57,14 @@ public class EuchrePanel extends JPanel {
 		//removeHand();
 		for (int i = 0; i < cards.size(); i++) {
 			hand.get(i).setText(cards.get(i).toString());
+			hand.get(i).setEnabled(true);
 			hand.get(i).setBounds(10+(155 *i),500,145, 40);
 			frame.add(hand.get(i));
+		}
+		for (int j = 4; j >= cards.size(); j--)
+		{
+			hand.get(j).setText("");
+			hand.get(j).setEnabled(false);
 		}
 		
 		frame.setVisible(true);
@@ -71,6 +81,7 @@ public class EuchrePanel extends JPanel {
 	}
 	
 	public void playGame(Euchre game) {
+		gameStats();
 		game.shuffle(game.deck);
 		Card tUp = game.deal();
 		setMiddle(tUp);
@@ -78,28 +89,73 @@ public class EuchrePanel extends JPanel {
 		game.setTrump(t);
 		//System.out.println(t);
 		playHand(aloneCount, game);
+		game.assignPoints();
+		game.gameStatus();
+		handStats();
+		gameStats();
 		
 	}
 	
-	public void playHand(int dead, Euchre game)
-	{
-		Player nPlayer = game.getFirstPlayer(dead);
-		while(game.getT1Trick() + game.getT2Trick() < 5) {
-			 displayHand(nPlayer.getHand());
-			 //NEED TO WAIT FOR BUTTON PRESS HERE
-			 game.playTrick(nPlayer.getHand());
-			 if(game.play.size()==4 || !(game.play.size()==3 && game.alone)){
-				 	nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
-				 	nPlayer = game.assignTrick(players, dead, nPlayer);
-				 	game.play.clear();
-				}
-			 else{
-				 nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
-			 }
-		}
-		game.assignPoints();
-		game.gameStatus();
+//	public void playHand(int dead, Euchre game)
+//	{
+//		Player nPlayer = game.getFirstPlayer(dead);
+//		while(game.getT1Trick() + game.getT2Trick() < 5) {
+//			 displayHand(nPlayer.getHand());
+//			 //NEED TO WAIT FOR BUTTON PRESS HERE
+//			 game.playTrick(nPlayer.getHand());
+//			 if(game.play.size()==4 || !(game.play.size()==3 && game.alone)){
+//				 	nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
+//				 	nPlayer = game.assignTrick(players, dead, nPlayer);
+//				 	game.play.clear();
+//				}
+//			 else{
+//				 nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
+//			 }
+//		}
+//		game.assignPoints();
+//		game.gameStatus();
+//	}
+	private void setCheck(Card card) {
+		checkbut.setText(card.toString());
+		checkbut.setBounds(320, 100, 145, 40);
+		checkbut.setBorder(BorderFactory.createLineBorder(Color.black));
+		frame.add(checkbut);
+		frame.revalidate();
+		frame.repaint();
 	}
+	
+	private void printPlayed(){
+		if( game.play.size() == 1 ){
+			setLeft(game.play.get(0));
+		}else if( game.play.size() == 2 ){
+			setMiddle(game.play.get(1));
+		}else if( game.play.size() == 3 ){
+			setRight(game.play.get(2));
+		}else if( game.play.size() == 4){
+			Card c = new Card();
+			setLeft(c);
+			setMiddle(c);
+			setRight(c);
+		}
+	}
+	private void gameStats() {
+		gStats.setText("<html>T1 Score: " + game.getT1Score() + "<br>T2 Score: " + game.getT2Score() +"</html>");
+		gStats.setBounds(100, 100, 145, 50);
+		gStats.setBorder(BorderFactory.createLineBorder(Color.black));
+		frame.add(gStats);
+		frame.revalidate();
+		frame.repaint();
+	}
+	
+	private void handStats() {
+		hStats.setText("<html>Trump: " + game.trump + "<br>T1 Tricks: " + game.getT1Trick() + "<br>T2 Tricks: " + game.getT2Trick() + "<br>Current Player: " + nPlayer.getTeam() + "</html>");
+		hStats.setBounds(500, 100, 145, 100);
+		hStats.setBorder(BorderFactory.createLineBorder(Color.black));
+		frame.add(hStats);
+		frame.revalidate();
+		frame.repaint();
+	}
+	
 	
 	private void setMiddle(Card card) {
 		middle.setText(card.toString());
@@ -231,11 +287,86 @@ public class EuchrePanel extends JPanel {
 		else
 			return 4;
 	}
+	
+	public void playHand(int dead, Euchre game)
+	{
+		nPlayer = game.getFirstPlayer(dead);
+		while(game.getT1Trick() + game.getT2Trick() < 5) {
+			handStats();
+			displayHand(nPlayer.getHand());
+			//NEED TO WAIT FOR BUTTON PRESS HERE
+			if(game.play.size()==4 || (game.play.size()==3 && game.alone)){
+			 	nPlayer = game.assignTrick(players, dead, nPlayer);
+			 	game.play.clear();
+			}
+		}
+	}
+	
 	private class ButtonListener implements ActionListener, MouseListener {
 
 		public void actionPerformed(ActionEvent e) {
 			if (hand.get(0) == e.getSource()) {
-				
+				setCheck(nPlayer.getCard(0));
+				if(game.play.size()==0){
+					game.play.add(nPlayer.getCard(0));
+					nPlayer.getHand().remove(0);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				}else if(game.playable(game.play.get(0), nPlayer.getCard(0), nPlayer.getHand())) {
+					game.play.add(nPlayer.getCard(0));
+					nPlayer.getHand().remove(0);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				}
+//				else
+//					System.out.println("bad input");
+				printPlayed();
+			} else if (hand.get(1) == e.getSource()) {
+				setCheck(nPlayer.getCard(1));
+				if(game.play.size()==0) {
+					game.play.add(nPlayer.getCard(1));
+					nPlayer.getHand().remove(1);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				} else if(game.playable(game.play.get(0), nPlayer.getCard(1), nPlayer.getHand())) {
+					game.play.add(nPlayer.getCard(1));
+					nPlayer.getHand().remove(1);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				}
+				printPlayed();
+			} else if (hand.get(2) == e.getSource()) {
+				setCheck(nPlayer.getCard(2));
+				if(game.play.size()==0) {
+					game.play.add(nPlayer.getCard(2));
+					nPlayer.getHand().remove(2);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				} else if(game.playable(game.play.get(0), nPlayer.getCard(2), nPlayer.getHand())) {
+					game.play.add(nPlayer.getCard(2));
+					nPlayer.getHand().remove(2);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				}
+				printPlayed();
+			} else if (hand.get(3) == e.getSource()) {
+				setCheck(nPlayer.getCard(3));
+				if(game.play.size()==0) {
+					game.play.add(nPlayer.getCard(3));
+					nPlayer.getHand().remove(3);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				}else if(game.playable(game.play.get(0), nPlayer.getCard(3), nPlayer.getHand())) {
+					game.play.add(nPlayer.getCard(3));
+					nPlayer.getHand().remove(3);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				}
+				printPlayed();
+			} else if (hand.get(4) == e.getSource()) {
+				setCheck(nPlayer.getCard(4));
+				if(game.play.size()==0) {
+					game.play.add(nPlayer.getCard(4));
+					nPlayer.getHand().remove(4);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				} else if(game.playable(game.play.get(0), nPlayer.getCard(4), nPlayer.getHand())) {
+					game.play.add(nPlayer.getCard(4));
+					nPlayer.getHand().remove(4);
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer),aloneCount);
+				}
+				printPlayed();
 			}
 		}
 
@@ -260,5 +391,34 @@ public class EuchrePanel extends JPanel {
 			
 		}
 	}
+//	private class ButtonListener implements ActionListener, MouseListener {
+//
+//		public void actionPerformed(ActionEvent e) {
+//			if (hand.get(0) == e.getSource()) {
+//				
+//			}
+//		}
+//
+//		@Override
+//		public void mouseClicked(MouseEvent e) {
+//		}
+//
+//		@Override
+//		public void mouseEntered(MouseEvent arg0) {
+//		}
+//
+//		@Override
+//		public void mouseExited(MouseEvent arg0) {
+//		}
+//
+//		@Override
+//		public void mousePressed(MouseEvent arg0) {
+//		}
+//
+//		@Override
+//		public void mouseReleased(MouseEvent r) { //Right Mouse Button
+//			
+//		}
+//	}
 }
 
