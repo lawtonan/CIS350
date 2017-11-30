@@ -17,6 +17,7 @@ public class EuchrePanel extends JPanel {
 	public ArrayList<JButton> images = new ArrayList<JButton>();
 	public ArrayList<Player> players;
 	private ButtonListener actionL = new ButtonListener();
+	JLabel deck = new JLabel();
 	JLabel middle = new JLabel();
 	JLabel left = new JLabel();
 	JLabel right = new JLabel();
@@ -26,7 +27,8 @@ public class EuchrePanel extends JPanel {
 	public int aloneCount = 0;
 	public boolean pickup = false;
 	public Card tUp;
-	
+	public Card back;
+
 	public JFrame frame;
 
 	public EuchrePanel(JFrame f) {
@@ -68,9 +70,9 @@ public class EuchrePanel extends JPanel {
 			String t = s + ".png";
 
 			ImageIcon card = new ImageIcon("cards/" + t);
-
+			
 			images.get(i).setIcon(card);
-
+					
 			images.get(i).setBounds(50 + (130 * i), 500, 100, 145);
 			frame.add(images.get(i));
 
@@ -78,7 +80,7 @@ public class EuchrePanel extends JPanel {
 		}
 		for (int j = 4; j >= cards.size(); j--) {
 			hand.get(j).setText("");
-			hand.get(j).setEnabled(false);
+			hand.get(j).setEnabled(false);	
 		}
 
 		frame.setVisible(true);
@@ -95,12 +97,11 @@ public class EuchrePanel extends JPanel {
 	}
 
 	public void playGame(Euchre game) {
-		while(!game.gameStatus())
-		{
+		while (!game.gameStatus()) {
 			gameStats();
 			game.shuffle(game.deck);
 			tUp = game.deal();
-			setMiddle(tUp);
+			setDeck(tUp);
 			Suits t = pickTrump(tUp);
 			game.setTrump(t);
 			// System.out.println(t);
@@ -131,14 +132,14 @@ public class EuchrePanel extends JPanel {
 	// game.assignPoints();
 	// game.gameStatus();
 	// }
-//	private void setCheck(Card card) {
-//		checkbut.setText(card.toString());
-//		checkbut.setBounds(320, 100, 145, 40);
-//		checkbut.setBorder(BorderFactory.createLineBorder(Color.black));
-//		frame.add(checkbut);
-//		frame.revalidate();
-//		frame.repaint();
-//	}
+	// private void setCheck(Card card) {
+	// checkbut.setText(card.toString());
+	// checkbut.setBounds(320, 100, 145, 40);
+	// checkbut.setBorder(BorderFactory.createLineBorder(Color.black));
+	// frame.add(checkbut);
+	// frame.revalidate();
+	// frame.repaint();
+	// }
 
 	private void printPlayed() {
 		if (game.play.size() == 1) {
@@ -157,7 +158,7 @@ public class EuchrePanel extends JPanel {
 
 	private void gameStats() {
 		gStats.setText("<html>T1 Score: " + game.getT1Score() + "<br>T2 Score: " + game.getT2Score() + "</html>");
-		gStats.setBounds(100, 100, 145, 50);
+		gStats.setBounds(100, 75, 145, 50);
 		gStats.setBorder(BorderFactory.createLineBorder(Color.black));
 		frame.add(gStats);
 		frame.revalidate();
@@ -167,16 +168,29 @@ public class EuchrePanel extends JPanel {
 	private void handStats() {
 		hStats.setText("<html>Trump: " + game.trump + "<br>T1 Tricks: " + game.getT1Trick() + "<br>T2 Tricks: "
 				+ game.getT2Trick() + "<br>Current Player: " + nPlayer.getTeam() + "</html>");
-		hStats.setBounds(500, 100, 145, 100);
+		hStats.setBounds(500, 75, 145, 100);
 		hStats.setBorder(BorderFactory.createLineBorder(Color.black));
 		frame.add(hStats);
 		frame.revalidate();
 		frame.repaint();
 	}
 
+	private void setDeck(Card card) {
+		ImageIcon d = new ImageIcon("cards/" + card.toString()  + ".png");
+		deck.setIcon(d);
+		deck.setText(card.toString());
+		deck.setBounds(320, 75, 100, 145);
+		deck.setBorder(BorderFactory.createLineBorder(Color.black));
+		frame.add(deck);
+		frame.revalidate();
+		frame.repaint();
+	}
+
 	private void setMiddle(Card card) {
+		ImageIcon m = new ImageIcon("cards/" + card.toString() + ".png");
+		middle.setIcon(m);
 		middle.setText(card.toString());
-		middle.setBounds(320, 250, 145, 40);
+		middle.setBounds(320, 250, 100, 145);
 		middle.setBorder(BorderFactory.createLineBorder(Color.black));
 		frame.add(middle);
 		frame.revalidate();
@@ -184,8 +198,10 @@ public class EuchrePanel extends JPanel {
 	}
 
 	private void setLeft(Card card) {
+		ImageIcon l = new ImageIcon("cards/" + card.toString() + ".png");
+		left.setIcon(l);
 		left.setText(card.toString());
-		left.setBounds(170, 250, 145, 40);
+		left.setBounds(170, 250, 100, 145);
 		left.setBorder(BorderFactory.createLineBorder(Color.black));
 		frame.add(left);
 		frame.revalidate();
@@ -193,8 +209,10 @@ public class EuchrePanel extends JPanel {
 	}
 
 	private void setRight(Card card) {
+		ImageIcon r = new ImageIcon("cards/" + card.toString() + ".png");
+		right.setIcon(r);
 		right.setText(card.toString());
-		right.setBounds(470, 250, 145, 40);
+		right.setBounds(470, 250, 100, 145);
 		right.setBorder(BorderFactory.createLineBorder(Color.black));
 		frame.add(right);
 		frame.revalidate();
@@ -251,20 +269,22 @@ public class EuchrePanel extends JPanel {
 		int count = 0;
 		nPlayer = game.getFirstPlayer(aloneCount);
 		while (n == 1 && count < 4) {
-			// USE NPLAYER NOT COUNT -------------------------------------------------------------------------------------------------------------------------
+			// USE NPLAYER NOT COUNT
+			// -------------------------------------------------------------------------------------------------------------------------
 			displayHand(nPlayer.getHand());
 			n = JOptionPane.showOptionDialog(frame, "Want to call it up?", "Call Trump", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-			if(n == 0)
-			{
-				pickup = true;				
-			}
-			else
+			if (n == 0) {
+				pickup = true;
+			} else
 				count++;
 			nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
 		}
-		Card c = new Card();
-		setMiddle(c);
+		
+		ImageIcon backCard = new ImageIcon("cards/" + "yugioh.png");
+		deck.setIcon(backCard);
+	
+
 		if (count > 3) {
 			count = 0;
 			n = 3;
@@ -302,23 +322,21 @@ public class EuchrePanel extends JPanel {
 		Object[] options = { "Go alone!", "No thanks!" };
 		int n = JOptionPane.showOptionDialog(frame, "Would you like to go alone?", "Go Alone?",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-		if (n == 0)
-		{
+		if (n == 0) {
 			game.setAlone(true);
 			return (count + 2) % 4;
-		}
-		else
-		{
+		} else {
 			game.setAlone(false);
-			return 5;	
+			return 5;
 		}
 	}
 
 	public void playHand(int dead, Euchre game) {
 		nPlayer = game.getFirstPlayer(dead);
-		while(pickup){
+		while (pickup) {
 			nPlayer = game.getDealer();
 			displayHand(nPlayer.getHand());
+			handStats();
 		}
 		while (game.getT1Trick() + game.getT2Trick() < 5) {
 			handStats();
@@ -332,7 +350,7 @@ public class EuchrePanel extends JPanel {
 	}
 
 	public void playCard(int i) {
-//		setCheck(nPlayer.getCard(i));
+		// setCheck(nPlayer.getCard(i));
 		if (game.play.size() == 0) {
 			game.play.add(nPlayer.getCard(i));
 			nPlayer.getHand().remove(i);
@@ -344,46 +362,44 @@ public class EuchrePanel extends JPanel {
 		}
 		printPlayed();
 	}
-	
-	public void pickUp(int i){
+
+	public void pickUp(int i) {
 		nPlayer.getHand().set(i, tUp);
 		nPlayer = game.getFirstPlayer(aloneCount);
 		pickup = false;
 	}
-	
+
 	private class ButtonListener implements ActionListener, MouseListener {
 
 		public void actionPerformed(ActionEvent e) {
-			if(pickup)
-			{
+			if (pickup) {
 				displayHand(game.getDealer().getHand());
-				if (hand.get(0) == e.getSource()) {
+				if (images.get(0) == e.getSource()) {
 					pickUp(0);
-				} else if (hand.get(1) == e.getSource()) {
+				} else if (images.get(1) == e.getSource()) {
 					pickUp(1);
-				} else if (hand.get(2) == e.getSource()) {
+				} else if (images.get(2) == e.getSource()) {
 					pickUp(2);
-				} else if (hand.get(3) == e.getSource()) {
+				} else if (images.get(3) == e.getSource()) {
 					pickUp(3);
 				} else if (hand.get(4) == e.getSource()) {
 					pickUp(4);
 				}
-			}
-			else{
-				if (hand.get(0) == e.getSource()) {
-//					setCheck(nPlayer.getCard(0));
+			} else {
+				if (images.get(0) == e.getSource()) {
+					// setCheck(nPlayer.getCard(0));
 					playCard(0);
-				} else if (hand.get(1) == e.getSource()) {
-//					setCheck(nPlayer.getCard(1));
+				} else if (images.get(1) == e.getSource()) {
+					// setCheck(nPlayer.getCard(1));
 					playCard(1);
-				} else if (hand.get(2) == e.getSource()) {
-//					setCheck(nPlayer.getCard(2));
+				} else if (images.get(2) == e.getSource()) {
+					// setCheck(nPlayer.getCard(2));
 					playCard(2);
-				} else if (hand.get(3) == e.getSource()) {
-//					setCheck(nPlayer.getCard(3));
+				} else if (images.get(3) == e.getSource()) {
+					// setCheck(nPlayer.getCard(3));
 					playCard(3);
-				} else if (hand.get(4) == e.getSource()) {
-//					setCheck(nPlayer.getCard(4));
+				} else if (images.get(4) == e.getSource()) {
+					// setCheck(nPlayer.getCard(4));
 					playCard(4);
 				}
 			}
