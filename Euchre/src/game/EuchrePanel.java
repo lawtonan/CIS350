@@ -169,7 +169,7 @@ public class EuchrePanel extends JPanel {
 
 	private void handStats() {
 		hStats.setText("<html>Trump: " + game.getTrump() + "<br>T1 Tricks: " + game.getT1Trick() + "<br>T2 Tricks: "
-				+ game.getT2Trick() + "<br>Current Player: " + nPlayer.getTeam() + "</html>");
+				+ game.getT2Trick() + "<br>Current Player: " + players.indexOf(nPlayer) + "<br>Current Team: " + nPlayer.getTeam() + "</html>"  );
 		hStats.setBounds(500, 100, 145, 100);
 		hStats.setBorder(BorderFactory.createLineBorder(Color.black));
 		frame.add(hStats);
@@ -256,6 +256,7 @@ public class EuchrePanel extends JPanel {
 		while (n == 1 && count < 4) {
 			// USE NPLAYER NOT COUNT -------------------------------------------------------------------------------------------------------------------------
 			displayHand(nPlayer.getHand());
+			handStats();
 			n = JOptionPane.showOptionDialog(frame, "Want to call it up?", "Call Trump", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			if(n == 0)
@@ -274,6 +275,7 @@ public class EuchrePanel extends JPanel {
 			n = 3;
 			while (n == 3 && count < 4) {
 				displayHand(nPlayer.getHand());
+				handStats();
 				if (count == 3) {
 					n = JOptionPane.showOptionDialog(frame, "Pick a suit?", "Call Trump", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null, last, last[0]);
