@@ -99,7 +99,7 @@ public class EuchrePanel extends JPanel {
 		while(!game.gameStatus())
 		{
 			gameStats();
-			game.alone = false;
+			game.setAlone(false);
 			aloneCount = 5;
 			game.shuffle(game.getDeck());
 			tUp = game.deal();
@@ -148,7 +148,7 @@ public class EuchrePanel extends JPanel {
 			setLeft(game.getPlay().get(0));
 		} else if (game.getPlay().size() == 2) {
 			setMiddle(game.getPlay().get(1));
-		} else if (game.getPlay().size() == 4 || (game.getPlay().size() == 3 && game.alone == true)) {
+		} else if (game.getPlay().size() == 4 || (game.getPlay().size() == 3 && game.alone() == true)) {
 			Card c = new Card();
 			setLeft(c);
 			setMiddle(c);
@@ -333,7 +333,7 @@ public class EuchrePanel extends JPanel {
 			handStats();
 			displayHand(nPlayer.getHand());
 			// NEED TO WAIT FOR BUTTON PRESS HERE
-			if (game.getPlay().size() == 4 || (game.getPlay().size() == 3 && game.alone)) {
+			if (game.getPlay().size() == 4 || (game.getPlay().size() == 3 && game.alone())) {
 				nPlayer = game.assignTrick(players, dead, nPlayer);
 				game.getPlay().clear();
 				printPlayed();
