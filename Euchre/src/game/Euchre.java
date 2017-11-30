@@ -48,13 +48,13 @@ public class Euchre {
 	private static int t2Score;
 
 	/** A card used to keep track of the turn up. */
-	public Card turnUp;
+	private Card turnUp;
 
 	/** A boolean used to see who called the trump. */
-	public boolean t1CallSuit;
+	private boolean t1CallSuit;
 
 	/** A boolean used to see who goes alone. */
-	public boolean alone;
+	private boolean alone;
 
 	/** An integer to keep track of team 1's trick count. */
 	private static int t1Trick;
@@ -65,18 +65,13 @@ public class Euchre {
 	/** A Card object used to track the high card in scoring. */
 	private Card highCard;
 	
-	//TODO: Getter
+	/** An ArrayList of cards to keep track of played cards.  */
 	private ArrayList<Card> play = new ArrayList<Card>();
 
 	/******************************************************************
-	 * A main method used to start the game after setting a few 
-	 * variables to then create the game itself. This will change in 
-	 * release 2 as we will move to a GUI instead of command terminal.
-	 * 
-	 * @param args
-	 *            An array of strings for arguments
+	 * A constructor for Euchre. This constructor instantiates all
+	 * values for the game to be played. (Creates the deck and players
 	 *****************************************************************/
-
 	public Euchre() {
 		createDeck();
 		setT1Score(0);
@@ -108,16 +103,40 @@ public class Euchre {
 		return players;
 	}
 	
+	/******************************************************************
+	 * A method to return the trump.
+	 * 
+	 * @return returns a Suit for trump.
+	 *****************************************************************/
 	public Suits getTrump() {
 		return trump;
 	}
 	
+	/******************************************************************
+	 * A method to return the played cards.
+	 * 
+	 * @return returns an ArrayList of played cards
+	 *****************************************************************/
 	public ArrayList<Card> getPlay() {
 		return play;
 	}
 	
+	/******************************************************************
+	 * A method to return the deck.
+	 * 
+	 * @return returns an ArrayList of cards.
+	 *****************************************************************/
 	public ArrayList<Card> getDeck() {
 		return deck;
+	}
+	
+	/******************************************************************
+	 * A method to check if alone is true or false..
+	 * 
+	 * @return returns a boolean.
+	 *****************************************************************/
+	public boolean alone() {
+		return alone;
 	}
 	
 	
@@ -179,6 +198,8 @@ public class Euchre {
 	/******************************************************************
 	 * An adder that increments team 1's score.
 	 * 
+	 * @param p
+	 * 			the point value
 	 *****************************************************************/
 	public void t1Point(int p) {
 		setT1Score(getT1Score() + p);
@@ -206,6 +227,8 @@ public class Euchre {
 	/******************************************************************
 	 * An incrementor that increments team 2's score.
 	 * 
+	 * @param p
+	 * 			the point value
 	 *****************************************************************/
 	public void t2Point(int p) {
 		setT2Score(getT2Score() + p);
@@ -218,18 +241,10 @@ public class Euchre {
 	 *****************************************************************/
 	public boolean gameStatus() {
 		if (t1Score >= 10) {
-			System.out.println("Team one score: " + t1Score 
-					+ "\nTeam two score: " + t2Score);
-			System.out.println("Team 1 wins");
 			return true;
 		} else if (t2Score >= 10) {
-			System.out.println("Team one score: " + t1Score
-					+ "\nTeam two score: " + t2Score);
-			System.out.println("Team 2 wins");
 			return true;
 		} else {
-			System.out.println("Team one score: " + t1Score
-					+ "\nTeam two score: " + t2Score);
 			return false;
 		}
 	}
@@ -263,21 +278,20 @@ public class Euchre {
 	 *            The card to check if valid
 	 * @param hand
 	 * 			  The players hand
-	 * @param t
-	 *            Trump
 	 * @return returns True if played is a valid card
 	 *****************************************************************/
 	public boolean playable(Card lead, Card played, ArrayList<Card> hand) {
 
-		if(lead == null)
+		if (lead == null)
 			return true;
 		
 		if (lead.getSuit() == trump || leftBower(lead, trump)) {
-			if (played.getSuit() == trump || leftBower(played, trump)) {
+			if (played.getSuit() == trump 
+					|| leftBower(played, trump)) {
 				return true;
 			} else {
 				for (int i = 0; i < hand.size(); i++) {
-					if (hand.get(i).getSuit() == trump 
+					if (hand.get(i).getSuit() == trump
 						|| leftBower(hand.get(i), trump)) 
 						return false;
 				}
@@ -311,8 +325,6 @@ public class Euchre {
 	 * 
 	 * @param active
 	 *            an array list of cards that were played
-	 * @param t
-	 *            trump
 	 * @return returns the highest value card
 	 *****************************************************************/
 	public Card takeTrick(ArrayList<Card> active) {
@@ -427,6 +439,7 @@ public class Euchre {
 	/******************************************************************
 	 * A method that give each player 5 cards from the shuffled deck.
 	 * 
+	 * @return returns the card to be turned up
 	 *****************************************************************/
 	public Card deal() {
 		int cardCount = 0;
@@ -493,8 +506,13 @@ public class Euchre {
 		return temp;
 		
 	}
-
-	public Player getDealer(){
+	
+	/******************************************************************
+	 * A method to return the dealer.
+	 * 
+	 * @return returns an a player that is the dealer.
+	 *****************************************************************/
+	public Player getDealer() {
 		if (players.get(0).isDealer()) {
 				return players.get(0);
 		} else if (players.get(1).isDealer()) {
@@ -506,49 +524,56 @@ public class Euchre {
 		}
 	}
 	
-	public Player getFirstPlayer(int dPlayer)
-	{
+	/******************************************************************
+	 * A method to return the first player.
+	 * 
+	 * @param dPlayer
+	 * 					the dead player
+	 * @return returns an player that plays first
+	 *****************************************************************/
+	public Player getFirstPlayer(int dPlayer) {
 		if (players.get(0).isDealer()) {
-			if(dPlayer != 1)
+			if (dPlayer != 1)
 				return players.get(1);
 			else 
 				return players.get(2);
 		} else if (players.get(1).isDealer()) {
-			if(dPlayer != 2)
+			if (dPlayer != 2)
 				return players.get(2);
 			else
 				return players.get(3);
 		} else if (players.get(2).isDealer()) {
-			if(dPlayer !=3)
+			if (dPlayer != 3)
 				return players.get(3);
 			else
 				return players.get(0);
 		} else {
-			if(dPlayer != 0)
+			if (dPlayer != 0)
 				return players.get(0);
 			else
 				return players.get(1);
 		}
 	}
-	
-	public void assignPoints()
-	{
+	/******************************************************************
+	 * A method to assign points to teams.
+	 *****************************************************************/
+	public void assignPoints() {
 		if (t1CallSuit) {
 			if (t1Trick == 5 && alone) {
 				t1Point(4);
-			} else if(t1Trick == 5) {
+			} else if (t1Trick == 5) {
 				t1Point(2);
-			} else if(t1Trick >= 3){
+			} else if (t1Trick >= 3) {
 				t1Point(1);
-			} else{
+			} else {
 				t2Point(2);
 			}
 		} else {
 			if (t2Trick == 5 && alone) {
 				t2Point(4);
-			} else if(t2Trick == 5) {
+			} else if (t2Trick == 5) {
 				t2Point(2);
-			} else if(t2Trick >= 3) {
+			} else if (t2Trick >= 3) {
 				t2Point(1);
 			} else {
 				t1Point(2);
@@ -558,28 +583,40 @@ public class Euchre {
 		setT2Trick(0);
 	}
 	
-	public void setAlone(boolean b){
+	/******************************************************************
+	 * A method to set the alone boolean.
+	 * 
+	 * @param b
+	 * 			the boolean to be set
+	 *****************************************************************/
+	public void setAlone(boolean b) {
 		alone = b;
 	}
-	
-	public Player assignTrick(ArrayList<Player> players, int dead, Player current)
-	{
+	/******************************************************************
+	 * A method to assign the trick.
+	 * 
+	 * @param players
+	 * 					a array list of players
+	 * @param dead
+	 * 					dead player
+	 * @param current
+	 * 					the current player
+	 * 
+	 * @return returns a Player that receives the trick.
+	 *****************************************************************/
+	public Player assignTrick(ArrayList<Player> players, int dead, Player current) {
 		highCard = takeTrick(play);
-		for(int i = 0;i<play.size();i++)
-		{	
+		for (int i = 0; i < play.size(); i++) {	
 			if (highCard == play.get(i)) {
-				if (current.getTeam() == TEAM1)
-				{
+				if (current.getTeam() == TEAM1) {
 					setT1Trick(getT1Trick() + 1);
 					return current;
-				}
-				else
-				{
+				} else {
 					setT2Trick(getT2Trick() + 1);
 					return current;
 				}
 			}
-			current = nextPlayer(players.indexOf(current),dead);
+			current = nextPlayer(players.indexOf(current), dead);
 		}
 		return null;
 	}
