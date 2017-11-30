@@ -99,7 +99,7 @@ public class EuchrePanel extends JPanel {
 		while(!game.gameStatus())
 		{
 			gameStats();
-			game.shuffle(game.deck);
+			game.shuffle(game.getDeck());
 			tUp = game.deal();
 			setMiddle(tUp);
 			Suits t = pickTrump(tUp);

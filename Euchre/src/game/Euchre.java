@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
 
 /**********************************************************************
  * The Euchre class is our main class that controls the functionality of the
@@ -28,19 +27,19 @@ public class Euchre {
 	private Suits CLUB = Suits.Clubs;
 
 	/** A type to assign Team 1. */
-	private static Team TEAM1 = Team.Team1;
+	private Team TEAM1 = Team.Team1;
 
 	/** A type to assign Team 2. */
-	private static Team TEAM2 = Team.Team2;
+	private Team TEAM2 = Team.Team2;
 
 	/** A suit used to keep track of trump. */
-	public Suits trump;
+	private Suits trump;
 
 	/** An ArrayList of cards for the deck. */
-	public ArrayList<Card> deck = new ArrayList<Card>();
+	private ArrayList<Card> deck = new ArrayList<Card>();
 	
-	/** An ArrayList of players */
-	ArrayList<Player> players = new ArrayList<Player>();
+	/** An ArrayList of players. */
+	private ArrayList<Player> players = new ArrayList<Player>();
 
 	/** An integer to keep track of team 1's score. */
 	private static int t1Score;
@@ -57,26 +56,17 @@ public class Euchre {
 	/** A boolean used to see who goes alone. */
 	public boolean alone;
 
-	/** An integer to be used for the scanner. */
-	public int input;
-
-	/** A scanner used to read user input. */
-	private Scanner reader = new Scanner(System.in);
-
 	/** An integer to keep track of team 1's trick count. */
 	private static int t1Trick;
 
 	/** An integer to keep track of team 2's trick count. */
 	private static int t2Trick;
-
-	/** A character to read if the user calls yes or no. */
-	public char yorn;
-
-	/** A character to read what the user calls for trump. */
-	public char cSuit;
 	
-	/** An integer used to keep track of whos turn it is **/
-	public int sPlayer;
+	/** A Card object used to track the high card in scoring. */
+	private Card highCard;
+	
+	//TODO: Getter
+	private ArrayList<Card> play = new ArrayList<Card>();
 
 	/******************************************************************
 	 * A main method used to start the game after setting a few 
@@ -86,9 +76,8 @@ public class Euchre {
 	 * @param args
 	 *            An array of strings for arguments
 	 *****************************************************************/
-	//public static void main(String[] args) {
+
 	public Euchre() {
-		//Euchre game = new Euchre();
 		createDeck();
 		setT1Score(0);
 		setT2Score(0);
@@ -108,20 +97,30 @@ public class Euchre {
 		players.add(p2);
 		players.add(p3);
 		players.add(p4);
-
-
-//		shuffle(deck);
-//		deal();
 	}
 	
 	/******************************************************************
-	 * A method to return the players
+	 * A method to return the players.
 	 * 
 	 * @return returns an ArrayList of player objects (the players)
 	 *****************************************************************/
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
+	
+	public Suits getTrump() {
+		return trump;
+	}
+	
+	public ArrayList<Card> getPlay() {
+		return play;
+	}
+	
+	public ArrayList<Card> getDeck() {
+		return deck;
+	}
+	
+	
 
 	/******************************************************************
 	 * A helper method used to create the deck in main.
@@ -495,131 +494,6 @@ public class Euchre {
 		
 	}
 
-	/******************************************************************
-	 * A method that allows each player to play a card and handles the 
-	 * scoring for each team. This method is recursive to play the entire 
-	 * game.
-	 * 
-	 * @param pl1
-	 *            Player 1
-	 * @param pl2
-	 *            Player 2
-	 * @param pl3
-	 *            Player 3
-	 * @param pl4
-	 *            Player 4
-	 * @param t
-	 *            Trump
-	 *****************************************************************/
-//	public void playTrick(Player pl1, Player pl2, Player pl3, Player pl4, Suits t) {
-//
-//		Card highCard;
-//		ArrayList<Card> played = new ArrayList<Card>();
-//
-//		printHand(pl1.getHand());
-//		System.out.println("Play a Card: ");
-//		input = reader.nextInt();
-//		played.add(pl1.getCard(input));
-//		pl1.getHand().remove(input);
-//
-//		printHand(pl2.getHand());
-//		System.out.println("Play a Card: ");
-//		input = reader.nextInt();
-//		while (playable(played.get(0), pl2.getCard(input), pl2.getHand(), t)) {
-//			System.out.println("not a valid card");
-//			printHand(pl2.getHand());
-//			System.out.println("Play a Card: ");
-//			input = reader.nextInt();
-//		}
-//		played.add(pl2.getCard(input));
-//		pl2.getHand().remove(input);
-//
-//		printHand(pl3.getHand());
-//		System.out.println("Play a Card: ");
-//		input = reader.nextInt();
-//		while (playable(played.get(0), pl3.getCard(input), pl3.getHand(), t)) {
-//			System.out.println("not a valid card");
-//			printHand(pl3.getHand());
-//			System.out.println("Play a Card: ");
-//			input = reader.nextInt();
-//		}
-//		played.add(pl3.getCard(input));
-//		pl3.getHand().remove(input);
-//
-//		printHand(pl4.getHand());
-//		System.out.println("Play a Card: ");
-//		input = reader.nextInt();
-//		while (playable(played.get(0), pl4.getCard(input), pl4.getHand(), t)) {
-//			System.out.println("not a valid card");
-//			printHand(pl4.getHand());
-//			System.out.println("Play a Card: ");
-//			input = reader.nextInt();
-//		}
-//		played.add(pl4.getCard(input));
-//		pl4.getHand().remove(input);
-//
-//		highCard = takeTrick(played, t);
-//		if (highCard == played.get(0) || highCard == played.get(2)) {
-//			if (pl1.getTeam() == TEAM1 || pl3.getTeam() == TEAM1)
-//				setT1Trick(getT1Trick() + 1);
-//			else
-//				setT2Trick(getT2Trick() + 1);
-//		} else {
-//			if (pl2.getTeam() == TEAM1 || pl4.getTeam() == TEAM1)
-//				setT1Trick(getT1Trick() + 1);
-//			else
-//				setT2Trick(getT2Trick() + 1);
-//		}
-//		System.out.println("Team 1 Tricks: " + t1Trick);
-//		System.out.println("Team 2 Tricks: " + t2Trick);
-//		if (t1Trick + t2Trick < 5) {
-//			if (highCard == played.get(0))
-//				playTrick(pl1, pl2, pl3, pl4, t);
-//			else if (highCard == played.get(1))
-//				playTrick(pl2, pl3, pl4, pl1, t);
-//			else if (highCard == played.get(2))
-//				playTrick(pl3, pl4, pl1, pl2, t);
-//			else
-//				playTrick(pl4, pl1, pl2, pl3, t);
-//		}
-//
-//		if (t1CallSuit) {
-//			if (t1Trick >= 3 && t1Trick < 5)
-//				T1Point();
-//			else if (t1Trick == 5) {
-//				T1Point();
-//				T1Point();
-//			} else {
-//				T2Point();
-//				T2Point();
-//			}
-//		} else {
-//			if (t2Trick >= 3 && t2Trick < 5)
-//				T2Point();
-//			else if (t2Trick == 5) {
-//				T2Point();
-//				T2Point();
-//			} else {
-//				T1Point();
-//				T1Point();
-//			}
-//		}
-//		if (gameStatus()) {
-//			System.out.println("Would you like to play again? (y) or (n)");
-//			yorn = reader.next().charAt(0);
-//			if (yorn == 'y' || yorn == 'Y') {
-//				setT1Score(0);
-//				setT2Score(0);
-//				swapDealer();
-//				shuffle(deck);
-//			}
-//		} else {
-//			setT1Trick(0);
-//			setT2Trick(0);
-//			swapDealer();
-//			shuffle(deck);
-//		}
-//	}
 	public Player getDealer(){
 		if (players.get(0).isDealer()) {
 				return players.get(0);
@@ -657,24 +531,6 @@ public class Euchre {
 		}
 	}
 	
-	public void playHand(ArrayList<Player> players,int dead)
-	{
-		Player nPlayer = getFirstPlayer(dead);
-		while(t1Trick + t2Trick < 5) {
-			 playTrick(nPlayer.getHand());
-			 if(play.size()!=4 || !(play.size()==3 && alone)){
-				 	nPlayer = nextPlayer(players.indexOf(nPlayer),dead);
-				 	nPlayer = assignTrick(players, dead, nPlayer);
-				 	play.clear();
-				}
-			 else{
-				 nPlayer = nextPlayer(players.indexOf(nPlayer),dead);
-			 }
-		}
-		assignPoints();
-		gameStatus();
-	}
-	
 	public void assignPoints()
 	{
 		if (t1CallSuit) {
@@ -698,8 +554,8 @@ public class Euchre {
 				t1Point(2);
 			}
 		}
-		t1Trick = 0;
-		t2Trick = 0;
+		setT1Trick(0);
+		setT2Trick(0);
 	}
 	
 	public void setAlone(boolean b){
@@ -728,170 +584,35 @@ public class Euchre {
 		return null;
 	}
 	
-	Card highCard;
-	ArrayList<Card> play = new ArrayList<Card>();
-	
-	public void playTrick(ArrayList<Card> hand)
-	{
-		printHand(hand);
-		System.out.println("Play a Card: ");
-		input = reader.nextInt();
-		while (playable(play.get(0), hand.get(input), hand)) {
-			System.out.println("not a valid card");
-			printHand(hand);
-			System.out.println("Play a Card: ");
-			input = reader.nextInt();
-		}
-		play.add(hand.get(input));
-		hand.remove(input);
-	}
-
-	/******************************************************************
-	 * A method that allows each player to play a card when a player 
-	 * goes alone and handles the scoring for each team. This method is 
-	 * recursive to play the entire game. This method is used when a 
-	 * player chooses to play alone.
-	 * 
-	 * @param pl1
-	 *            Player 1
-	 * @param pl2
-	 *            Player 2
-	 * @param pl3
-	 *            Player 3
-	 * @param t
-	 *            Trump
-	 *****************************************************************/	
-//	public void playTrick(Player pl1, Player pl2, Player pl3, Suits t) {
-//
-//		Card highCard;
-//		ArrayList<Card> play = new ArrayList<Card>();
-//
-//		printHand(pl1.getHand());
-//		System.out.println("Play a Card: ");
-//		input = reader.nextInt();
-//		play.add(pl1.getCard(input));
-//		pl1.getHand().remove(input);
-//
-//		printHand(pl2.getHand());
-//		System.out.println("Play a Card: ");
-//		input = reader.nextInt();
-//		while (playable(play.get(0), pl2.getCard(input), pl2.getHand(), t)) {
-//			System.out.println("not a valid card");
-//			printHand(pl2.getHand());
-//			System.out.println("Play a Card: ");
-//			input = reader.nextInt();
-//		}
-//		play.add(pl2.getCard(input));
-//		pl2.getHand().remove(input);
-//
-//		printHand(pl3.getHand());
-//		System.out.println("Play a Card: ");
-//		input = reader.nextInt();
-//		while (playable(play.get(0), pl3.getCard(input), pl3.getHand(), t)) {
-//			System.out.println("not a valid card");
-//			printHand(pl3.getHand());
-//			System.out.println("Play a Card: ");
-//			input = reader.nextInt();
-//		}
-//		play.add(pl3.getCard(input));
-//		pl3.getHand().remove(input);
-//
-//		highCard = takeTrick(play, t);
-//		if (highCard == play.get(0)) {
-//			if (pl1.getTeam() == TEAM1)
-//				setT1Trick(getT1Trick() + 1);
-//			else
-//				setT2Trick(getT2Trick() + 1);
-//		} else if (highCard == play.get(1)) {
-//			if (pl2.getTeam() == TEAM1)
-//				setT1Trick(getT1Trick() + 1);
-//			else
-//				setT2Trick(getT2Trick() + 1);
-//		} else {
-//			if (pl3.getTeam() == TEAM1)
-//				setT1Trick(getT1Trick() + 1);
-//			else
-//				setT2Trick(getT2Trick() + 1);
-//		}
-//		System.out.println("Team 1 Tricks: " + t1Trick);
-//		System.out.println("Team 2 Tricks: " + t2Trick);
-//		if (t1Trick + t2Trick < 5) {
-//			if (highCard == play.get(0))
-//				playTrick(pl1, pl2, pl3, t);
-//			else if (highCard == play.get(1))
-//				playTrick(pl2, pl3, pl1, t);
-//			else
-//				playTrick(pl3, pl1, pl2, t);
-//		}
-//
-//		if (t1CallSuit) {
-//			if (t1Trick >= 3 && t1Trick < 5)
-//				T1Point();
-//			else if (t1Trick == 5) {
-//				T1Point();
-//				T1Point();
-//				T1Point();
-//				T1Point();
-//			} else {
-//				T2Point();
-//				T2Point();
-//			}
-//		} else {
-//			if (t2Trick >= 3 && t2Trick < 5)
-//				T2Point();
-//			else if (t2Trick == 5) {
-//				T2Point();
-//				T2Point();
-//				T2Point();
-//				T2Point();
-//			} else {
-//				T1Point();
-//				T1Point();
-//			}
-//		}
-//		if (gameStatus()) {
-//			System.out.println("Would you like to play again? (y) or (n)");
-//			yorn = reader.next().charAt(0);
-//			if (yorn == 'y' || yorn == 'Y') {
-//				setT1Score(0);
-//				setT2Score(0);
-//				swapDealer();
-//				shuffle(deck);
-//			}
-//		} else {
-//			setT1Trick(0);
-//			setT2Trick(0);
-//			swapDealer();
-//			shuffle(deck);
-//		}
-//	}
 	
 	/******************************************************************
 	 * A method that returns next player.
 	 * 
 	 * @param current 
 	 * 			  The current player index 
+	 * @param dPlayer
+	 * 			  The player not playing if alone.
 	 * @return player
 	 * 			  Returns the next player
 	 *****************************************************************/
 	public Player nextPlayer(int current, int dPlayer) {
 		if (current == 0) 
-			if(dPlayer != 1)
+			if (dPlayer != 1)
 				return players.get(1);
 			else 
 				return players.get(2);
 		else if (current == 1) 
-			if(dPlayer != 2)
+			if (dPlayer != 2)
 				return players.get(2);
 			else
 				return players.get(3);
 		else if (current == 2) 
-			if(dPlayer !=3)
+			if (dPlayer != 3)
 				return players.get(3);
 			else
 				return players.get(0);
 		else
-			if(dPlayer != 0)
+			if (dPlayer != 0)
 				return players.get(0);
 			else
 				return players.get(1);
@@ -920,22 +641,5 @@ public class Euchre {
 		System.out.println("\nThe card turned up is: " + c);
 	}
 
-	/******************************************************************
-	 * A method that asks which card the player will remove from their 
-	 * hand to pickup the new card.
-	 * 
-	 * @param p
-	 *            the player that is picking up a card
-	 * @param c
-	 *            the card the player is picking up
-	 *****************************************************************/
-	public void pickUp(Player p, Card c) {
-		System.out.println("Pick a card to replace: ");
-		printHand(p.getHand());
-		input = reader.nextInt();
-		p.getHand().remove(input);
-		p.getHand().add(c);
-		p.setHand(organizeHand(p.getHand()));
-	}
 
 }
