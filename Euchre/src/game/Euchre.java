@@ -443,6 +443,7 @@ public class Euchre {
 			players.get(0).setCard(this.deck.get(cardCount));
 			cardCount++;
 		}
+		
 		turnUp = deck.get(cardCount);
 		players.get(0).setHand(organizeHand(players.get(0).getHand()));
 		players.get(1).setHand(organizeHand(players.get(1).getHand()));
@@ -619,7 +620,17 @@ public class Euchre {
 //			shuffle(deck);
 //		}
 //	}
-	
+	public Player getDealer(){
+		if (players.get(0).isDealer()) {
+				return players.get(0);
+		} else if (players.get(1).isDealer()) {
+				return players.get(1);
+		} else if (players.get(2).isDealer()) {
+				return players.get(2);
+		} else {
+				return players.get(3);
+		}
+	}
 	
 	public Player getFirstPlayer(int dPlayer)
 	{
@@ -689,6 +700,10 @@ public class Euchre {
 		}
 		t1Trick = 0;
 		t2Trick = 0;
+	}
+	
+	public void setAlone(boolean b){
+		alone = b;
 	}
 	
 	public Player assignTrick(ArrayList<Player> players, int dead, Player current)
