@@ -22,8 +22,6 @@ public class Card {
 	/******************************************************************
 	 * A default constructor that sets card name to -1 and the suit to
 	 * null.
-	 * 
-	 *
 	 *****************************************************************/
 	public Card() {
 		cardName = -1;

@@ -27,6 +27,7 @@ public class EuchrePanel extends JPanel {
 	public int aloneCount = 0;
 	public boolean pickup = false;
 	public Card tUp;
+	Card c = new Card();
 	public Card back;
 
 	public JFrame frame;
@@ -52,9 +53,12 @@ public class EuchrePanel extends JPanel {
 		frame.setSize(800, 800);
 		frame.setLayout(null);
 		frame.setVisible(true);
-
+		
+		//game.setT1Score(9);
+		//game.setT2Score(9);
+		
 		playGame(game);
-		displayHand(players.get(1).getHand());
+		// displayHand(players.get(1).getHand());
 		// setMiddle(players.get(0).getHand().get(0));
 
 	}
@@ -88,18 +92,20 @@ public class EuchrePanel extends JPanel {
 		frame.repaint();
 	}
 
-	public void removeHand() {
-		for (int i = 0; i < hand.size(); i++) {
-			frame.remove(hand.get(i));
-		}
-		frame.revalidate();
-		frame.repaint();
-	}
+//	public void removeHand() {
+//		for (int i = 0; i < hand.size(); i++) {
+//			frame.remove(hand.get(i));
+//		}
+//		frame.revalidate();
+//		frame.repaint();
+//	}
 
 	public void playGame(Euchre game) {
+		gameStats();
 		while (!game.gameStatus()) {
-			gameStats();
-			game.shuffle(game.deck);
+			game.setAlone(false);
+			aloneCount = 5;
+			game.shuffle(game.getDeck());
 			tUp = game.deal();
 			setDeck(tUp);
 			Suits t = pickTrump(tUp);
@@ -108,22 +114,51 @@ public class EuchrePanel extends JPanel {
 			playHand(aloneCount, game);
 			game.assignPoints();
 			game.gameStatus();
-			handStats();
 			gameStats();
+			handStats();
 		}
+		if(playAgain())
+		{
+			game.setT1Score(0);
+			game.setT2Score(0);
+			playGame(game);
+		}
+		else
+			 System.exit(0);
+		
 	}
 
-	// public void playHand(int dead, Euchre game)
+	public boolean playAgain()
+	{
+		int n;
+		Object[] options = { "Play again", "Close" };
+		if(game.getT1Score()>=10)
+		{
+			n = JOptionPane.showOptionDialog(frame, "Would you like to play again?", "Team 1 Wins!", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		}
+		else
+		{
+			n = JOptionPane.showOptionDialog(frame, "Would you like to play again?", "Team 2 Wins!", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		}
+		if(n==0)
+			return true;
+		else
+			return false;
+	}
+		
+		// public void playHand(int dead, Euchre game)
 	// {
 	// Player nPlayer = game.getFirstPlayer(dead);
 	// while(game.getT1Trick() + game.getT2Trick() < 5) {
 	// displayHand(nPlayer.getHand());
 	// //NEED TO WAIT FOR BUTTON PRESS HERE
 	// game.playTrick(nPlayer.getHand());
-	// if(game.play.size()==4 || !(game.play.size()==3 && game.alone)){
+	// if(game.getPlay().size()==4 || !(game.getPlay().size()==3 && game.alone)){
 	// nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
 	// nPlayer = game.assignTrick(players, dead, nPlayer);
-	// game.play.clear();
+	// game.getPlay().clear();
 	// }
 	// else{
 	// nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
@@ -142,17 +177,17 @@ public class EuchrePanel extends JPanel {
 	// }
 
 	private void printPlayed() {
-		if (game.play.size() == 1) {
-			setLeft(game.play.get(0));
-		} else if (game.play.size() == 2) {
-			setMiddle(game.play.get(1));
-		} else if (game.play.size() == 3) {
-			setRight(game.play.get(2));
-		} else if (game.play.size() == 4) {
+		if (game.getPlay().size() == 1) {
+			setLeft(game.getPlay().get(0));
+		} else if (game.getPlay().size() == 2) {
+			setMiddle(game.getPlay().get(1));
+		} else if (game.getPlay().size() == 4 || (game.getPlay().size() == 3 && game.alone() == true)) {
 			Card c = new Card();
 			setLeft(c);
 			setMiddle(c);
 			setRight(c);
+		} else if (game.getPlay().size() == 3) {
+			setRight(game.getPlay().get(2));
 		}
 	}
 
@@ -166,8 +201,8 @@ public class EuchrePanel extends JPanel {
 	}
 
 	private void handStats() {
-		hStats.setText("<html>Trump: " + game.trump + "<br>T1 Tricks: " + game.getT1Trick() + "<br>T2 Tricks: "
-				+ game.getT2Trick() + "<br>Current Player: " + nPlayer.getTeam() + "</html>");
+		hStats.setText("<html>Trump: " + game.getTrump() + "<br>T1 Tricks: " + game.getT1Trick() + "<br>T2 Tricks: "
+				+ game.getT2Trick() + "<br>Current Player: " + players.indexOf(nPlayer) + "<br>Current Team: " + nPlayer.getTeam() + "</html>"  );
 		hStats.setBounds(500, 75, 145, 100);
 		hStats.setBorder(BorderFactory.createLineBorder(Color.black));
 		frame.add(hStats);
@@ -269,16 +304,18 @@ public class EuchrePanel extends JPanel {
 		int count = 0;
 		nPlayer = game.getFirstPlayer(aloneCount);
 		while (n == 1 && count < 4) {
-			// USE NPLAYER NOT COUNT
-			// -------------------------------------------------------------------------------------------------------------------------
+			// USE NPLAYER NOT COUNT -------------------------------------------------------------------------------------------------------------------------
 			displayHand(nPlayer.getHand());
+			handStats();
 			n = JOptionPane.showOptionDialog(frame, "Want to call it up?", "Call Trump", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			if (n == 0) {
 				pickup = true;
 			} else
+			{
 				count++;
-			nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
+				nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
+			}
 		}
 		
 		ImageIcon backCard = new ImageIcon("cards/" + "yugioh.png");
@@ -287,9 +324,11 @@ public class EuchrePanel extends JPanel {
 
 		if (count > 3) {
 			count = 0;
+			setMiddle(c);
 			n = 3;
 			while (n == 3 && count < 4) {
-				displayHand(players.get(count).getHand());
+				displayHand(nPlayer.getHand());
+				handStats();
 				if (count == 3) {
 					n = JOptionPane.showOptionDialog(frame, "Pick a suit?", "Call Trump", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null, last, last[0]);
@@ -299,8 +338,12 @@ public class EuchrePanel extends JPanel {
 				n = JOptionPane.showOptionDialog(frame, "Pick a suit?", "Call Trump", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, second, second[0]);
 				count++;
+				if(n==3)
+				{
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
+				}
 			}
-			aloneCount = goAlone(count);
+			aloneCount = goAlone(players.indexOf(nPlayer));
 			String suit = second[n].toString();
 			if (suit.equals("Hearts"))
 				return Suits.Hearts;
@@ -312,12 +355,13 @@ public class EuchrePanel extends JPanel {
 				return Suits.Spades;
 
 		}
-		aloneCount = goAlone(count);
+		aloneCount = goAlone(players.indexOf(nPlayer));
 		return top.getSuit();
 
 	}
 
 	public int goAlone(int count) {
+
 		displayHand(players.get(count).getHand());
 		Object[] options = { "Go alone!", "No thanks!" };
 		int n = JOptionPane.showOptionDialog(frame, "Would you like to go alone?", "Go Alone?",
@@ -332,31 +376,32 @@ public class EuchrePanel extends JPanel {
 	}
 
 	public void playHand(int dead, Euchre game) {
-		nPlayer = game.getFirstPlayer(dead);
 		while (pickup) {
 			nPlayer = game.getDealer();
 			displayHand(nPlayer.getHand());
 			handStats();
 		}
+		nPlayer = game.getFirstPlayer(dead);
 		while (game.getT1Trick() + game.getT2Trick() < 5) {
 			handStats();
 			displayHand(nPlayer.getHand());
 			// NEED TO WAIT FOR BUTTON PRESS HERE
-			if (game.play.size() == 4 || (game.play.size() == 3 && game.alone)) {
+			if (game.getPlay().size() == 4 || (game.getPlay().size() == 3 && game.alone())) {
 				nPlayer = game.assignTrick(players, dead, nPlayer);
-				game.play.clear();
+				game.getPlay().clear();
+				printPlayed();
 			}
 		}
 	}
 
 	public void playCard(int i) {
 		// setCheck(nPlayer.getCard(i));
-		if (game.play.size() == 0) {
-			game.play.add(nPlayer.getCard(i));
+		if (game.getPlay().size() == 0) {
+			game.getPlay().add(nPlayer.getCard(i));
 			nPlayer.getHand().remove(i);
 			nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
-		} else if (game.playable(game.play.get(0), nPlayer.getCard(i), nPlayer.getHand())) {
-			game.play.add(nPlayer.getCard(i));
+		} else if (game.playable(game.getPlay().get(0), nPlayer.getCard(i), nPlayer.getHand())) {
+			game.getPlay().add(nPlayer.getCard(i));
 			nPlayer.getHand().remove(i);
 			nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
 		}
@@ -367,6 +412,7 @@ public class EuchrePanel extends JPanel {
 		nPlayer.getHand().set(i, tUp);
 		nPlayer = game.getFirstPlayer(aloneCount);
 		pickup = false;
+		setMiddle(c);
 	}
 
 	private class ButtonListener implements ActionListener, MouseListener {

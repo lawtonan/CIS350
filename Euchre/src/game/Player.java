@@ -15,13 +15,13 @@ import java.util.ArrayList;
 public class Player {
 	
 	/** An array of Cards that designates the hand. */
-	public ArrayList<Card> hand = new ArrayList<Card>();
+	private ArrayList<Card> hand = new ArrayList<Card>();
 	
 	/** A enumerated type to hold which team the player belongs. */
-	public Team team;
+	private Team team;
 	
 	/** A boolean to determine if the player is the dealer. */
-	public boolean dealer;
+	private boolean dealer;
 	
 	/******************************************************************
 	 * A Constructor that sets the players team and hand, while setting
