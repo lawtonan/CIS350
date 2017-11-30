@@ -13,7 +13,7 @@ public class EuchrePanel extends JPanel {
 	Euchre game;
 	Player nPlayer;
 	private static final long serialVersionUID = 1L;
-	public ArrayList<JButton> hand = new ArrayList<JButton>();
+	//public ArrayList<JButton> hand = new ArrayList<JButton>();
 	public ArrayList<JButton> images = new ArrayList<JButton>();
 	public ArrayList<Player> players;
 	private ButtonListener actionL = new ButtonListener();
@@ -43,8 +43,8 @@ public class EuchrePanel extends JPanel {
 
 		int i = 0;
 		while (i < 5) {
-			hand.add(new JButton());
-			hand.get(i).addActionListener(actionL);
+//			hand.add(new JButton());
+//			hand.get(i).addActionListener(actionL);
 			images.add(new JButton());
 			images.get(i).addActionListener(actionL);
 			i++;
@@ -66,25 +66,34 @@ public class EuchrePanel extends JPanel {
 	private void displayHand(ArrayList<Card> cards) {
 		// removeHand();
 		for (int i = 0; i < cards.size(); i++) {
-			hand.get(i).setText(cards.get(i).toString());
-			hand.get(i).setEnabled(true);
-			hand.get(i).setBounds(50 + (130 * i), 650, 100, 40);
+			//hand.get(i).setText(cards.get(i).toString());
+			//hand.get(i).setEnabled(true);
+			//hand.get(i).setBounds(50 + (130 * i), 650, 100, 40);
 
-			String s = hand.get(i).getText();
+			String s = cards.get(i).toString();
 			String t = s + ".png";
 
 			ImageIcon card = new ImageIcon("cards/" + t);
-			
+			images.get(i).setEnabled(true);
 			images.get(i).setIcon(card);
 					
 			images.get(i).setBounds(50 + (130 * i), 500, 100, 145);
 			frame.add(images.get(i));
 
-			frame.add(hand.get(i));
+			//frame.add(hand.get(i));
 		}
 		for (int j = 4; j >= cards.size(); j--) {
-			hand.get(j).setText("");
-			hand.get(j).setEnabled(false);	
+			//hand.get(j).setText("");
+			images.get(j).setEnabled(false);	
+			
+			ImageIcon card = new ImageIcon("");
+			
+			images.get(j).setIcon(card);
+					
+			images.get(j).setBounds(50 + (130 * j), 500, 100, 145);
+			frame.add(images.get(j));
+
+//			frame.add(hand.get(j));
 		}
 
 		frame.setVisible(true);
@@ -317,14 +326,11 @@ public class EuchrePanel extends JPanel {
 				nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
 			}
 		}
-		
-		ImageIcon backCard = new ImageIcon("cards/" + "yugioh.png");
-		deck.setIcon(backCard);
 	
 
 		if (count > 3) {
 			count = 0;
-			setMiddle(c);
+			//setMiddle(c);
 			n = 3;
 			while (n == 3 && count < 4) {
 				displayHand(nPlayer.getHand());
@@ -412,7 +418,8 @@ public class EuchrePanel extends JPanel {
 		nPlayer.getHand().set(i, tUp);
 		nPlayer = game.getFirstPlayer(aloneCount);
 		pickup = false;
-		setMiddle(c);
+		ImageIcon backCard = new ImageIcon("cards/" + "yugioh.png");
+		deck.setIcon(backCard);
 	}
 
 	private class ButtonListener implements ActionListener, MouseListener {
@@ -428,7 +435,7 @@ public class EuchrePanel extends JPanel {
 					pickUp(2);
 				} else if (images.get(3) == e.getSource()) {
 					pickUp(3);
-				} else if (hand.get(4) == e.getSource()) {
+				} else if (images.get(4) == e.getSource()) {
 					pickUp(4);
 				}
 			} else {
