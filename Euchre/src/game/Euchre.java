@@ -442,6 +442,9 @@ public class Euchre {
 	 * @return returns the card to be turned up
 	 *****************************************************************/
 	public Card deal() {
+		for (int j = 0; j < 4; j++) {
+			players.get(j).getHand().clear();
+		}
 		int cardCount = 0;
 		setT1Trick(0);
 		setT2Trick(0);
