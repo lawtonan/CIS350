@@ -26,6 +26,7 @@ public class EuchrePanel extends JPanel {
 	public int aloneCount = 0;
 	public boolean pickup = false;
 	public Card tUp;
+	Card c = new Card();
 	
 	public JFrame frame;
 
@@ -108,7 +109,7 @@ public class EuchrePanel extends JPanel {
 			game.assignPoints();
 			game.gameStatus();
 			handStats();
-			gameStats();
+			aloneCount = 5;
 		}
 	}
 
@@ -260,16 +261,17 @@ public class EuchrePanel extends JPanel {
 				pickup = true;				
 			}
 			else
+			{
 				count++;
-			nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
+				nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
+			}
 		}
-		Card c = new Card();
-		setMiddle(c);
 		if (count > 3) {
 			count = 0;
+			setMiddle(c);
 			n = 3;
 			while (n == 3 && count < 4) {
-				displayHand(players.get(count).getHand());
+				displayHand(nPlayer.getHand());
 				if (count == 3) {
 					n = JOptionPane.showOptionDialog(frame, "Pick a suit?", "Call Trump", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null, last, last[0]);
@@ -279,8 +281,12 @@ public class EuchrePanel extends JPanel {
 				n = JOptionPane.showOptionDialog(frame, "Pick a suit?", "Call Trump", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, second, second[0]);
 				count++;
+				if(n==3)
+				{
+					nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
+				}
 			}
-			aloneCount = goAlone(count);
+			aloneCount = goAlone(players.indexOf(nPlayer));
 			String suit = second[n].toString();
 			if (suit.equals("Hearts"))
 				return Suits.Hearts;
@@ -292,12 +298,13 @@ public class EuchrePanel extends JPanel {
 				return Suits.Spades;
 
 		}
-		aloneCount = goAlone(count);
+		aloneCount = goAlone(players.indexOf(nPlayer));
 		return top.getSuit();
 
 	}
 
 	public int goAlone(int count) {
+
 		displayHand(players.get(count).getHand());
 		Object[] options = { "Go alone!", "No thanks!" };
 		int n = JOptionPane.showOptionDialog(frame, "Would you like to go alone?", "Go Alone?",
@@ -349,6 +356,7 @@ public class EuchrePanel extends JPanel {
 		nPlayer.getHand().set(i, tUp);
 		nPlayer = game.getFirstPlayer(aloneCount);
 		pickup = false;
+		setMiddle(c);
 	}
 	
 	private class ButtonListener implements ActionListener, MouseListener {
