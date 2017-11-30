@@ -240,13 +240,7 @@ public class Euchre {
 	 * @return returns a boolean whether the game is complete
 	 *****************************************************************/
 	public boolean gameStatus() {
-		if (t1Score >= 10) {
-			return true;
-		} else if (t2Score >= 10) {
-			return true;
-		} else {
-			return false;
-		}
+		return ((t1Score >= 10) || (t2Score >= 10));
 	}
 
 	/******************************************************************
@@ -584,6 +578,7 @@ public class Euchre {
 		}
 		setT1Trick(0);
 		setT2Trick(0);
+		swapDealer();
 	}
 	
 	/******************************************************************
