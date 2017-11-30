@@ -51,7 +51,10 @@ public class EuchrePanel extends JPanel {
 		frame.setSize(800, 800);
 		frame.setLayout(null);
 		frame.setVisible(true);
-
+		
+		//game.setT1Score(9);
+		//game.setT2Score(9);
+		
 		playGame(game);
 		// displayHand(players.get(1).getHand());
 		// setMiddle(players.get(0).getHand().get(0));
@@ -96,9 +99,9 @@ public class EuchrePanel extends JPanel {
 //	}
 
 	public void playGame(Euchre game) {
+		gameStats();
 		while(!game.gameStatus())
 		{
-			gameStats();
 			game.setAlone(false);
 			aloneCount = 5;
 			game.shuffle(game.getDeck());
@@ -110,12 +113,41 @@ public class EuchrePanel extends JPanel {
 			playHand(aloneCount, game);
 			game.assignPoints();
 			game.gameStatus();
+			gameStats();
 			handStats();
-			
 		}
+		if(playAgain())
+		{
+			game.setT1Score(0);
+			game.setT2Score(0);
+			playGame(game);
+		}
+		else
+			 System.exit(0);
+		
 	}
 
-	// public void playHand(int dead, Euchre game)
+	public boolean playAgain()
+	{
+		int n;
+		Object[] options = { "Play again", "Close" };
+		if(game.getT1Score()>=10)
+		{
+			n = JOptionPane.showOptionDialog(frame, "Would you like to play again?", "Team 1 Wins!", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		}
+		else
+		{
+			n = JOptionPane.showOptionDialog(frame, "Would you like to play again?", "Team 2 Wins!", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		}
+		if(n==0)
+			return true;
+		else
+			return false;
+	}
+		
+		// public void playHand(int dead, Euchre game)
 	// {
 	// Player nPlayer = game.getFirstPlayer(dead);
 	// while(game.getT1Trick() + game.getT2Trick() < 5) {

@@ -42,10 +42,10 @@ public class Euchre {
 	private ArrayList<Player> players = new ArrayList<Player>();
 
 	/** An integer to keep track of team 1's score. */
-	private static int t1Score;
+	private int t1Score;
 
 	/** An integer to keep track of team 2's score. */
-	private static int t2Score;
+	private int t2Score;
 
 	/** A card used to keep track of the turn up. */
 	private Card turnUp;
@@ -191,7 +191,7 @@ public class Euchre {
 	 * @param t1
 	 *            a desired score
 	 *****************************************************************/
-	public static void setT1Score(int t1) {
+	public void setT1Score(int t1) {
 		t1Score = t1;
 	}
 
@@ -220,7 +220,7 @@ public class Euchre {
 	 * @param t2
 	 *            a desired score
 	 *****************************************************************/
-	public static void setT2Score(int t2) {
+	public void setT2Score(int t2) {
 		t2Score = t2;
 	}
 
