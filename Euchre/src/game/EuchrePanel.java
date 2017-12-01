@@ -330,7 +330,8 @@ public class EuchrePanel extends JPanel {
 
 		if (count > 3) {
 			count = 0;
-			//setMiddle(c);
+			ImageIcon backCard = new ImageIcon("cards/" + "yugioh.png");
+			deck.setIcon(backCard);
 			n = 3;
 			while (n == 3 && count < 4) {
 				displayHand(nPlayer.getHand());
@@ -361,6 +362,8 @@ public class EuchrePanel extends JPanel {
 				return Suits.Spades;
 
 		}
+		ImageIcon backCard = new ImageIcon("cards/" + "yugioh.png");
+		deck.setIcon(backCard);
 		aloneCount = goAlone(players.indexOf(nPlayer));
 		return top.getSuit();
 
