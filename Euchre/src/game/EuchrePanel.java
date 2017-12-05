@@ -3,112 +3,149 @@ package game;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
-import javax.swing.*;
 
+/**********************************************************************
+ * The EuchrePanel class controls our GUI for the Euchre game. It uses
+ * the Euchre class in order to play the game and add functionality where 
+ * needed.
+ * 
+ * @author Andrew Lawton
+ * @author Dan Schroeder
+ * @author Aron Ockerse
+ * @version 1.0
+ *********************************************************************/
 public class EuchrePanel extends JPanel {
-	Euchre game;
-	Player nPlayer;
+	/** The game object used to play the game. */
+	private Euchre game;
+	
+	/** A player object used to track the current player. */
+	private Player nPlayer;
+	
+	/** Added to shut up CheckStyle. */
 	private static final long serialVersionUID = 1L;
-	//public ArrayList<JButton> hand = new ArrayList<JButton>();
-	public ArrayList<JButton> images = new ArrayList<JButton>();
-	public ArrayList<Player> players;
+	
+	/** An ArrayList of JButtons used to manage the hand. */
+	private ArrayList<JButton> images = new ArrayList<JButton>();
+	
+	/** An ArrayList of the players paying the game. */
+	private ArrayList<Player> players;
+	
+	/** A ButtonListener used to recognize button presses. */
 	private ButtonListener actionL = new ButtonListener();
-	JLabel deck = new JLabel();
-	JLabel middle = new JLabel();
-	JLabel left = new JLabel();
-	JLabel right = new JLabel();
-	JLabel checkbut = new JLabel();
-	JLabel gStats = new JLabel();
-	JLabel hStats = new JLabel();
-	public int aloneCount = 0;
-	public boolean pickup = false;
-	public Card tUp;
-	Card c = new Card();
-	public Card back;
+	
+	/** A JLabel for the rest of the deck. */
+	private JLabel deck = new JLabel();
+	
+	/** A JLabel for the middle image. */
+	private JLabel middle = new JLabel();
+	
+	/** A JLabel for the left image. */
+	private JLabel left = new JLabel();
+	
+	/** A JLabel for the right image. */
+	private JLabel right = new JLabel();
+	
+	/** A JLabel used to display the game status. */
+	private JLabel gStats = new JLabel();
+	
+	/** A JLabel used to display the hand status. */
+	private JLabel hStats = new JLabel();
+	
+	/** The count of alone. */
+	private int aloneCount = 0;
+	
+	/** A boolean used to know if pickup was used. */
+	private boolean pickup = false;
+	
+	/** A card used to keep track of the turn up. */
+	private Card tUp;
+	
+	/** A JFrame for the game as a whole. */
+	private JFrame frame;
 
-	public JFrame frame;
-
+	/******************************************************************
+	 * A constructor for Euchre Panel. This is called by the EuchreGUI
+	 * class to set up the panel. We use a helper function to display 
+	 * the game called here.
+	 * 
+	 * @param f
+	 * 			A JFrame to display on.
+	 *****************************************************************/
 	public EuchrePanel(JFrame f) {
 		frame = f;
 		display();
 	}
 
+	/******************************************************************
+	 * A helper method used to set up the display. This instantiates
+	 * the values in the GUI and calls the playGame method in oder to
+	 * start the game logic.
+	 *****************************************************************/
 	private void display() {
 		game = new Euchre();
 		players = game.getPlayers();
-
 		int i = 0;
 		while (i < 5) {
-//			hand.add(new JButton());
-//			hand.get(i).addActionListener(actionL);
 			images.add(new JButton());
 			images.get(i).addActionListener(actionL);
 			i++;
 		}
-
 		frame.setSize(800, 800);
 		frame.setLayout(null);
-		frame.setVisible(true);
+		frame.setVisible(true);	
 		
 		//game.setT1Score(9);
 		//game.setT2Score(9);
 		
 		playGame(game);
-		// displayHand(players.get(1).getHand());
-		// setMiddle(players.get(0).getHand().get(0));
-
 	}
 
+	/******************************************************************
+	 * A method used to display the hand. Looks at the cards and assigns
+	 * images to them based on their card name.
+	 * 
+	 * @param cards
+	 * 			The hand to display
+	 *****************************************************************/
 	private void displayHand(ArrayList<Card> cards) {
-		// removeHand();
 		for (int i = 0; i < cards.size(); i++) {
-			//hand.get(i).setText(cards.get(i).toString());
-			//hand.get(i).setEnabled(true);
-			//hand.get(i).setBounds(50 + (130 * i), 650, 100, 40);
-
 			String s = cards.get(i).toString();
 			String t = s + ".png";
-
 			ImageIcon card = new ImageIcon("cards/" + t);
 			images.get(i).setEnabled(true);
-			images.get(i).setIcon(card);
-					
+			images.get(i).setIcon(card);					
 			images.get(i).setBounds(50 + (130 * i), 500, 100, 145);
 			frame.add(images.get(i));
-
-			//frame.add(hand.get(i));
 		}
 		for (int j = 4; j >= cards.size(); j--) {
-			//hand.get(j).setText("");
 			images.get(j).setEnabled(false);	
-			
 			ImageIcon card = new ImageIcon("");
-			
-			images.get(j).setIcon(card);
-					
+			images.get(j).setIcon(card);		
 			images.get(j).setBounds(50 + (130 * j), 500, 100, 145);
 			frame.add(images.get(j));
-
-//			frame.add(hand.get(j));
 		}
-
 		frame.setVisible(true);
 		frame.revalidate();
 		frame.repaint();
 	}
 
-//	public void removeHand() {
-//		for (int i = 0; i < hand.size(); i++) {
-//			frame.remove(hand.get(i));
-//		}
-//		frame.revalidate();
-//		frame.repaint();
-//	}
-
+	/******************************************************************
+	 * The playGame method. This method is used to play the game. It 
+	 * calls all of the logic necessary for the game to play out in a 
+	 * loop to get to the end of the game.
+	 * 
+	 * @param game
+	 * 			The game being played.
+	 *****************************************************************/
 	public void playGame(Euchre game) {
 		gameStats();
 		while (!game.gameStatus()) {
@@ -119,78 +156,46 @@ public class EuchrePanel extends JPanel {
 			setDeck(tUp);
 			Suits t = pickTrump(tUp);
 			game.setTrump(t);
-			// System.out.println(t);
 			playHand(aloneCount, game);
 			game.assignPoints();
-			game.gameStatus();
 			gameStats();
 			handStats();
 		}
-		if(playAgain())
-		{
+		if (playAgain()) {
 			game.setT1Score(0);
 			game.setT2Score(0);
 			playGame(game);
-		}
-		else
+		} else
 			 System.exit(0);
-		
 	}
 
-	public boolean playAgain()
-	{
+	/******************************************************************
+	 * A helper method to check if the player would like to play again.
+	 * 
+	 * @return returns a boolean on what the player chose
+	 *****************************************************************/
+	public boolean playAgain() {
 		int n;
-		Object[] options = { "Play again", "Close" };
-		if(game.getT1Score()>=10)
-		{
+		Object[] options = {"Play again", "Close" };
+		if (game.getT1Score() >= 10) {
 			n = JOptionPane.showOptionDialog(frame, "Would you like to play again?", "Team 1 Wins!", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-		}
-		else
-		{
+		} else {
 			n = JOptionPane.showOptionDialog(frame, "Would you like to play again?", "Team 2 Wins!", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		}
-		if(n==0)
-			return true;
-		else
-			return false;
+		return n == 0;
 	}
-		
-		// public void playHand(int dead, Euchre game)
-	// {
-	// Player nPlayer = game.getFirstPlayer(dead);
-	// while(game.getT1Trick() + game.getT2Trick() < 5) {
-	// displayHand(nPlayer.getHand());
-	// //NEED TO WAIT FOR BUTTON PRESS HERE
-	// game.playTrick(nPlayer.getHand());
-	// if(game.getPlay().size()==4 || !(game.getPlay().size()==3 && game.alone)){
-	// nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
-	// nPlayer = game.assignTrick(players, dead, nPlayer);
-	// game.getPlay().clear();
-	// }
-	// else{
-	// nPlayer = game.nextPlayer(players.indexOf(nPlayer),dead);
-	// }
-	// }
-	// game.assignPoints();
-	// game.gameStatus();
-	// }
-	// private void setCheck(Card card) {
-	// checkbut.setText(card.toString());
-	// checkbut.setBounds(320, 100, 145, 40);
-	// checkbut.setBorder(BorderFactory.createLineBorder(Color.black));
-	// frame.add(checkbut);
-	// frame.revalidate();
-	// frame.repaint();
-	// }
 
+	/******************************************************************
+	 * A method used to display the cards being played.
+	 *****************************************************************/
 	private void printPlayed() {
 		if (game.getPlay().size() == 1) {
 			setLeft(game.getPlay().get(0));
 		} else if (game.getPlay().size() == 2) {
 			setMiddle(game.getPlay().get(1));
-		} else if (game.getPlay().size() == 4 || (game.getPlay().size() == 3 && game.alone() == true)) {
+		} else if (game.getPlay().size() == 4 || (game.getPlay().size() == 3 && game.alone())) {
 			Card c = new Card();
 			setLeft(c);
 			setMiddle(c);
@@ -200,6 +205,9 @@ public class EuchrePanel extends JPanel {
 		}
 	}
 
+	/******************************************************************
+	 * A method used to display the game statistics.
+	 *****************************************************************/
 	private void gameStats() {
 		gStats.setText("<html>T1 Score: " + game.getT1Score() + "<br>T2 Score: " + game.getT2Score() + "</html>");
 		gStats.setBounds(100, 75, 145, 50);
@@ -209,9 +217,12 @@ public class EuchrePanel extends JPanel {
 		frame.repaint();
 	}
 
+	/******************************************************************
+	 * A method used to display the hand statistics.
+	 *****************************************************************/
 	private void handStats() {
 		hStats.setText("<html>Trump: " + game.getTrump() + "<br>T1 Tricks: " + game.getT1Trick() + "<br>T2 Tricks: "
-				+ game.getT2Trick() + "<br>Current Player: " + players.indexOf(nPlayer) + "<br>Current Team: " + nPlayer.getTeam() + "</html>"  );
+				+ game.getT2Trick() + "<br>Current Player: " + players.indexOf(nPlayer) + "<br>Current Team: " + nPlayer.getTeam() + "</html>");
 		hStats.setBounds(500, 75, 145, 100);
 		hStats.setBorder(BorderFactory.createLineBorder(Color.black));
 		frame.add(hStats);
@@ -219,6 +230,12 @@ public class EuchrePanel extends JPanel {
 		frame.repaint();
 	}
 
+	/******************************************************************
+	 * A method used to display the deck position in the GUI.
+	 * 
+	 * @param card
+	 * 				the card being set to the position.
+	 *****************************************************************/
 	private void setDeck(Card card) {
 		ImageIcon d = new ImageIcon("cards/" + card.toString()  + ".png");
 		deck.setIcon(d);
@@ -230,6 +247,12 @@ public class EuchrePanel extends JPanel {
 		frame.repaint();
 	}
 
+	/******************************************************************
+	 * A method used to display the middle position in the GUI.
+	 * 
+	 * @param card
+	 * 				the card being set to the position.
+	 *****************************************************************/
 	private void setMiddle(Card card) {
 		ImageIcon m = new ImageIcon("cards/" + card.toString() + ".png");
 		middle.setIcon(m);
@@ -241,6 +264,12 @@ public class EuchrePanel extends JPanel {
 		frame.repaint();
 	}
 
+	/******************************************************************
+	 * A method used to display the left position in the GUI.
+	 * 
+	 * @param card
+	 * 				the card being set to the position.
+	 *****************************************************************/
 	private void setLeft(Card card) {
 		ImageIcon l = new ImageIcon("cards/" + card.toString() + ".png");
 		left.setIcon(l);
@@ -252,6 +281,12 @@ public class EuchrePanel extends JPanel {
 		frame.repaint();
 	}
 
+	/******************************************************************
+	 * A method used to display the right position in the GUI.
+	 * 
+	 * @param card
+	 * 				the card being set to the position.
+	 *****************************************************************/
 	private void setRight(Card card) {
 		ImageIcon r = new ImageIcon("cards/" + card.toString() + ".png");
 		right.setIcon(r);
@@ -263,11 +298,18 @@ public class EuchrePanel extends JPanel {
 		frame.repaint();
 	}
 
+	/******************************************************************
+	 * A method used go through the trump logic and set trump to what
+	 * is called by the player.
+	 * 
+	 * @param top
+	 * 				this is the card that was turned up
+	 * @return returns the suit that was picked.
+	 *****************************************************************/
 	public Suits pickTrump(Card top) {
-		Object[] options = { "Pick it up!", "Pass" };
+		Object[] options = {"Pick it up!", "Pass" };
 		Object[] second = new Object[4];
 		Object[] last = new Object[3];
-
 		if (top.getSuit() == Suits.Hearts) {
 			second[0] = "Clubs";
 			second[1] = "Diamonds";
@@ -276,9 +318,7 @@ public class EuchrePanel extends JPanel {
 			last[0] = "Clubs";
 			last[1] = "Diamonds";
 			last[2] = "Spades";
-
 		}
-
 		if (top.getSuit() == Suits.Clubs) {
 			second[0] = "Hearts";
 			second[1] = "Diamonds";
@@ -288,7 +328,6 @@ public class EuchrePanel extends JPanel {
 			last[1] = "Diamonds";
 			last[2] = "Spades";
 		}
-
 		if (top.getSuit() == Suits.Diamonds) {
 			second[0] = "Hearts";
 			second[1] = "Clubs";
@@ -298,7 +337,6 @@ public class EuchrePanel extends JPanel {
 			last[1] = "Clubs";
 			last[2] = "Spades";
 		}
-
 		if (top.getSuit() == Suits.Spades) {
 			second[0] = "Hearts";
 			second[1] = "Clubs";
@@ -308,26 +346,21 @@ public class EuchrePanel extends JPanel {
 			last[1] = "Clubs";
 			last[2] = "Diamonds";
 		}
-
 		int n = 1;
 		int count = 0;
 		nPlayer = game.getFirstPlayer(aloneCount);
 		while (n == 1 && count < 4) {
-			// USE NPLAYER NOT COUNT -------------------------------------------------------------------------------------------------------------------------
 			displayHand(nPlayer.getHand());
 			handStats();
 			n = JOptionPane.showOptionDialog(frame, "Want to call it up?", "Call Trump", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			if (n == 0) {
 				pickup = true;
-			} else
-			{
+			} else {
 				count++;
 				nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
 			}
 		}
-	
-
 		if (count > 3) {
 			count = 0;
 			ImageIcon backCard = new ImageIcon("cards/" + "yugioh.png");
@@ -345,8 +378,7 @@ public class EuchrePanel extends JPanel {
 				n = JOptionPane.showOptionDialog(frame, "Pick a suit?", "Call Trump", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, second, second[0]);
 				count++;
-				if(n==3)
-				{
+				if (n == 3) {
 					nPlayer = game.nextPlayer(players.indexOf(nPlayer), aloneCount);
 				}
 			}
@@ -360,19 +392,23 @@ public class EuchrePanel extends JPanel {
 				return Suits.Diamonds;
 			if (suit.equals("Spades"))
 				return Suits.Spades;
-
 		}
 		ImageIcon backCard = new ImageIcon("cards/" + "yugioh.png");
 		deck.setIcon(backCard);
 		aloneCount = goAlone(players.indexOf(nPlayer));
 		return top.getSuit();
-
 	}
 
+	/******************************************************************
+	 * A method used to manage if the player wishes to go alone.
+	 * 
+	 * @param count
+	 * 				the count of the player
+	 * @return returns a value to evaluate in play game.
+	 *****************************************************************/
 	public int goAlone(int count) {
-
 		displayHand(players.get(count).getHand());
-		Object[] options = { "Go alone!", "No thanks!" };
+		Object[] options = {"Go alone!", "No thanks!"};
 		int n = JOptionPane.showOptionDialog(frame, "Would you like to go alone?", "Go Alone?",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n == 0) {
@@ -384,6 +420,15 @@ public class EuchrePanel extends JPanel {
 		}
 	}
 
+	/******************************************************************
+	 * A method used to play a hand via GUI terms. It updates the GUI
+	 * as the hand is played.
+	 * 
+	 * @param dead
+	 * 				used to determine the first player.
+	 * @param game 
+	 * 				the game being played.
+	 *****************************************************************/
 	public void playHand(int dead, Euchre game) {
 		while (pickup) {
 			nPlayer = game.getDealer();
@@ -394,7 +439,6 @@ public class EuchrePanel extends JPanel {
 		while (game.getT1Trick() + game.getT2Trick() < 5) {
 			handStats();
 			displayHand(nPlayer.getHand());
-			// NEED TO WAIT FOR BUTTON PRESS HERE
 			if (game.getPlay().size() == 4 || (game.getPlay().size() == 3 && game.alone())) {
 				nPlayer = game.assignTrick(players, dead, nPlayer);
 				game.getPlay().clear();
@@ -403,6 +447,13 @@ public class EuchrePanel extends JPanel {
 		}
 	}
 
+	/******************************************************************
+	 * A method used to play a hand via GUI terms. It updates the GUI
+	 * as the hand is played.
+	 * 
+	 * @param i
+	 * 			the card count
+	 *****************************************************************/
 	public void playCard(int i) {
 		// setCheck(nPlayer.getCard(i));
 		if (game.getPlay().size() == 0) {
@@ -417,6 +468,13 @@ public class EuchrePanel extends JPanel {
 		printPlayed();
 	}
 
+	/******************************************************************
+	 * A method for pickup to update the players hand as well as update
+	 * the GUI when you pick up a card.
+	 * 
+	 * @param i
+	 * 			the card count
+	 *****************************************************************/
 	public void pickUp(int i) {
 		nPlayer.getHand().set(i, tUp);
 		nPlayer = game.getFirstPlayer(aloneCount);
@@ -425,8 +483,24 @@ public class EuchrePanel extends JPanel {
 		deck.setIcon(backCard);
 	}
 
-	private class ButtonListener implements ActionListener, MouseListener {
+/**********************************************************************
+ * A button listener class that is implemented for button listening
+ * capabilities.
+ * 
+ * @author Andrew Lawton
+ * @author Dan Schroeder
+ * @author Aron Ockerse
+ * @version 1.0
+*********************************************************************/	
+	private class ButtonListener implements ActionListener {
 
+		/******************************************************************
+		 * An action performed method that takes an input from a button
+		 * and performs a certain action based on the event.
+		 * 
+		 * @param e
+		 * 			the ActionEvent for each button
+		 *****************************************************************/
 		public void actionPerformed(ActionEvent e) {
 			if (pickup) {
 				displayHand(game.getDealer().getHand());
@@ -460,55 +534,5 @@ public class EuchrePanel extends JPanel {
 				}
 			}
 		}
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-		}
-
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-		}
-
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent r) { // Right Mouse Button
-
-		}
 	}
-	// private class ButtonListener implements ActionListener, MouseListener {
-	//
-	// public void actionPerformed(ActionEvent e) {
-	// if (hand.get(0) == e.getSource()) {
-	//
-	// }
-	// }
-	//
-	// @Override
-	// public void mouseClicked(MouseEvent e) {
-	// }
-	//
-	// @Override
-	// public void mouseEntered(MouseEvent arg0) {
-	// }
-	//
-	// @Override
-	// public void mouseExited(MouseEvent arg0) {
-	// }
-	//
-	// @Override
-	// public void mousePressed(MouseEvent arg0) {
-	// }
-	//
-	// @Override
-	// public void mouseReleased(MouseEvent r) { //Right Mouse Button
-	//
-	// }
-	// }
 }

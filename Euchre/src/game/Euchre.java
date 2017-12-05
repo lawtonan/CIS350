@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**********************************************************************
- * The Euchre class is our main class that controls the functionality of the
- * game to be played in the console window. It can create a deck and keep track
- * of score as the game is played.
+ * The Euchre class is our main class that controls the functionality 
+ * of the game to be played in the console window. It can create a deck 
+ * and keep track of score as the game is played.
  * 
  * @author Andrew Lawton
  * @author Dan Schroeder
